@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Add Event</h2>
+<mat-dialog-content>
+  <form (ngSubmit)="saveEvent()">
+    <mat-form-field>
+      <mat-label>Event Title</mat-label>
+      <input matInput [(ngModel)]="eventTitle" name="title" required>
+    </mat-form-field>
+    <p><strong>Date:</strong> {{ data.date }}</p>
+    <mat-dialog-actions>
+      <button mat-button type="button" (click)="close()">Cancel</button>
+      <button mat-button type="submit" color="primary">Save</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

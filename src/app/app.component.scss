@@ -1,0 +1,28 @@
+mat-toolbar {
+    position: relative;
+    z-index: 2;
+
+    button {
+        pointer-events: auto;
+        z-index: 3;
+      }
+    
+    span {
+        margin-right: auto;
+    }
+}
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+mat-sidenav-content {
+    overflow: hidden;
+}
+
+.sidenav-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    margin: 8px;
+}

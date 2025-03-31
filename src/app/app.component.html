@@ -1,0 +1,28 @@
+<!-- This is the main component of the Angular application. It serves as the entry point for the application and contains the router outlet for navigation. -->
+<!-- The <mat-toolbar> component is a Material Design toolbar that provides a consistent look and feel for the application. -->
+<mat-toolbar>
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Reminders & Tasks</span>
+</mat-toolbar>
+<!-- <mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side">
+    <button mat-button routerLink="/dashboard">Dashboard</button>
+    <button mat-button routerLink="/reminders">Reminders</button>
+    <button mat-button routerLink="/tasks">Tasks</button>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet/>
+  </mat-drawer-content>
+</mat-drawer-container> -->
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <div class="sidenav-list">
+      <a mat-button routerLink="/dashboard" (click)="sidenav.close()">Dashboard</a>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet/>
+  </mat-sidenav-content>
+</mat-sidenav-container>
