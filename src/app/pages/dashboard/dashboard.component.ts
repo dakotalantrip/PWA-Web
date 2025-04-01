@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public onEditClick(arg: any): void {
     const dialogRef = this.dialog.open(EventDialogComponent, {
-      data: { title: arg.event.title, date: arg.event.start }, // Pass the selected date to the dialog component
+      data: this.eventService.events.find((event: Event) => event.id === parseInt(arg.event.id)) || null, // Find the event by ID or return null if not found
     });
 
     dialogRef

@@ -35,7 +35,14 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/scss/styles.scss"
             ],
-            "scripts": []
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/",
+                "src/scss"
+              ]
+            },
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {

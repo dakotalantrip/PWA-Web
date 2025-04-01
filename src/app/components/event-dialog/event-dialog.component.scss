@@ -1,0 +1,6 @@
+@use "abstracts/variables"; // Import variables for use in this stylesheet
+form {
+    display: flex;
+    flex-direction: column;
+    row-gap: variables.$spacing;
+}
