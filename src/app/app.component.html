@@ -4,7 +4,7 @@
   <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Reminders & Tasks</span>
+  <span>{{title}}</span>
 </mat-toolbar>
 <!-- <mat-drawer-container autosize>
   <mat-drawer #drawer mode="side">
@@ -23,6 +23,6 @@
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <router-outlet/>
+    <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

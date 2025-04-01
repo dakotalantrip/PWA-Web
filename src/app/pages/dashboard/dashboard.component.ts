@@ -1,24 +1,35 @@
 import { DialogRef } from '@angular/cdk/dialog';
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventInput } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid'; // Import the day grid plugin for FullCalendar
-import interactionPlugin from '@fullcalendar/interaction'; // Import the interaction plugin for handling date clicks
+import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import { EventDialogComponent } from '../../components/event-dialog/event-dialog.component';
 import { EventService } from '../../services/event.service';
-import { catchError, filter, finalize, Observable, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  filter,
+  finalize,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Event } from '../../models/event.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FullCalendarModule, MatCardModule],
+  imports: [FullCalendarModule, MatIconModule, MatButtonModule],
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   public eventsSignal: WritableSignal<EventInput[]> = signal([]); // Signal to hold the events for the calendar
   public calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth', // Set the initial view of the calendar
@@ -26,11 +37,24 @@ export class DashboardComponent implements OnInit {
     plugins: [dayGridPlugin, interactionPlugin],
     select: this.onSelectClick.bind(this), // Bind the onSelectClick method to handle date selection
     selectable: true, // Enable date selection on the calendar
-    eventClick: this.onEventClick.bind(this), // Bind the onEventClick method to handle event clicks
     events: signal<EventInput[]>([])(),
   };
 
-  constructor(private eventService: EventService, private dialog: MatDialog) {}
+  private subscription: Subscription = new Subscription(); // Subscription to manage observables
+
+  constructor(private eventService: EventService, private dialog: MatDialog) {
+    const eventSubscription = this.eventService.events$.pipe(tap((events: Event[]) => {
+      const formattedEvents: EventInput[] = events.map((event) => ({
+        id: event.id.toString(),
+        title: event.title,
+        start: event.date,
+        description: event.description,
+      }));
+      this.eventsSignal.set(formattedEvents);
+      this.refreshCalendar();
+    })).subscribe();
+    this.subscription.add(eventSubscription); // Add the subscription to the main subscription to ensure cleanup on destroy
+  }
 
   //#region Lifecycle Hooks
 
@@ -38,12 +62,39 @@ export class DashboardComponent implements OnInit {
     this.loadEvents();
   }
 
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe(); // Unsubscribe from all subscriptions to avoid memory leaks
+    }
+  }
+
   //#endregion
 
   //#region Events
 
-  public onEventClick(arg: any): void {
-    alert(arg.event.title); // This method will be called when an event on the calendar is clicked
+  public onDeleteClick(eventClick: EventClickArg): void {
+    const eventID: number = eventClick.event.id ? parseInt(eventClick.event.id.toString(), 10) : NaN; // Get the event ID from the clicked event
+    if (isNaN(eventID)) {
+      return;
+    } else {
+      if (confirm("Delete this event?")) {
+        this.eventService.deleteEvent(eventID).subscribe();
+      }
+    }
+  }
+
+  public onEditClick(arg: any): void {
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      data: { title: arg.event.title, date: arg.event.start }, // Pass the selected date to the dialog component
+    });
+
+    dialogRef
+    .afterClosed()
+    .pipe(
+      filter((event: Event | undefined) => !!event), 
+      switchMap((event: Event) => this.updateEvent$(event))
+    )
+    .subscribe();
   }
 
   public onSelectClick(arg: DateSelectArg): void {
@@ -51,22 +102,13 @@ export class DashboardComponent implements OnInit {
       data: { date: arg.startStr }, // Pass the selected date to the dialog component
     });
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(
         filter((event: Event | undefined) => !!event),
-        switchMap((event: Event) => this.addEvent$(event)))
-      .subscribe({
-        next: (addedEvent: Event | null) => {
-          if (addedEvent) {
-            const newEventInput: EventInput = {
-              title: addedEvent.title,
-              start: addedEvent.date, // Format the date for FullCalendar
-              description: addedEvent.description,
-            };
-            this.addEvent(newEventInput); // Add the new event to the calendar
-          }
-        }
-      });
+        switchMap((event: Event) => this.addEvent$(event))
+      )
+      .subscribe();
   }
 
   //#endregion
@@ -74,40 +116,22 @@ export class DashboardComponent implements OnInit {
   //#region Http
 
   private addEvent$(event: Event): Observable<Event | null> {
-    return this.eventService.addEvent(event).pipe(
-      tap((response) => console.log('Event added:', response)),
-      catchError((error) => {
-        console.error('Error adding event:', error); // Handle error if adding the event fails
-        return of(null);
-      })
-    );
+    return this.eventService.addEvent(event);
   }
 
   private loadEvents(): void {
-    this.eventService.getEvents().subscribe((events) => {
-      // Load events from the EventService and update the events signal
-      const formattedEvents: EventInput[] = events.map((event) => ({
-        title: event.title,
-        start: event.date, // Assuming 'date' is in a format that FullCalendar can understand
-        description: event.description,
-      }));
-      this.eventsSignal.set(formattedEvents); // Set the events signal with the formatted events
-      this.refreshCalendar();
-    });
+    this.eventService.getEvents().subscribe();
+  }
+
+  private updateEvent$(event: Event): Observable<void> {
+    return this.eventService.updateEvent(event);
   }
 
   //#endregion
 
   //#region Utility Methods
 
-  private addEvent(newEvent: EventInput) {
-    this.eventsSignal.update((events) => [...events, newEvent]); // Add a new event to the events array by updating the signal
-    this.refreshCalendar();
-  }
-
   private refreshCalendar(): void {
-    // This method can be used to refresh the calendar if needed
-    // For example, if you want to reload events or update the calendar view
     this.calendarOptions = {
       ...this.calendarOptions,
       events: this.eventsSignal(), // Ensure the calendar options are updated with the latest events

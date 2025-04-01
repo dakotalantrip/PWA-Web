@@ -1,31 +1,56 @@
 import { Component, Inject, signal } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { Event } from '../../models/event.model';
 
 @Component({
   selector: 'app-event-dialog',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatDialogModule, MatInputModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatDialogModule, MatInputModule, ReactiveFormsModule],
   templateUrl: './event-dialog.component.html',
   styleUrl: './event-dialog.component.scss'
 })
 export class EventDialogComponent {
-  eventTitle = '';
+  public formGroup: FormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<EventDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { date: string }
-  ) {}
+    public formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: Event
+  ) {
 
-  saveEvent() {
-    if (this.eventTitle.trim()) {
-      this.dialogRef.close({ title: this.eventTitle, date: this.data.date });
+    this.formGroup = this.formBuilder.group({
+      title: this.data.title,
+      description: this.data.description
+    })
+  }
+
+  public get description(): FormControl {
+    return this.formGroup.get('description') as FormControl;
+  }
+
+  public get title(): FormControl {
+    return this.formGroup.get('title') as FormControl;
+  }
+
+  //#region Events
+
+  public onCloseClick(): void {
+    this.dialogRef.close();
+  }
+
+  public onSubmit(): void {
+    if (this.formGroup.valid)
+    {
+      const updatedEvent: Event = {
+        ...this.data,
+        ...this.formGroup.value
+      };
+      this.dialogRef.close(updatedEvent);
     }
   }
 
-  close() {
-    this.dialogRef.close();
-  }
+  //#endregion
 }
