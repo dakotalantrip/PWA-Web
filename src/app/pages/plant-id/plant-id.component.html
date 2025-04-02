@@ -9,9 +9,9 @@
             (dragleave)="onDragLeave($event)"
             (drop)="onDrop($event)">
             @if (!selectedFile) {
-            <p>Drag & drop an image</p>
+                <p>Drag & drop an image</p>
             } @else {
-            <p>File: {{ selectedFile.name }}</p>
+                <p>File: {{ selectedFile.name }}</p>
             }
             <input
                 type="file"
@@ -19,11 +19,11 @@
                 accept="image/*" />
         </div>
         @if (imagePreview) {
-        <div class="image-preview-container">
-            <img
-                [src]="imagePreview"
-                alt="Image Preview" />
-        </div>
+            <div class="image-preview-container">
+                <img
+                    [src]="imagePreview"
+                    alt="Image Preview" />
+            </div>
         }
     </mat-card-content>
     <mat-card-actions>
@@ -41,22 +41,22 @@
     </mat-card-actions>
 </mat-card>
 @if (isLoading) {
-<mat-progress-bar mode="buffer"></mat-progress-bar>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
 } @else if (plantID) {
-<mat-divider></mat-divider>
-<span>Plant identified: {{ plantID.bestMatch }}</span>
-<div class="plant-id-results-container">
-    @for (result of plantID.results; track result) {
-    <div class="plant-id-result">
-        @if (result.images && result.images[0] != null) {
-        <div>
-            <span>{{ result.species?.scientificNameWithoutAuthor }} - {{ result.score }}</span>
-            @for (image of result.images; track image) {
-            <img [src]="image.url?.m" />
-            }
-        </div>
+    <mat-divider></mat-divider>
+    <span>Plant identified: {{ plantID.bestMatch }}</span>
+    <div class="plant-id-results-container">
+        @for (result of plantID.results; track result) {
+            <div class="plant-id-result">
+                @if (result.images && result.images[0] != null) {
+                    <div>
+                        <span>{{ result.species?.scientificNameWithoutAuthor }} - {{ result.score }}</span>
+                        @for (image of result.images; track image) {
+                            <img [src]="image.url?.m" />
+                        }
+                    </div>
+                }
+            </div>
         }
     </div>
-    }
-</div>
 }
