@@ -1,12 +1,18 @@
 <full-calendar [options]="calendarOptions">
-  <ng-template #eventContent let-arg>
-    <b>{{ arg.timeText }}</b>
-    <i>{{ arg.event.title }}</i>
-    <button mat-icon-button (click)="onEditClick(arg)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button (click)="onDeleteClick(arg)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </ng-template>
+    <ng-template
+        #eventContent
+        let-arg>
+        <b>{{ arg.timeText }}</b>
+        <i>{{ arg.event.title }}</i>
+        <button
+            mat-icon-button
+            (click)="onEditClick(arg)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button
+            mat-icon-button
+            (click)="onDeleteClick(arg)">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </ng-template>
 </full-calendar>

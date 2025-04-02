@@ -18,12 +18,12 @@ export class EventDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<EventDialogComponent>,
     public formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: Event
+    @Inject(MAT_DIALOG_DATA) public data: Event | undefined
   ) {
 
     this.formGroup = this.formBuilder.group({
-      title: this.data.title,
-      description: this.data.description
+      title: this.data ? this.data.title : '',
+      description: this.data ? this.data.description : ''
     })
   }
 

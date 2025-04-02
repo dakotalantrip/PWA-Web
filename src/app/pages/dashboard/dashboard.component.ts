@@ -1,26 +1,18 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventDialogComponent } from '../../components/event-dialog/event-dialog.component';
 import { EventService } from '../../services/event.service';
-import {
-  catchError,
-  filter,
-  finalize,
-  Observable,
-  of,
-  Subscription,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, filter, finalize, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { Event } from '../../models/event.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-id-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -43,16 +35,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription(); // Subscription to manage observables
 
   constructor(private eventService: EventService, private dialog: MatDialog) {
-    const eventSubscription = this.eventService.events$.pipe(tap((events: Event[]) => {
-      const formattedEvents: EventInput[] = events.map((event) => ({
-        id: event.id.toString(),
-        title: event.title,
-        start: event.date,
-        description: event.description,
-      }));
-      this.eventsSignal.set(formattedEvents);
-      this.refreshCalendar();
-    })).subscribe();
+    const eventSubscription = this.eventService.events$
+      .pipe(
+        tap((events: Event[]) => {
+          const formattedEvents: EventInput[] = events.map((event) => ({
+            id: event.id.toString(),
+            title: event.title,
+            start: event.date,
+            description: event.description,
+          }));
+          this.eventsSignal.set(formattedEvents);
+          this.refreshCalendar();
+        })
+      )
+      .subscribe();
     this.subscription.add(eventSubscription); // Add the subscription to the main subscription to ensure cleanup on destroy
   }
 
@@ -72,12 +68,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   //#region Events
 
+  private handleDialogClose(dialogRef: MatDialogRef<any>, action: (event: Event) => Observable<any>): Observable<void> {
+    return dialogRef.afterClosed().pipe(
+      filter((event: Event | undefined) => !!event),
+      switchMap((event: Event) => action(event))
+    );
+  }
+
+  public onAddClick(): void {
+    const dialogRef = this.dialog.open(PlantIDDialogComponent, { data: null });
+
+    this.handleDialogClose(dialogRef, (event: Event) => this.addEvent$(event)).subscribe();
+  }
+
   public onDeleteClick(eventClick: EventClickArg): void {
     const eventID: number = eventClick.event.id ? parseInt(eventClick.event.id.toString(), 10) : NaN; // Get the event ID from the clicked event
     if (isNaN(eventID)) {
       return;
     } else {
-      if (confirm("Delete this event?")) {
+      if (confirm('Delete this event?')) {
         this.eventService.deleteEvent(eventID).subscribe();
       }
     }
@@ -88,13 +97,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       data: this.eventService.events.find((event: Event) => event.id === parseInt(arg.event.id)) || null, // Find the event by ID or return null if not found
     });
 
-    dialogRef
-    .afterClosed()
-    .pipe(
-      filter((event: Event | undefined) => !!event), 
-      switchMap((event: Event) => this.updateEvent$(event))
-    )
-    .subscribe();
+    this.handleDialogClose(dialogRef, (event: Event) => this.updateEvent$(event)).subscribe();
   }
 
   public onSelectClick(arg: DateSelectArg): void {
@@ -102,13 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       data: { date: arg.startStr }, // Pass the selected date to the dialog component
     });
 
-    dialogRef
-      .afterClosed()
-      .pipe(
-        filter((event: Event | undefined) => !!event),
-        switchMap((event: Event) => this.addEvent$(event))
-      )
-      .subscribe();
+    this.handleDialogClose(dialogRef, (event: Event) => this.addEvent$(event)).subscribe();
   }
 
   //#endregion

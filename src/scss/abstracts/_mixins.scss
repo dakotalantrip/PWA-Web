@@ -1,0 +1,30 @@
+@use "abstracts/variables";
+
+// Border
+@mixin border-standard($radius: null, $top: null, $right: null, $bottom: null, $left: null) {
+    @if ($radius) {
+        @extend %border-standard-rounded; // Use rounded border if radius is provided
+    } @else {
+        @extend %border-standard; // Use standard border
+    }
+
+    @if $top or $right or $bottom or $left {
+        border-width: 0px;
+    }
+
+    @if $top {
+        border-top-width: $top;
+    }
+
+    @if $right {
+        border-right-width: $right;
+    }
+
+    @if $bottom {
+        border-bottom-width: $bottom;
+    }
+
+    @if $left {
+        border-left-width: $left;
+    }
+}
