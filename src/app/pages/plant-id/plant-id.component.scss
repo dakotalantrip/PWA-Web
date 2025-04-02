@@ -1,13 +1,23 @@
 @use "abstracts/variables";
 @use "abstracts/mixins";
 
+$calculated-spacing: calc(variables.$spacing * 2);
+
 :host {
     @extend %display-flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100%;
     height: 100%;
+
+    mat-card {
+        width: 33vw;
+        margin-bottom: $calculated-spacing;
+    }
+
+    img {
+        max-width: 150px;
+        max-height: 150px;
+    }
 
     .file-drop-area {
         border: 2px dashed #ccc;
@@ -23,6 +33,17 @@
 
         input {
             display: none;
+        }
+    }
+
+    .plant-id-results-container {
+        @extend %display-flex;
+        flex-direction: column;
+        overflow: auto;
+        padding: $calculated-spacing;
+
+        .plant-id-result {
+            @extend %display-flex;
         }
     }
 }

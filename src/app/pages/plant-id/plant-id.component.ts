@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
@@ -6,25 +6,51 @@ import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-i
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PlantIDService } from '../../services/plant-id.service';
+import { PlantID, PlantIDRequest } from '../../models/plant-id.model';
+import { finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-plant-id',
-  imports: [FormsModule, ReactiveFormsModule, MatInputModule, MatCardModule, MatButtonModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatListModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressBarModule,
+  ],
   templateUrl: './plant-id.component.html',
   styleUrl: './plant-id.component.scss',
 })
 export class PlantIDComponent {
   public formGroup: FormGroup;
   public imagePreview: string | null = null;
+  public isLoading: boolean = false;
   public selectedFile: File | null = null;
+  public plantIDResponse = signal<PlantID | null>(null);
 
-  constructor(private formBuilder: FormBuilder, private matDialog: MatDialog) {
+  constructor(private formBuilder: FormBuilder, private plantIDService: PlantIDService) {
     this.formGroup = this.formBuilder.group({
       image: [''],
     });
   }
 
+  public get plantID(): PlantID | null {
+    return this.plantIDResponse();
+  }
+
   //#region Events
+
+  public onClearClick(): void {
+    this.imagePreview = null;
+    this.selectedFile = null;
+    this.formGroup.reset();
+    this.plantIDResponse.set(null);
+  }
 
   public onDragLeave(event: DragEvent): void {
     event.preventDefault();
@@ -53,7 +79,21 @@ export class PlantIDComponent {
     }
   }
 
-  public onIdentifyClick(): void {}
+  public onIdentifyClick(): void {
+    if (this.selectedFile) {
+      this.isLoading = true;
+      const plantID: PlantIDRequest = new PlantIDRequest(this.selectedFile, 'flower');
+      this.plantIDService
+        .identify(plantID)
+        .pipe(
+          tap((plantID: PlantID) => {
+            this.plantIDResponse.set(plantID);
+          }),
+          finalize(() => (this.isLoading = false))
+        )
+        .subscribe();
+    }
+  }
 
   //#endregion
 
@@ -62,5 +102,6 @@ export class PlantIDComponent {
     reader.onload = (e) => {
       this.imagePreview = e.target?.result as string;
     };
+    reader.readAsDataURL(file);
   }
 }

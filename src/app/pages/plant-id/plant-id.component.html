@@ -18,8 +18,20 @@
                 (change)="onFileSelected($event)"
                 accept="image/*" />
         </div>
+        @if (imagePreview) {
+        <div class="image-preview-container">
+            <img
+                [src]="imagePreview"
+                alt="Image Preview" />
+        </div>
+        }
     </mat-card-content>
     <mat-card-actions>
+        <button
+            mat-stroked-button
+            (click)="onClearClick()">
+            Clear
+        </button>
         <button
             mat-stroked-button
             (click)="onIdentifyClick()"
@@ -28,3 +40,23 @@
         </button>
     </mat-card-actions>
 </mat-card>
+@if (isLoading) {
+<mat-progress-bar mode="buffer"></mat-progress-bar>
+} @else if (plantID) {
+<mat-divider></mat-divider>
+<span>Plant identified: {{ plantID.bestMatch }}</span>
+<div class="plant-id-results-container">
+    @for (result of plantID.results; track result) {
+    <div class="plant-id-result">
+        @if (result.images && result.images[0] != null) {
+        <div>
+            <span>{{ result.species?.scientificNameWithoutAuthor }} - {{ result.score }}</span>
+            @for (image of result.images; track image) {
+            <img [src]="image.url?.m" />
+            }
+        </div>
+        }
+    </div>
+    }
+</div>
+}
