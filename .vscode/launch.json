@@ -21,7 +21,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Connect to Aspire",
-      "url": "http://localhost:58017", // This needs to be whatever the url is for your instance when running with Aspire
+      "url": "http://localhost:4200", // This needs to be whatever the url is for your instance when running with Aspire
       "webRoot": "${workspaceFolder}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {
