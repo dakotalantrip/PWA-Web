@@ -6,7 +6,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export abstract class BaseApiService {
-  protected apiUrl: string = 'https://localhost:44364/api'; // Base API URL
+  protected apiUrl: string = 'api'; // Base API URL
 
   constructor(protected httpClient: HttpClient, controller: string) {
     this.apiUrl = `${this.apiUrl}/${controller}`;
