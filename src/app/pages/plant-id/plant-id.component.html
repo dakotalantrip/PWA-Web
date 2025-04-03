@@ -3,26 +3,22 @@
         <mat-card-title>Plant ID</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <div
-            class="file-drop-area"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)">
-            @if (!selectedFile) {
-                <p>Drag & drop an image</p>
-            } @else {
-                <p>File: {{ selectedFile.name }}</p>
-            }
-            <input
-                type="file"
-                (change)="onFileSelected($event)"
-                accept="image/*" />
-        </div>
-        @if (imagePreview) {
+        @if (!selectedFiles.length) {
+            <div
+                class="file-drop-area"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onDrop($event)">
+                <p>Drag & drop image(s)</p>
+            </div>
+        }
+        @if (imagePreviews.length) {
             <div class="image-preview-container">
-                <img
-                    [src]="imagePreview"
-                    alt="Image Preview" />
+                @for (imagePreview of imagePreviews; track imagePreview) {
+                    <img
+                        [src]="imagePreview"
+                        alt="Image Preview" />
+                }
             </div>
         }
     </mat-card-content>
@@ -32,31 +28,29 @@
             (click)="onClearClick()">
             Clear
         </button>
-        <button
-            mat-stroked-button
-            (click)="onIdentifyClick()"
-            color="primary">
-            Identify
-        </button>
     </mat-card-actions>
 </mat-card>
-@if (isLoading) {
-    <mat-progress-bar mode="buffer"></mat-progress-bar>
-} @else if (plantID) {
-    <mat-divider></mat-divider>
-    <span>Plant identified: {{ plantID.bestMatch }}</span>
-    <div class="plant-id-results-container">
+<div
+    class="plant-id-results-container"
+    [class.open]="!isLoading">
+    @if (isLoading) {
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    } @else if (plantID) {
         @for (result of plantID.results; track result) {
             <div class="plant-id-result">
                 @if (result.images && result.images[0] != null) {
-                    <div>
-                        <span>{{ result.species?.scientificNameWithoutAuthor }} - {{ result.score }}</span>
-                        @for (image of result.images; track image) {
+                    <span>{{ result.species?.scientificNameWithoutAuthor }}</span>
+                    <div class="score">
+                        <span>{{ getScorePercent(result.score) }}%</span>
+                    </div>
+                    <span>{{ result.species?.family?.scientificName }} ({{ result.species?.commonNames }})</span>
+                    <div class="result-images">
+                        @for (image of result.images.slice(0, 3); track image) {
                             <img [src]="image.url?.m" />
                         }
                     </div>
                 }
             </div>
         }
-    </div>
-}
+    }
+</div>

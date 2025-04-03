@@ -1,9 +1,9 @@
 export class PlantIDRequest {
-  public file: File;
+  public files: File[];
   public organ: string = 'flower';
 
-  constructor(file: File, organ: string) {
-    this.file = file;
+  constructor(files: File[], organ: string) {
+    this.files = files;
     this.organ = organ;
   }
 }

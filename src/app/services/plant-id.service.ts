@@ -14,9 +14,11 @@ export class PlantIDService extends BaseApiService {
 
   public identify(plantID: PlantIDRequest): Observable<PlantID> {
     const formData = new FormData();
-    formData.append('file', plantID.file, plantID.file.name);
+    for (let file of plantID.files) {
+      formData.append('file', file, file.name);
+    }
     formData.append('organ', plantID.organ);
 
-    return this.post<PlantID>('identify', formData);
+    return this.post<PlantID>('Search', formData);
   }
 }

@@ -25,7 +25,6 @@ export class EventService extends BaseApiService {
     this.getEvents().subscribe(); // Preload the events when the service is instantiated to ensure the cache is populated
   }
 
-  // Make a POST request to add a new event
   public addEvent(event: Event): Observable<Event | null> {
     return this.post<Event>('', event).pipe(
       tap((event: Event) => {
@@ -34,7 +33,7 @@ export class EventService extends BaseApiService {
           const currentEvents = this.eventsSubject.value;
           this.events = [...currentEvents, event];
         }
-      })
+      }),
     );
   }
 
@@ -43,7 +42,7 @@ export class EventService extends BaseApiService {
       tap(() => {
         // When an event is deleted, update the BehaviorSubject to remove the deleted event
         this.events = this.events.filter((event) => event.id !== id);
-      })
+      }),
     );
   }
 
@@ -53,7 +52,7 @@ export class EventService extends BaseApiService {
       : this.get<Event[]>('').pipe(
           tap((response) => {
             this.events = response; // Update the BehaviorSubject with the latest events
-          })
+          }),
         );
   }
 
@@ -62,11 +61,11 @@ export class EventService extends BaseApiService {
   }
 
   public updateEvent(event: Event): Observable<void> {
-    return this.put<void>(`Update/${event.id}`, event).pipe(
+    return this.put<void>(`${event.id}`, event).pipe(
       tap(() => {
         const updatedEvents = this.events.map((value: Event) => (event.id === value.id ? event : value));
         this.events = updatedEvents;
-      })
+      }),
     );
   }
 }

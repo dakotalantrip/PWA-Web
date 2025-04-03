@@ -1,7 +1,8 @@
 @use "abstracts/variables";
 @use "abstracts/mixins";
 
-$calculated-spacing: calc(variables.$spacing * 2);
+$double-spacing: calc(variables.$spacing * 2);
+$image-size: 125px;
 
 :host {
     @extend %display-flex;
@@ -11,12 +12,18 @@ $calculated-spacing: calc(variables.$spacing * 2);
 
     mat-card {
         width: 33vw;
-        margin-bottom: $calculated-spacing;
+        margin-bottom: $double-spacing;
+    }
+
+    .image-preview-container {
+        @extend %display-flex;
+        column-gap: variables.$spacing;
     }
 
     img {
-        max-width: 150px;
-        max-height: 150px;
+        width: $image-size;
+        height: $image-size;
+        @include mixins.border-standard(true);
     }
 
     .file-drop-area {
@@ -30,20 +37,46 @@ $calculated-spacing: calc(variables.$spacing * 2);
         &:hover {
             background-color: #f9f9f9;
         }
+    }
 
-        input {
-            display: none;
-        }
+    input {
+        display: none;
     }
 
     .plant-id-results-container {
         @extend %display-flex;
         flex-direction: column;
+        text-align: center;
         overflow: auto;
-        padding: $calculated-spacing;
+        padding: $double-spacing;
+        row-gap: $double-spacing;
+        max-height: 0;
+        transition: max-height 0.5s ease-out;
+
+        &.open {
+            max-height: 100%;
+        }
 
         .plant-id-result {
-            @extend %display-flex;
+            display: grid;
+            grid-template-columns: 150px 75px 250px 2fr;
+            align-items: center;
+            column-gap: variables.$spacing;
+
+            .score {
+                @extend %display-flex;
+                align-items: center;
+                justify-content: center;
+                @include mixins.border-standard;
+                border-radius: 50%;
+                width: calc(#{$image-size} * 0.35);
+                height: calc(#{$image-size} * 0.35);
+            }
+
+            .result-images {
+                @extend %display-flex;
+                column-gap: variables.$spacing;
+            }
         }
     }
 }

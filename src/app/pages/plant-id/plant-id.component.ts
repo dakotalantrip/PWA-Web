@@ -1,9 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
-import { MatIcon } from '@angular/material/icon';
-import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-id-dialog.component';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -27,17 +24,12 @@ import { finalize, tap } from 'rxjs';
   styleUrl: './plant-id.component.scss',
 })
 export class PlantIDComponent {
-  public formGroup: FormGroup;
-  public imagePreview: string | null = null;
+  public imagePreviews: string[] = [];
   public isLoading: boolean = false;
-  public selectedFile: File | null = null;
+  public selectedFiles: File[] = [];
   public plantIDResponse = signal<PlantID | null>(null);
 
-  constructor(private formBuilder: FormBuilder, private plantIDService: PlantIDService) {
-    this.formGroup = this.formBuilder.group({
-      image: [''],
-    });
-  }
+  constructor(private plantIDService: PlantIDService) {}
 
   public get plantID(): PlantID | null {
     return this.plantIDResponse();
@@ -46,9 +38,8 @@ export class PlantIDComponent {
   //#region Events
 
   public onClearClick(): void {
-    this.imagePreview = null;
-    this.selectedFile = null;
-    this.formGroup.reset();
+    this.imagePreviews = [];
+    this.selectedFiles = [];
     this.plantIDResponse.set(null);
   }
 
@@ -64,32 +55,25 @@ export class PlantIDComponent {
     event.preventDefault();
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      this.selectedFile = file;
-      this.previewImage(file);
-      this.formGroup.patchValue({ image: file });
+      for (let file of files) {
+        this.selectedFiles.push(file);
+        this.previewImage(file);
+      }
+      this.handleFileSelect();
     }
   }
 
-  public onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.selectedFile = file;
-      this.previewImage(file);
-    }
-  }
-
-  public onIdentifyClick(): void {
-    if (this.selectedFile) {
+  private handleFileSelect(): void {
+    if (this.selectedFiles.length) {
       this.isLoading = true;
-      const plantID: PlantIDRequest = new PlantIDRequest(this.selectedFile, 'flower');
+      const plantID: PlantIDRequest = new PlantIDRequest(this.selectedFiles, 'flower');
       this.plantIDService
         .identify(plantID)
         .pipe(
           tap((plantID: PlantID) => {
             this.plantIDResponse.set(plantID);
           }),
-          finalize(() => (this.isLoading = false))
+          finalize(() => (this.isLoading = false)),
         )
         .subscribe();
     }
@@ -97,10 +81,14 @@ export class PlantIDComponent {
 
   //#endregion
 
+  public getScorePercent(score: number): string {
+    return Math.ceil(score * 100).toString();
+  }
+
   private previewImage(file: File): void {
     const reader = new FileReader();
     reader.onload = (e) => {
-      this.imagePreview = e.target?.result as string;
+      this.imagePreviews.push(e.target?.result as string);
     };
     reader.readAsDataURL(file);
   }
