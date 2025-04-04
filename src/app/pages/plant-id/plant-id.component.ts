@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PlantIDService } from '../../services/plant-id.service';
-import { PlantID, PlantIDRequest } from '../../models/plant-id.model';
+import { PlantIDSpecies, PlantID, PlantIDRequest } from '../../models/plant-id.model';
 import { finalize, tap } from 'rxjs';
 
 @Component({
@@ -27,15 +27,31 @@ export class PlantIDComponent {
   public imagePreviews: string[] = [];
   public isLoading: boolean = false;
   public selectedFiles: File[] = [];
-  public plantIDResponse = signal<PlantID | null>(null);
+  public plantIDResponse = signal<PlantID[] | null>(null);
 
   constructor(private plantIDService: PlantIDService) {}
 
-  public get plantID(): PlantID | null {
+  public get plantIDs(): PlantID[] | null {
     return this.plantIDResponse();
   }
 
   //#region Events
+
+  private handleFileSelect(): void {
+    if (this.selectedFiles.length) {
+      this.isLoading = true;
+      const plantID: PlantIDRequest = new PlantIDRequest(this.selectedFiles, 'flower');
+      this.plantIDService
+        .identify(plantID)
+        .pipe(
+          tap((plantID: PlantID[]) => {
+            this.plantIDResponse.set(plantID);
+          }),
+          finalize(() => (this.isLoading = false)),
+        )
+        .subscribe();
+    }
+  }
 
   public onClearClick(): void {
     this.imagePreviews = [];
@@ -63,20 +79,10 @@ export class PlantIDComponent {
     }
   }
 
-  private handleFileSelect(): void {
-    if (this.selectedFiles.length) {
-      this.isLoading = true;
-      const plantID: PlantIDRequest = new PlantIDRequest(this.selectedFiles, 'flower');
-      this.plantIDService
-        .identify(plantID)
-        .pipe(
-          tap((plantID: PlantID) => {
-            this.plantIDResponse.set(plantID);
-          }),
-          finalize(() => (this.isLoading = false)),
-        )
-        .subscribe();
-    }
+  public onSpeciesClick(species: PlantIDSpecies): void {
+    this.plantIDService
+      .search(`${species.scientificNameWithoutAuthor} ${species.scientificNameAuthorship}`)
+      .subscribe();
   }
 
   //#endregion

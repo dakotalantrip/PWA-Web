@@ -30,27 +30,26 @@
         </button>
     </mat-card-actions>
 </mat-card>
+@if (isLoading) {
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+}
 <div
     class="plant-id-results-container"
     [class.open]="!isLoading">
-    @if (isLoading) {
-        <mat-progress-bar mode="buffer"></mat-progress-bar>
-    } @else if (plantID) {
-        @for (result of plantID.results; track result) {
-            <div class="plant-id-result">
-                @if (result.images && result.images[0] != null) {
-                    <span>{{ result.species?.scientificNameWithoutAuthor }}</span>
-                    <div class="score">
-                        <span>{{ getScorePercent(result.score) }}%</span>
-                    </div>
-                    <span>{{ result.species?.family?.scientificName }} ({{ result.species?.commonNames }})</span>
-                    <div class="result-images">
-                        @for (image of result.images.slice(0, 3); track image) {
-                            <img [src]="image.url?.m" />
-                        }
-                    </div>
-                }
+    @for (plantID of plantIDs; track plantID) {
+        <div class="plant-id-result">
+            <span (click)="onSpeciesClick(plantID.species!)">{{ plantID.species?.scientificNameWithoutAuthor }}</span>
+            <div class="score">
+                <span>{{ getScorePercent(plantID.score) }}%</span>
             </div>
-        }
+            <span>{{ plantID.species?.family?.scientificName }} ({{ plantID.species?.commonNames }})</span>
+            @if (plantID.images && plantID.images[0] != null) {
+                <div class="result-images">
+                    @for (image of plantID.images.slice(0, 3); track image) {
+                        <img [src]="image.url" />
+                    }
+                </div>
+            }
+        </div>
     }
 </div>

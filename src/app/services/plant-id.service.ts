@@ -12,13 +12,21 @@ export class PlantIDService extends BaseApiService {
     super(http, 'PlantID');
   }
 
-  public identify(plantID: PlantIDRequest): Observable<PlantID> {
-    const formData = new FormData();
-    for (let file of plantID.files) {
-      formData.append('file', file, file.name);
-    }
-    formData.append('organ', plantID.organ);
+  public search(name: string): Observable<PlantID> {
+    return this.get<any>(`${name}`).pipe(
+      tap((response) => {
+        console.log(response);
+      }),
+    );
+  }
 
-    return this.post<PlantID>('Search', formData);
+  public identify(plantID: PlantIDRequest): Observable<PlantID[]> {
+    const formData = new FormData();
+    plantID.files.forEach((value: File) => {
+      formData.append('Files', value);
+    });
+    formData.append('Organ', plantID.organ);
+
+    return this.post<PlantID[]>('Identify', formData);
   }
 }

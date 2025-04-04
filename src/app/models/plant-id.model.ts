@@ -9,48 +9,20 @@ export class PlantIDRequest {
 }
 
 export interface PlantID {
-  query?: PlantIDQuery;
-  language?: string;
-  preferredReferential?: string;
-  switchToProject?: string;
-  bestMatch?: string;
-  version?: string;
-  results?: PlantIDResult[];
-  remainingIdentificationRequests: number;
-  predictedOrgans?: Model5[];
-}
-
-export interface PlantIDQuery {
-  project?: string;
-  images?: string[];
-  organs?: string[];
-  includeRelatedImages: boolean;
-  noReject: boolean;
-  type?: string;
-}
-
-export interface PlantIDResult {
   score: number;
-  species?: Model4;
+  species?: PlantIDSpecies;
   images?: PlantIDImage[];
-  gbif?: GBIF;
-  powo?: POWO;
+  gbif_id?: string;
+  powo_id?: string;
   iucn?: IUCN;
 }
 
-export interface Model4 {
+export interface PlantIDSpecies {
   scientificNameWithoutAuthor?: string;
   scientificNameAuthorship?: string;
   genus?: TaxonomicRank;
   family?: TaxonomicRank;
   commonNames?: string[];
-}
-
-export interface Model5 {
-  image?: string;
-  fileName?: string;
-  organ?: string;
-  score: number;
 }
 
 export interface TaxonomicRank {
@@ -63,28 +35,9 @@ export interface PlantIDImage {
   organ?: string;
   author?: string;
   license?: string;
-  date?: PlantIDImageDate;
+  date?: Date;
+  url: string;
   citation?: string;
-  url?: PlantIDUrl;
-}
-
-export interface PlantIDImageDate {
-  timestamp: number;
-  string?: string;
-}
-
-export interface PlantIDUrl {
-  o?: string;
-  m?: string;
-  s?: string;
-}
-
-export interface GBIF {
-  id?: string;
-}
-
-export interface POWO {
-  id?: string;
 }
 
 export interface IUCN {
