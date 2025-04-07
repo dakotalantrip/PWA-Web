@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PlantIDService } from '../../services/plant-id.service';
 import { PlantIDSpecies, PlantID, PlantIDRequest } from '../../models/plant-id.model';
 import { finalize, tap } from 'rxjs';
+import { Plant } from '../../models/plant.model';
 
 @Component({
   selector: 'app-plant-id',
@@ -27,12 +28,17 @@ export class PlantIDComponent {
   public imagePreviews: string[] = [];
   public isLoading: boolean = false;
   public selectedFiles: File[] = [];
-  public plantIDResponse = signal<PlantID[] | null>(null);
+  public plantIDSignal = signal<PlantID[] | null>(null);
+  public plantsSignal = signal<Plant[] | null>(null);
 
   constructor(private plantIDService: PlantIDService) {}
 
   public get plantIDs(): PlantID[] | null {
-    return this.plantIDResponse();
+    return this.plantIDSignal();
+  }
+
+  public get plants(): Plant[] | null {
+    return this.plantsSignal();
   }
 
   //#region Events
@@ -45,7 +51,7 @@ export class PlantIDComponent {
         .identify(plantID)
         .pipe(
           tap((plantID: PlantID[]) => {
-            this.plantIDResponse.set(plantID);
+            this.plantIDSignal.set(plantID);
           }),
           finalize(() => (this.isLoading = false)),
         )
@@ -56,7 +62,8 @@ export class PlantIDComponent {
   public onClearClick(): void {
     this.imagePreviews = [];
     this.selectedFiles = [];
-    this.plantIDResponse.set(null);
+    this.plantIDSignal.set(null);
+    this.plantsSignal.set(null);
   }
 
   public onDragLeave(event: DragEvent): void {
@@ -81,7 +88,8 @@ export class PlantIDComponent {
 
   public onSpeciesClick(species: PlantIDSpecies): void {
     this.plantIDService
-      .search(`${species.scientificNameWithoutAuthor} ${species.scientificNameAuthorship}`)
+      .search(species.scientificNameWithoutAuthor ?? '')
+      .pipe(tap((result: Plant[]) => this.plantsSignal.set(result)))
       .subscribe();
   }
 

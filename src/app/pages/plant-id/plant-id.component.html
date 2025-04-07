@@ -33,23 +33,47 @@
 @if (isLoading) {
     <mat-progress-bar mode="buffer"></mat-progress-bar>
 }
-<div
-    class="plant-id-results-container"
-    [class.open]="!isLoading">
-    @for (plantID of plantIDs; track plantID) {
-        <div class="plant-id-result">
-            <span (click)="onSpeciesClick(plantID.species!)">{{ plantID.species?.scientificNameWithoutAuthor }}</span>
-            <div class="score">
-                <span>{{ getScorePercent(plantID.score) }}%</span>
-            </div>
-            <span>{{ plantID.species?.family?.scientificName }} ({{ plantID.species?.commonNames }})</span>
-            @if (plantID.images && plantID.images[0] != null) {
-                <div class="result-images">
-                    @for (image of plantID.images.slice(0, 3); track image) {
-                        <img [src]="image.url" />
-                    }
+<div class="results-container">
+    <div
+        class="plant-id-results-container"
+        [class.open]="!isLoading">
+        @for (plantID of plantIDs; track plantID) {
+            <div class="plant-id-result">
+                <span (click)="onSpeciesClick(plantID.species!)">{{
+                    plantID.species?.scientificNameWithoutAuthor
+                }}</span>
+                <div class="score">
+                    <span>{{ getScorePercent(plantID.score) }}%</span>
                 </div>
-            }
-        </div>
-    }
+                <span>{{ plantID.species?.family?.scientificName }} ({{ plantID.species?.commonNames }})</span>
+                @if (plantID.images && plantID.images[0] != null) {
+                    <div class="result-images">
+                        @for (image of plantID.images.slice(0, 3); track image) {
+                            <img [src]="image.url" />
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div
+        class="plant-info-results-container"
+        [class.open]="!isLoading">
+        @for (plant of plants; track plant) {
+            <div class="plant-info">
+                <span>{{ plant.name }} ({{ plant.id }})</span>
+                <span>{{ plant.description }}</span>
+                <span>{{ plant.scientificName }}</span>
+                <span>{{ plant.type }}</span>
+                <span>{{ plant.growth }}</span>
+                <span>{{ plant.layer }}</span>
+                <span>{{ plant.lightRequirement }}</span>
+                <span>{{ plant.waterRequirement }}</span>
+                <span>{{ plant.usdaHardinessZone }}</span>
+                @for (plantData of plant.data; track plantData) {
+                    <span>{{ plantData.key }}: {{ plantData.value }}</span>
+                }
+            </div>
+        }
+    </div>
 </div>

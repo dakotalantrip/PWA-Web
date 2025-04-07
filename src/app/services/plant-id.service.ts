@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { BaseApiService } from './base-api.service';
 import { PlantID, PlantIDRequest } from '../models/plant-id.model';
+import { Plant } from '../models/plant.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class PlantIDService extends BaseApiService {
     super(http, 'PlantID');
   }
 
-  public search(name: string): Observable<PlantID> {
+  public search(name: string): Observable<Plant[]> {
     return this.get<any>(`${name}`).pipe(
       tap((response) => {
         console.log(response);
