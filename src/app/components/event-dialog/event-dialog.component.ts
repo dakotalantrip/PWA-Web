@@ -23,7 +23,8 @@ export class EventDialogComponent {
 
     this.formGroup = this.formBuilder.group({
       title: this.data ? this.data.title : '',
-      description: this.data ? this.data.description : ''
+      description: this.data ? this.data.description : '',
+      color: this.data ? this.data.color : '#d6d2d2'
     })
   }
 
@@ -33,6 +34,10 @@ export class EventDialogComponent {
 
   public get title(): FormControl {
     return this.formGroup.get('title') as FormControl;
+  }
+
+  public get color(): FormControl {
+    return this.formGroup.get('color') as FormControl;
   }
 
   //#region Events
@@ -46,7 +51,7 @@ export class EventDialogComponent {
     {
       const updatedEvent: Event = {
         ...this.data,
-        ...this.formGroup.value
+        ...this.formGroup.value,
       };
       this.dialogRef.close(updatedEvent);
     }

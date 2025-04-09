@@ -17,6 +17,11 @@
                 formControlName="description"
                 required />
         </mat-form-field>
+        <mat-form-field>
+            <input type="color" 
+                matInput 
+                formControlName="color">
+        </mat-form-field>
         @if (data) {
             <p><strong>Date:</strong> {{ data.date }}</p>
         }

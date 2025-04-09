@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/c
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
+import { Calendar, CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventDialogComponent } from '../../components/event-dialog/event-dialog.component';
@@ -23,6 +23,7 @@ import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-i
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public eventsSignal: WritableSignal<EventInput[]> = signal([]); // Signal to hold the events for the calendar
+
   public calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth', // Set the initial view of the calendar
     height: '95%', // Set the height of the calendar to 100% of its container
@@ -30,11 +31,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     select: this.onSelectClick.bind(this), // Bind the onSelectClick method to handle date selection
     selectable: true, // Enable date selection on the calendar
     events: signal<EventInput[]>([])(),
+    droppable: true,
+    eventDisplay: 'block'
   };
 
   private subscription: Subscription = new Subscription(); // Subscription to manage observables
 
   constructor(private eventService: EventService, private dialog: MatDialog) {
+    
     const eventSubscription = this.eventService.events$
       .pipe(
         tap((events: Event[]) => {
@@ -43,6 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             title: event.title,
             start: event.date,
             description: event.description,
+            color: event.color,
           }));
           this.eventsSignal.set(formattedEvents);
           this.refreshCalendar();
@@ -104,6 +109,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(EventDialogComponent, {
       data: { date: arg.startStr }, // Pass the selected date to the dialog component
     });
+
+    let test = arg.view.calendar;
 
     this.handleDialogClose(dialogRef, (event: Event) => this.addEvent$(event)).subscribe();
   }
