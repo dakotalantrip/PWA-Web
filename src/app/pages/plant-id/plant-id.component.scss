@@ -2,29 +2,26 @@
 @use "abstracts/mixins";
 
 $double-spacing: calc(variables.$spacing * 2);
-$image-size: 125px;
 
 :host {
     @extend %display-flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     height: 100%;
 
     mat-card {
-        width: 33vw;
         margin-bottom: $double-spacing;
     }
 
     .image-preview-container {
         @extend %display-flex;
         column-gap: variables.$spacing;
-    }
 
-    img {
-        width: $image-size;
-        height: $image-size;
-        @include mixins.border-standard(true);
+        img {
+            width: variables.$image-size;
+            height: variables.$image-size;
+            @include mixins.border-standard(true);
+        }
     }
 
     .file-drop-area {
@@ -48,56 +45,9 @@ $image-size: 125px;
         display: none;
     }
 
-    .results-container {
-        @extend %display-flex;
-        overflow: auto;
-    }
-
-    .plant-id-results-container,
-    .plant-info-results-container {
-        @extend %display-flex;
-        flex-direction: column;
-        text-align: center;
-        overflow: auto;
-        padding: $double-spacing;
-        row-gap: $double-spacing;
-        max-height: 0;
-        transition: max-height 0.5s ease-out;
-
+    .plant-id-results-container {
         &.open {
             max-height: 100%;
-        }
-
-        .plant-id-result {
-            display: grid;
-            grid-template-columns: 150px 75px 250px 2fr;
-            align-items: center;
-            column-gap: variables.$spacing;
-
-            > span:first-child {
-                cursor: pointer;
-            }
-
-            .score {
-                @extend %display-flex;
-                align-items: center;
-                justify-content: center;
-                @include mixins.border-standard;
-                border-radius: 50%;
-                width: calc(#{$image-size} * 0.35);
-                height: calc(#{$image-size} * 0.35);
-            }
-
-            .result-images {
-                @extend %display-flex;
-                column-gap: variables.$spacing;
-            }
-        }
-
-        .plant-info {
-            @extend %display-flex;
-            column-gap: variables.$spacing;
-            justify-content: space-between;
         }
     }
 }

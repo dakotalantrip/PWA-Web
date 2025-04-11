@@ -1,27 +1,26 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { Plant } from '../../models/plant.model';
 
 @Component({
   selector: 'app-plant-id-dialog',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatDialogModule, MatInputModule, ReactiveFormsModule],
+  imports: [CommonModule, MatButtonModule, MatDialogModule, MatExpansionModule],
   templateUrl: './plant-id-dialog.component.html',
-  styleUrl: './plant-id-dialog.component.scss'
+  styleUrl: './plant-id-dialog.component.scss',
 })
 export class PlantIDDialogComponent {
-  public formGroup: FormGroup;
+  public title: string = 'Plant ID';
+  public plant: Plant;
 
   constructor(
     public dialogRef: MatDialogRef<EventDialogComponent>,
-    public formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: Event | undefined
+    @Inject(MAT_DIALOG_DATA) public data: Plant,
   ) {
-
-    this.formGroup = this.formBuilder.group({
-    })
+    this.plant = data;
   }
 }

@@ -1,0 +1,6 @@
+@use "abstracts/variables";
+
+.plant-info {
+    @extend %display-flex;
+    flex-direction: column;
+}

@@ -1,0 +1,28 @@
+@for (plantID of plantIDs; track plantID) {
+    <div class="plant-id-result">
+        <div class="plant-id-data">
+            <div>
+                <span>{{ plantID.species?.scientificNameWithoutAuthor }}</span>
+                <div
+                    class="score"
+                    (click)="onClick(plantID)">
+                    <span>{{ getScorePercent(plantID.score) }}%</span>
+                </div>
+            </div>
+            <div>
+                <span>{{ plantID.species?.commonNames }}</span>
+                <span>{{ plantID.species?.family?.scientificName }}</span>
+            </div>
+        </div>
+        <div class="plant-id-images">
+            @if (plantID.images && plantID.images[0] != null) {
+                <div class="result-images">
+                    @for (image of plantID.images; track image) {
+                        <img [src]="image.url" />
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+}

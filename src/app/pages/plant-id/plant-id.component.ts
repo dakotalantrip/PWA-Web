@@ -7,8 +7,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PlantIDService } from '../../services/plant-id.service';
 import { PlantIDSpecies, PlantID, PlantIDRequest } from '../../models/plant-id.model';
-import { finalize, tap } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs';
 import { Plant } from '../../models/plant.model';
+import { PlantIdResultsComponent } from '../../components/plant-id-results/plant-id-results.component';
+import { MatDialog } from '@angular/material/dialog';
+import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-id-dialog.component';
 
 @Component({
   selector: 'app-plant-id',
@@ -20,6 +23,7 @@ import { Plant } from '../../models/plant.model';
     MatCardModule,
     MatButtonModule,
     MatProgressBarModule,
+    PlantIdResultsComponent,
   ],
   templateUrl: './plant-id.component.html',
   styleUrl: './plant-id.component.scss',
@@ -28,17 +32,15 @@ export class PlantIDComponent {
   public imagePreviews: string[] = [];
   public isLoading: boolean = false;
   public selectedFiles: File[] = [];
-  public plantIDSignal = signal<PlantID[] | null>(null);
-  public plantsSignal = signal<Plant[] | null>(null);
+  public plantIDSignal = signal<PlantID[]>([]);
 
-  constructor(private plantIDService: PlantIDService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private plantIDService: PlantIDService,
+  ) {}
 
-  public get plantIDs(): PlantID[] | null {
+  public get plantIDs(): PlantID[] {
     return this.plantIDSignal();
-  }
-
-  public get plants(): Plant[] | null {
-    return this.plantsSignal();
   }
 
   //#region Events
@@ -62,8 +64,7 @@ export class PlantIDComponent {
   public onClearClick(): void {
     this.imagePreviews = [];
     this.selectedFiles = [];
-    this.plantIDSignal.set(null);
-    this.plantsSignal.set(null);
+    this.plantIDSignal.set([]);
   }
 
   public onDragLeave(event: DragEvent): void {
@@ -86,18 +87,24 @@ export class PlantIDComponent {
     }
   }
 
-  public onSpeciesClick(species: PlantIDSpecies): void {
+  public onPlantIDClick(plantID: PlantID): void {
+    this.isLoading = true;
+
     this.plantIDService
-      .search(species.scientificNameWithoutAuthor ?? '')
-      .pipe(tap((result: Plant[]) => this.plantsSignal.set(result)))
+      .search(plantID.species?.scientificNameWithoutAuthor ?? '')
+      .pipe(
+        tap((result: Plant) => {
+          this.isLoading = false;
+        }),
+        switchMap((result: Plant) => {
+          var dialogRef = this.matDialog.open(PlantIDDialogComponent, { data: result });
+          return dialogRef.afterClosed().pipe();
+        }),
+      )
       .subscribe();
   }
 
   //#endregion
-
-  public getScorePercent(score: number): string {
-    return Math.ceil(score * 100).toString();
-  }
 
   private previewImage(file: File): void {
     const reader = new FileReader();

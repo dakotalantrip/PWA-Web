@@ -1,0 +1,55 @@
+@use "abstracts/variables";
+@use "abstracts/mixins";
+
+:host {
+    @extend %display-flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    row-gap: variables.$spacing;
+}
+
+mat-divider {
+    width: 100%;
+}
+
+.plant-id-result {
+    .plant-id-data {
+        @extend %display-flex;
+        flex-direction: column;
+        align-items: center;
+
+        > * {
+            @extend %display-flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .score {
+            @extend %display-flex;
+            align-items: center;
+            justify-content: center;
+            @include mixins.border-standard;
+            border-radius: 50%;
+            width: calc(#{variables.$image-size} * 0.35);
+            height: calc(#{variables.$image-size} * 0.35);
+            cursor: pointer;
+        }
+    }
+
+    .plant-id-images {
+        display: grid;
+        grid-template-columns: repeat(1fr, 5);
+
+        img {
+            width: 15vw;
+            height: 15vh;
+            @include mixins.border-standard(true);
+        }
+
+        .result-images {
+            @extend %display-flex;
+            column-gap: variables.$spacing;
+        }
+    }
+}

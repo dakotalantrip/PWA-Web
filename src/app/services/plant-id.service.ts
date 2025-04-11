@@ -13,12 +13,8 @@ export class PlantIDService extends BaseApiService {
     super(http, 'PlantID');
   }
 
-  public search(name: string): Observable<Plant[]> {
-    return this.get<any>(`${name}`).pipe(
-      tap((response) => {
-        console.log(response);
-      }),
-    );
+  public search(name: string): Observable<Plant> {
+    return this.get<any>(`${name}`);
   }
 
   public identify(plantID: PlantIDRequest): Observable<PlantID[]> {

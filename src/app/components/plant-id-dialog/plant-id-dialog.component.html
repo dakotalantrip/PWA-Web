@@ -1,9 +1,39 @@
-<h2 mat-dialog-title>Add Plant</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 <mat-dialog-content>
-  <form [formGroup]="formGroup">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{ plant.name }}</mat-panel-title>
+                <mat-panel-description>
+                    {{ plant.id }}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="plant-info">
+                <span>Description: {{ plant.description }}</span>
+                <span>Scientific Name: {{ plant.scientificName }}</span>
+                <span>Type: {{ plant.type }}</span>
+                <span>Growth: {{ plant.growth }}</span>
+                <span>Layer: {{ plant.layer }}</span>
+                <span>Light: {{ plant.lightRequirement }}</span>
+                <span>Water: {{ plant.waterRequirement }}</span>
+                <span>Hardiness Zone: {{ plant.usdaHardinessZone }}</span>
+                @for (plantData of plant.data; track plantData) {
+                    <span>{{ plantData.key }}: {{ plantData.value }}</span>
+                }
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
     <mat-dialog-actions>
-      <button mat-button type="button">Cancel</button>
-      <button mat-button type="submit" color="primary">Save</button>
+        <button
+            mat-button
+            type="button">
+            Cancel
+        </button>
+        <button
+            mat-button
+            type="submit"
+            color="primary">
+            Save
+        </button>
     </mat-dialog-actions>
-  </form>
 </mat-dialog-content>
