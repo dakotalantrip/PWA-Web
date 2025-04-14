@@ -1,5 +1,7 @@
 @use "abstracts/variables";
 @use "abstracts/mixins";
+@use "@angular/material" as mat;
+@use "themes/_theme_vars" as vars;
 
 $double-spacing: calc(variables.$spacing * 2);
 
@@ -7,11 +9,15 @@ $double-spacing: calc(variables.$spacing * 2);
     @extend %display-flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    row-gap: $double-spacing;
     height: 100%;
 
-    mat-card {
-        margin-bottom: $double-spacing;
-    }
+    @include mat.card-overrides(
+        (
+            outlined-container-color: vars.$color-container-primary,
+        )
+    );
 
     .image-preview-container {
         @extend %display-flex;
@@ -37,7 +43,7 @@ $double-spacing: calc(variables.$spacing * 2);
         height: 15vh;
 
         &:hover {
-            background-color: #f9f9f9;
+            background-color: vars.$color-container-secondary;
         }
     }
 

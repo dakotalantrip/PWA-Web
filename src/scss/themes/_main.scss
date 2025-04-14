@@ -1,0 +1,18 @@
+@use "@angular/material" as mat;
+@use "themes/palettes" as palettes;
+@use "sass:map";
+
+html {
+    @include mat.theme(
+        (
+            scheme: light dark,
+            color: (
+                primary: palettes.$primary-palette,
+                tertiary: palettes.$tertiary-palette,
+                theme-type: dark,
+            ),
+            typography: Roboto,
+            density: 0,
+        )
+    );
+}

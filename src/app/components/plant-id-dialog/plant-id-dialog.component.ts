@@ -6,10 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { Plant } from '../../models/plant.model';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-plant-id-dialog',
-  imports: [CommonModule, MatButtonModule, MatDialogModule, MatExpansionModule],
+  imports: [CommonModule, MatButtonModule, MatCardModule, MatDialogModule, MatExpansionModule],
   templateUrl: './plant-id-dialog.component.html',
   styleUrl: './plant-id-dialog.component.scss',
 })

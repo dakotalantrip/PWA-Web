@@ -22,14 +22,26 @@
             </div>
         }
     </mat-card-content>
-    <mat-card-actions>
-        <button
-            mat-stroked-button
-            (click)="onClearClick()">
-            Clear
-        </button>
-    </mat-card-actions>
 </mat-card>
+
+<!-- Add a search input field -->
+<mat-form-field
+    appearance="outline"
+    class="search-field">
+    <mat-label>Search for a plant</mat-label>
+    <button
+        mat-icon-button
+        matSuffix
+        (click)="onSearch()">
+        <mat-icon>search</mat-icon>
+    </button>
+    <input
+        matInput
+        placeholder="Enter plant name"
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()" />
+</mat-form-field>
+
 @if (isLoading) {
     <mat-progress-bar mode="buffer"></mat-progress-bar>
 } @else if (plantIDs.length) {

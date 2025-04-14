@@ -1,31 +1,39 @@
 export interface Plant {
-  id: number;
   type: string;
   scientificName: string;
+  commonName: string;
   name: string;
-  version: number;
+  family: string;
+  genus: string;
+  species: string;
   description: string;
   link: string;
-  parentId: number | null;
   slug: string;
-  updatedAt: Date;
-  createdAt: Date;
   edibility: Edibility;
+  toxicity: Toxicity;
+  image: Image;
   growth: string;
   waterRequirement: string;
   lightRequirement: string;
   usdaHardinessZone: string;
   layer: string;
   soilType: string;
-  data: PlantData[];
-}
-
-export interface PlantData {
-  key: string;
-  value: string;
 }
 
 export interface Edibility {
   edible: boolean;
-  parts: string[];
+  parts: string;
+}
+
+export interface Image {
+  url: string;
+  license: string;
+  licenseUrl: string;
+  attribution: string;
+}
+
+export interface Toxicity {
+  toxic: boolean;
+  parts: string;
+  organisms: string;
 }
