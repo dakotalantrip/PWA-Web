@@ -7,43 +7,34 @@ $double-spacing: calc(variables.$spacing * 2);
 
 :host {
     @extend %display-flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    row-gap: $double-spacing;
+    justify-content: space-evenly;
+    column-gap: $double-spacing;
     height: 100%;
+    padding-left: $double-spacing;
+    position: relative;
 
-    @include mat.card-overrides(
-        (
-            outlined-container-color: vars.$color-container-primary,
-        )
-    );
+    .progress-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+    }
+
+    > div {
+        @extend %display-flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: $double-spacing;
+    }
 
     .image-preview-container {
         @extend %display-flex;
         column-gap: variables.$spacing;
 
         img {
-            width: variables.$image-size;
-            height: variables.$image-size;
+            width: 15vw;
             @include mixins.border-standard(true);
-        }
-    }
-
-    .file-drop-area {
-        @extend %display-flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px dashed #ccc;
-        border-radius: variables.$border-radius;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        margin: variables.$spacing 0;
-        height: 15vh;
-
-        &:hover {
-            background-color: vars.$color-container-secondary;
         }
     }
 

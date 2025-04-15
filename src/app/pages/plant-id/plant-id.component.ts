@@ -31,11 +31,11 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './plant-id.component.scss',
 })
 export class PlantIDComponent implements OnDestroy {
-  public imagePreviews: string[] = [];
   public isLoading: boolean = false;
   public plantIDSignal = signal<PlantID[]>([]);
   public searchQuery: string = '';
-  public selectedFiles: File[] = [];
+  public selectedFile: File | null = null;
+  public selectedImage: string = '';
 
   private searchSubject: Subject<string> = new Subject<string>();
   private subscription: Subscription = new Subscription();
@@ -69,9 +69,9 @@ export class PlantIDComponent implements OnDestroy {
   //#region Events
 
   private handleFileSelect(): void {
-    if (this.selectedFiles.length) {
+    if (this.selectedFile) {
       this.isLoading = true;
-      const plantID: PlantIDRequest = new PlantIDRequest(this.selectedFiles, 'flower');
+      const plantID: PlantIDRequest = new PlantIDRequest([this.selectedFile], 'flower');
       this.plantIDService
         .identify(plantID)
         .pipe(
@@ -84,12 +84,6 @@ export class PlantIDComponent implements OnDestroy {
     }
   }
 
-  public onClearClick(): void {
-    this.imagePreviews = [];
-    this.selectedFiles = [];
-    this.plantIDSignal.set([]);
-  }
-
   public onDragLeave(event: DragEvent): void {
     event.preventDefault();
   }
@@ -98,16 +92,25 @@ export class PlantIDComponent implements OnDestroy {
     event.preventDefault();
   }
 
-  public onDrop(event: DragEvent): void {
-    event.preventDefault();
-    const files = event.dataTransfer?.files;
-    if (files && files.length > 0) {
-      for (let file of files) {
-        this.selectedFiles.push(file);
-        this.previewImage(file);
-      }
-      this.handleFileSelect();
+  public onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (file) {
+      this.readFile(file);
     }
+  }
+
+  public takePhoto(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.capture = 'environment'; // use 'user' for front camera
+    input.onchange = (event: Event) => {
+      const file = (input as HTMLInputElement).files?.[0];
+      if (file) {
+        this.readFile(file);
+      }
+    };
+    input.click();
   }
 
   public onPlantIDClick(plantID: PlantID): void {
@@ -120,12 +123,15 @@ export class PlantIDComponent implements OnDestroy {
 
   //#endregion
 
-  private previewImage(file: File): void {
+  private readFile(file: File): void {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      this.imagePreviews.push(e.target?.result as string);
+    reader.onload = () => {
+      this.selectedImage = reader.result as string;
     };
     reader.readAsDataURL(file);
+
+    this.selectedFile = file;
+    this.handleFileSelect();
   }
 
   private search(query: string): Observable<Plant> {

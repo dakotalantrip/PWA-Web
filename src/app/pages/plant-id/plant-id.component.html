@@ -1,52 +1,59 @@
-<mat-card appearance="outlined">
-    <mat-card-header>
-        <mat-card-title>Plant ID</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        @if (!selectedFiles.length) {
-            <div
-                class="file-drop-area"
-                (dragover)="onDragOver($event)"
-                (dragleave)="onDragLeave($event)"
-                (drop)="onDrop($event)">
-                <p>Drag & drop image(s)</p>
-            </div>
-        }
-        @if (imagePreviews.length) {
-            <div class="image-preview-container">
-                @for (imagePreview of imagePreviews; track imagePreview) {
-                    <img
-                        [src]="imagePreview"
-                        alt="Image Preview" />
-                }
-            </div>
-        }
-    </mat-card-content>
-</mat-card>
-
-<!-- Add a search input field -->
-<mat-form-field
-    appearance="outline"
-    class="search-field">
-    <mat-label>Search for a plant</mat-label>
-    <button
-        mat-icon-button
-        matSuffix
-        (click)="onSearch()">
-        <mat-icon>search</mat-icon>
-    </button>
-    <input
-        matInput
-        placeholder="Enter plant name"
-        [(ngModel)]="searchQuery"
-        (input)="onSearch()" />
-</mat-form-field>
-
 @if (isLoading) {
-    <mat-progress-bar mode="buffer"></mat-progress-bar>
-} @else if (plantIDs.length) {
+    <div class="progress-container">
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </div>
+}
+<div>
+    <button
+        mat-stroked-button
+        color="primary"
+        (click)="fileInput.click()">
+        Select Image
+    </button>
+    <button
+        mat-stroked-button
+        color="accent"
+        (click)="takePhoto()">
+        Take Photo
+    </button>
+
+    <input
+        #fileInput
+        type="file"
+        accept="image/*"
+        hidden
+        (change)="onFileSelected($event)" />
+
+    <!-- Search -->
+    <mat-form-field
+        appearance="outline"
+        class="search-field">
+        <mat-label>Search for a plant</mat-label>
+        <button
+            mat-icon-button
+            matSuffix
+            (click)="onSearch()">
+            <mat-icon>search</mat-icon>
+        </button>
+        <input
+            matInput
+            placeholder="Enter plant name"
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()" />
+    </mat-form-field>
+
+    <!-- Preview -->
+    @if (selectedImage) {
+        <div class="image-preview-container">
+            <img
+                [src]="selectedImage"
+                alt="Preview" />
+        </div>
+    }
+</div>
+@if (plantIDs.length) {
     <app-plant-id-results
-        [plantIDs]="plantIDs"
+        [results]="plantIDs"
         class="plant-id-results-container"
         [class.open]="!isLoading"
         (plantIDClick)="onPlantIDClick($event)" />

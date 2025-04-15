@@ -1,55 +1,36 @@
-@use "abstracts/variables";
-@use "abstracts/mixins";
+.plant-results {
+    padding: 1rem;
 
-:host {
-    @extend %display-flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: auto;
-    row-gap: variables.$spacing;
-}
-
-mat-divider {
-    width: 100%;
-}
-
-.plant-id-result {
-    .plant-id-data {
-        @extend %display-flex;
-        flex-direction: column;
-        align-items: center;
-
-        > * {
-            @extend %display-flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .score {
-            @extend %display-flex;
-            align-items: center;
-            justify-content: center;
-            @include mixins.border-standard;
-            border-radius: 50%;
-            width: calc(#{variables.$image-size} * 0.35);
-            height: calc(#{variables.$image-size} * 0.35);
-            cursor: pointer;
-        }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
     }
 
-    .plant-id-images {
-        display: grid;
-        grid-template-columns: repeat(1fr, 5);
+    .plant-card {
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: #fdfdfd;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
 
         img {
-            width: 15vw;
-            height: 15vh;
-            @include mixins.border-standard(true);
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 4 / 3;
         }
 
-        .result-images {
-            @extend %display-flex;
-            column-gap: variables.$spacing;
+        .plant-info {
+            padding: 0.75rem;
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                color: #2e5939; // example plant-like green
+            }
         }
     }
 }

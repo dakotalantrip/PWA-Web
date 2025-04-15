@@ -1,15 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PlantID } from '../../models/plant-id.model';
 import { MatDividerModule } from '@angular/material/divider';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-plant-id-results',
-  imports: [MatDividerModule],
+  imports: [CommonModule, MatDividerModule],
   templateUrl: './plant-id-results.component.html',
   styleUrl: './plant-id-results.component.scss',
 })
 export class PlantIdResultsComponent {
-  @Input({ required: true }) public plantIDs: PlantID[] = [];
+  @Input({ required: true }) public results: PlantID[] = [];
 
   @Output() plantIDClick: EventEmitter<PlantID> = new EventEmitter<PlantID>();
 
