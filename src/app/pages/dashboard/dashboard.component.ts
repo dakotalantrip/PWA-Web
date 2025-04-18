@@ -12,7 +12,6 @@ import { catchError, filter, finalize, Observable, of, Subscription, switchMap, 
 import { Event } from '../../models/event.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-id-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,13 +31,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     selectable: true, // Enable date selection on the calendar
     events: signal<EventInput[]>([])(),
     droppable: true,
-    eventDisplay: 'block'
+    eventDisplay: 'block',
   };
 
   private subscription: Subscription = new Subscription(); // Subscription to manage observables
 
-  constructor(private eventService: EventService, private dialog: MatDialog) {
-    
+  constructor(
+    private eventService: EventService,
+    private dialog: MatDialog,
+  ) {
     const eventSubscription = this.eventService.events$
       .pipe(
         tap((events: Event[]) => {
@@ -51,7 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }));
           this.eventsSignal.set(formattedEvents);
           this.refreshCalendar();
-        })
+        }),
       )
       .subscribe();
     this.subscription.add(eventSubscription); // Add the subscription to the main subscription to ensure cleanup on destroy
@@ -76,14 +77,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private handleDialogClose(dialogRef: MatDialogRef<any>, action: (event: Event) => Observable<any>): Observable<void> {
     return dialogRef.afterClosed().pipe(
       filter((event: Event | undefined) => !!event),
-      switchMap((event: Event) => action(event))
+      switchMap((event: Event) => action(event)),
     );
-  }
-
-  public onAddClick(): void {
-    const dialogRef = this.dialog.open(PlantIDDialogComponent, { data: null });
-
-    this.handleDialogClose(dialogRef, (event: Event) => this.addEvent$(event)).subscribe();
   }
 
   public onDeleteClick(eventClick: EventClickArg): void {

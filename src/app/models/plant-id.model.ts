@@ -1,4 +1,6 @@
-export class PlantIDRequest {
+import { Image } from './image.model';
+
+export class PlantIDImageRequest {
   public files: File[];
   public organ: string = 'flower';
 
@@ -8,10 +10,16 @@ export class PlantIDRequest {
   }
 }
 
+export interface PlantIDSearchResult {
+  scientificName: string;
+  commonName: string;
+  image: Image;
+}
+
 export interface PlantID {
   score: number;
   species?: PlantIDSpecies;
-  images?: PlantIDImage[];
+  images?: Image[];
   gbif_id?: string;
   powo_id?: string;
   iucn?: IUCN;
@@ -29,15 +37,6 @@ export interface TaxonomicRank {
   scientificNameWithoutAuthor?: string;
   scientificNameAuthorship?: string;
   scientificName?: string;
-}
-
-export interface PlantIDImage {
-  organ?: string;
-  author?: string;
-  license?: string;
-  date?: Date;
-  url: string;
-  citation?: string;
 }
 
 export interface IUCN {

@@ -1,0 +1,87 @@
+@use "abstracts/variables";
+@use "abstracts/mixins";
+@use "themes/theme_vars" as themeVars;
+
+.plant-details {
+    @include mixins.flexbox(column, center);
+    @include mixins.spacing(row-gap);
+    @include mixins.spacing(padding);
+    @include mixins.container-style;
+
+    @include mixins.respond-to(medium) {
+        flex-direction: row;
+
+        mat-divider {
+            display: none;
+        }
+    }
+
+    > div:first-child {
+        @include mixins.flexbox(column, center);
+    }
+
+    .plant-image {
+        @include mixins.spacing(margin-bottom);
+        max-height: 300px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+    }
+
+    .image-attribution {
+        font-size: 0.75rem;
+        color: themeVars.$color-on-container-secondary;
+
+        a {
+            @include mixins.link-style;
+        }
+    }
+
+    mat-divider {
+        width: 100%;
+    }
+
+    .plant-info-container {
+        @include mixins.flexbox(column, flex-start);
+        @include mixins.spacing(row-gap, 2);
+        @include mixins.container-style(auto);
+        position: relative;
+
+        @include mixins.respond-to(medium) {
+            justify-content: center;
+            @include mixins.spacing(padding, 4);
+        }
+
+        .metadata,
+        .edibility,
+        .toxicity,
+        .growth-info,
+        .source-info {
+            h4 {
+                color: themeVars.$color-on-container-primary; // A nice green
+                @include mixins.spacing(margin-bottom, 0.5);
+                margin-top: 0;
+            }
+
+            p {
+                margin: 0;
+
+                &.description {
+                    @include mixins.spacing(margin-bottom, 0.5);
+                }
+            }
+        }
+
+        .fab {
+            position: absolute;
+            @include mixins.spacing(bottom);
+            @include mixins.spacing(right);
+            z-index: 1000;
+
+            @include mixins.respond-to(medium) {
+                @include mixins.spacing(top);
+                bottom: unset;
+            }
+        }
+    }
+}

@@ -24,6 +24,11 @@
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
+        @if (isLoading) {
+            <div class="progress-container">
+                <mat-progress-bar mode="buffer"></mat-progress-bar>
+            </div>
+        }
         <router-outlet />
     </mat-sidenav-content>
 </mat-sidenav-container>

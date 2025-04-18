@@ -1,0 +1,6 @@
+<h2>{{ plant.name }}</h2>
+@if (suggestedWateringSchedule) {
+    <app-watering-schedule-form
+        (formSubmit)="onFormSubmit($event)"
+        [suggestedSchedule]="suggestedWateringSchedule" />
+}

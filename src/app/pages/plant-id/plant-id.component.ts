@@ -6,13 +6,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PlantIDService } from '../../services/plant-id.service';
-import { PlantIDSpecies, PlantID, PlantIDRequest } from '../../models/plant-id.model';
-import { debounceTime, distinctUntilChanged, finalize, Observable, Subject, Subscription, switchMap, tap } from 'rxjs';
-import { Plant } from '../../models/plant.model';
+import { PlantID, PlantIDImageRequest, PlantIDSearchResult } from '../../models/plant-id.model';
+import { debounceTime, filter, map, Observable, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { PlantIdResultsComponent } from '../../components/plant-id-results/plant-id-results.component';
-import { MatDialog } from '@angular/material/dialog';
-import { PlantIDDialogComponent } from '../../components/plant-id-dialog/plant-id-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { PlantIdSearchResultsComponent } from '../../components/plant-id-search-results/plant-id-search-results.component';
 
 @Component({
   selector: 'app-plant-id',
@@ -26,13 +25,14 @@ import { MatIconModule } from '@angular/material/icon';
     MatListModule,
     MatProgressBarModule,
     PlantIdResultsComponent,
+    PlantIdSearchResultsComponent,
   ],
   templateUrl: './plant-id.component.html',
   styleUrl: './plant-id.component.scss',
 })
 export class PlantIDComponent implements OnDestroy {
-  public isLoading: boolean = false;
   public plantIDSignal = signal<PlantID[]>([]);
+  public plantIDSearchResultSignal = signal<PlantIDSearchResult[]>([]);
   public searchQuery: string = '';
   public selectedFile: File | null = null;
   public selectedImage: string = '';
@@ -41,14 +41,16 @@ export class PlantIDComponent implements OnDestroy {
   private subscription: Subscription = new Subscription();
 
   constructor(
-    private matDialog: MatDialog,
     private plantIDService: PlantIDService,
+    private router: Router,
   ) {
     this.subscription.add(
       this.searchSubject
         .pipe(
           debounceTime(600),
-          switchMap((query: string) => this.search(query)),
+          map((value) => value?.trim()), // remove extra whitespace
+          filter((value): value is string => !!value), // filter out empty or undefined/null
+          switchMap((value: string) => this.identifyByName(value)), // pipe searchTerm to observable returning search results
         )
         .subscribe(),
     );
@@ -56,6 +58,10 @@ export class PlantIDComponent implements OnDestroy {
 
   public get plantIDs(): PlantID[] {
     return this.plantIDSignal();
+  }
+
+  public get plantIDSearchResults(): PlantIDSearchResult[] {
+    return this.plantIDSearchResultSignal();
   }
 
   //#region Lifecycle
@@ -70,26 +76,17 @@ export class PlantIDComponent implements OnDestroy {
 
   private handleFileSelect(): void {
     if (this.selectedFile) {
-      this.isLoading = true;
-      const plantID: PlantIDRequest = new PlantIDRequest([this.selectedFile], 'flower');
+      const plantID: PlantIDImageRequest = new PlantIDImageRequest([this.selectedFile], 'flower');
       this.plantIDService
-        .identify(plantID)
+        .identifyByImage(plantID)
         .pipe(
           tap((plantID: PlantID[]) => {
+            this.plantIDSearchResultSignal.set([]);
             this.plantIDSignal.set(plantID);
           }),
-          finalize(() => (this.isLoading = false)),
         )
         .subscribe();
     }
-  }
-
-  public onDragLeave(event: DragEvent): void {
-    event.preventDefault();
-  }
-
-  public onDragOver(event: DragEvent): void {
-    event.preventDefault();
   }
 
   public onFileSelected(event: Event): void {
@@ -99,7 +96,21 @@ export class PlantIDComponent implements OnDestroy {
     }
   }
 
-  public takePhoto(): void {
+  public onPlantIDClick(plantID: PlantID): void {
+    this.router.navigate(['plant', plantID.species?.scientificNameWithoutAuthor]);
+  }
+
+  public onRemoveClick(): void {
+    this.selectedFile = null;
+    this.selectedImage = '';
+    this.plantIDSignal.set([]);
+  }
+
+  public onSearch(): void {
+    this.searchSubject.next(this.searchQuery);
+  }
+
+  public onTakePhoto(): void {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -113,15 +124,16 @@ export class PlantIDComponent implements OnDestroy {
     input.click();
   }
 
-  public onPlantIDClick(plantID: PlantID): void {
-    this.searchSubject.next(plantID.species?.scientificNameWithoutAuthor ?? '');
-  }
-
-  public onSearch(): void {
-    this.searchSubject.next(this.searchQuery);
-  }
-
   //#endregion
+
+  private identifyByName(searchTerm: string): Observable<PlantIDSearchResult[]> {
+    return this.plantIDService.identifyByName(searchTerm).pipe(
+      tap((value: PlantIDSearchResult[]) => {
+        this.onRemoveClick();
+        this.plantIDSearchResultSignal.set(value);
+      }),
+    );
+  }
 
   private readFile(file: File): void {
     const reader = new FileReader();
@@ -132,19 +144,5 @@ export class PlantIDComponent implements OnDestroy {
 
     this.selectedFile = file;
     this.handleFileSelect();
-  }
-
-  private search(query: string): Observable<Plant> {
-    this.isLoading = true;
-
-    return this.plantIDService.search(query).pipe(
-      finalize(() => {
-        this.isLoading = false;
-      }),
-      switchMap((result: Plant) => {
-        var dialogRef = this.matDialog.open(PlantIDDialogComponent, { data: result });
-        return dialogRef.afterClosed().pipe();
-      }),
-    );
   }
 }

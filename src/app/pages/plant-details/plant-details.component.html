@@ -1,0 +1,84 @@
+<div class="plant-details">
+    <div>
+        <h2>
+            {{ plant.name }} <small>({{ plant.type }})</small>
+        </h2>
+
+        <img
+            mat-card-image
+            class="plant-image"
+            [src]="plant.image.url"
+            [alt]="plant.name" />
+        <div class="image-attribution">
+            <small>
+                <span>Image by: {{ plant.image.attribution }}</span
+                ><br />
+                <a
+                    [href]="plant.image.licenseUrl"
+                    target="_blank"
+                    rel="noopener">
+                    {{ plant.image.license }}
+                </a>
+            </small>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="plant-info-container">
+        <section class="metadata">
+            <h4>Description</h4>
+            <p class="description">{{ plant.description }}</p>
+            <p><strong>Scientific Name:</strong> {{ plant.scientificName }}</p>
+            <p><strong>Common Name(s):</strong> {{ plant.commonName }}</p>
+            <p><strong>Family:</strong> {{ plant.family }}</p>
+            <p><strong>Genus:</strong> {{ plant.genus }}</p>
+            <p><strong>Species:</strong> {{ plant.species }}</p>
+        </section>
+
+        <section class="edibility">
+            <h4>Edibility</h4>
+            <p><strong>Edible:</strong> {{ plant.edibility.edible }}</p>
+            @if (plant.edibility.edible) {
+                <p><strong>Parts:</strong> {{ plant.edibility.parts }}</p>
+            }
+        </section>
+
+        <section class="toxicity">
+            <h4>Toxicity</h4>
+            <p><strong>Toxic:</strong> {{ plant.toxicity.toxic }}</p>
+            @if (plant.toxicity.toxic) {
+                <p><strong>Organisms:</strong> {{ plant.toxicity.organisms }}</p>
+                <p><strong>Parts:</strong> {{ plant.toxicity.parts }}</p>
+            }
+        </section>
+
+        <section class="growth-info">
+            <h4>Growth Requirements</h4>
+            <p><strong>Light:</strong> {{ plant.lightRequirement }}</p>
+            <p><strong>Water:</strong> {{ plant.waterRequirement }}</p>
+            <p><strong>Soil:</strong> {{ plant.soilType }}</p>
+            <p><strong>Hardiness Zone:</strong> {{ plant.usdaHardinessZone }}</p>
+            <p><strong>Layer:</strong> {{ plant.layer }}</p>
+            <p><strong>Growth:</strong> {{ plant.growth }}</p>
+        </section>
+
+        <section class="source-info">
+            <a
+                [href]="plant.link"
+                target="_blank"
+                rel="noopener"
+                >Wikipedia</a
+            >
+        </section>
+
+        <button
+            mat-fab
+            class="fab"
+            title="Add Watering Schedule"
+            alt="Add Watering Schedule"
+            (click)="onWateringScheduleClick()">
+            <mat-icon>water_drop</mat-icon>
+        </button>
+    </div>
+</div>

@@ -1,3 +1,5 @@
+import { Image } from './image.model';
+
 export interface Plant {
   type: string;
   scientificName: string;
@@ -23,13 +25,6 @@ export interface Plant {
 export interface Edibility {
   edible: boolean;
   parts: string;
-}
-
-export interface Image {
-  url: string;
-  license: string;
-  licenseUrl: string;
-  attribution: string;
 }
 
 export interface Toxicity {

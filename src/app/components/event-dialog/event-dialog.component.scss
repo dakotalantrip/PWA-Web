@@ -1,7 +1,6 @@
-@use "abstracts/variables"; // Import variables for use in this stylesheet
+@use "abstracts/mixins"; // Import variables for use in this stylesheet
 
 form {
-    @extend %display-flex;
-    flex-direction: column;
-    row-gap: variables.$spacing;
+    @include mixins.flexbox(column);
+    @include mixins.spacing(row-gap);
 }

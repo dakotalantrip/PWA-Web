@@ -1,22 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import {
+  Event,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterModule,
+} from '@angular/router';
+import { Subscription } from 'rxjs';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    RouterModule,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatProgressBarModule, MatSidenavModule, MatToolbarModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'PWA Web';
+export class AppComponent implements OnDestroy {
+  public isLoading: boolean = true;
+  public title: string = 'PWA Web';
+
+  private subscription: Subscription = new Subscription();
+
+  constructor(
+    private loadingService: LoadingService,
+    private router: Router,
+  ) {
+    // Routing
+    this.subscription.add(
+      this.router.events.subscribe((event: Event) => {
+        if (event instanceof NavigationStart) {
+          this.isLoading = true;
+        } else if (
+          event instanceof NavigationEnd ||
+          event instanceof NavigationCancel ||
+          event instanceof NavigationError
+        ) {
+          this.isLoading = false;
+        }
+      }),
+    );
+
+    // Loading
+    this.subscription.add(
+      this.loadingService.loading$.subscribe((loading: boolean) => {
+        this.isLoading = loading;
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

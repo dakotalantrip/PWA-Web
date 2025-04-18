@@ -1,0 +1,6 @@
+@use "abstracts/mixins";
+
+:host {
+    @include mixins.flexbox(column, center, center);
+    height: 100%;
+}

@@ -1,25 +1,23 @@
-<div class="plant-results">
-    @if (results.length > 0) {
-        <div class="grid">
-            @for (result of results; track result) {
-                <div
-                    class="plant-card"
-                    (click)="onClick(result)">
-                    @if (result.images) {
-                        <img
-                            [src]="result.images[0].url"
-                            [alt]="result.species?.scientificNameWithoutAuthor ?? 'Plant'" />
-                    }
-                    <div class="plant-info">
-                        <h3>
-                            {{ result.species?.scientificNameWithoutAuthor ?? "Unknown" }} -
-                            {{ result.score * 100 | number: "1.0-0" }}%
-                        </h3>
-                    </div>
+@if (results.length > 0) {
+    <div class="grid">
+        @for (result of results; track result) {
+            <div
+                class="plant-card"
+                (click)="onClick(result)">
+                @if (result.images) {
+                    <img
+                        [src]="result.images[0].url"
+                        [alt]="result.species?.scientificNameWithoutAuthor ?? 'Plant'" />
+                }
+                <div class="plant-info">
+                    <span>
+                        {{ result.species?.scientificNameWithoutAuthor ?? "Unknown" }} -
+                        {{ result.score * 100 | number: "1.0-0" }}%
+                    </span>
                 </div>
-            }
-        </div>
-    } @else {
-        <p>No results found.</p>
-    }
-</div>
+            </div>
+        }
+    </div>
+} @else {
+    <p>No results found.</p>
+}

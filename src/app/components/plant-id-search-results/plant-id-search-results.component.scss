@@ -19,12 +19,12 @@
         cursor: pointer;
 
         img {
-            border-top-right-radius: variables.$border-radius;
-            border-top-left-radius: variables.$border-radius;
             width: 100%;
             height: auto;
             object-fit: cover;
             aspect-ratio: 4 / 3;
+            border-top-right-radius: variables.$border-radius;
+            border-top-left-radius: variables.$border-radius;
         }
 
         .plant-info {

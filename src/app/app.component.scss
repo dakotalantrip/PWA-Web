@@ -1,36 +1,51 @@
-@use "abstracts/variables";
-
-mat-toolbar {
-    position: relative;
-    z-index: 2;
-
-    button {
-        pointer-events: auto;
-        z-index: 3;
-    }
-
-    span {
-        margin-right: auto;
-    }
-}
-
-mat-sidenav-container {
-    height: 100%;
-}
-
-mat-sidenav-content {
-    overflow: hidden;
-}
-
-.sidenav-list {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-    margin: 8px;
-}
+@use "abstracts/mixins";
+@use "themes/theme_vars" as themeVars;
 
 :host {
-    @extend %display-flex;
-    flex-direction: column;
+    @include mixins.flexbox(column);
     height: 100%;
+    position: relative;
+
+    mat-toolbar {
+        position: relative;
+        z-index: 2;
+
+        button {
+            pointer-events: auto;
+            z-index: 3;
+        }
+
+        span {
+            margin-right: auto;
+        }
+    }
+
+    mat-sidenav-container {
+        height: 100%;
+        width: 100%;
+    }
+
+    mat-sidenav-content {
+        overflow: hidden;
+    }
+
+    .progress-container {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background-color: themeVars.$color-on-container-tertiary;
+        opacity: 0.25;
+    }
+
+    .sidenav-list {
+        @include mixins.flexbox(column, center, center);
+        @include mixins.spacing(row-gap);
+        @include mixins.spacing(margin);
+
+        a {
+            width: 100%;
+        }
+    }
 }

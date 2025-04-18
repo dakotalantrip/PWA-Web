@@ -1,8 +1,7 @@
-$spacing: 8px;
+@use "abstracts/mixins";
 
 :host {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Ensure the dashboard takes full height of its parent */
-    padding: $spacing calc($spacing * 4); /* Add padding around the dashboard */
+    display: block;
+    @include mixins.container-style(auto);
+    @include mixins.spacing(padding, 4);
 }

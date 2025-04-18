@@ -1,0 +1,98 @@
+<form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="form-container">
+    <mat-form-field>
+        <mat-label>Room Temperature (°F)</mat-label>
+        <input
+            matInput
+            type="number"
+            formControlName="roomTemperature"
+            placeholder="e.g. 68" />
+        <mat-hint (click)="onSuggestedClick('roomTemperature')">
+            Suggested: {{ suggestedSchedule.roomTemperature }}</mat-hint
+        >
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Humidity Level (%)</mat-label>
+        <input
+            matInput
+            type="number"
+            formControlName="humidityLevel" />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Light Exposure</mat-label>
+        <mat-select formControlName="lightExposure">
+            <mat-option value="Low">Low</mat-option>
+            <mat-option value="Medium">Medium</mat-option>
+            <mat-option value="Bright indirect">Bright indirect</mat-option>
+            <mat-option value="Direct sun">Direct sun</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Airflow</mat-label>
+        <mat-select formControlName="airflow">
+            <mat-option value="Poor">Poor</mat-option>
+            <mat-option value="Moderate">Moderate</mat-option>
+            <mat-option value="Good">Good</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Location in Home</mat-label>
+        <mat-select formControlName="location">
+            <mat-option>Near window</mat-option>
+            <mat-option>Middle of room</mat-option>
+            <mat-option>Bathroom</mat-option>
+            <mat-option>Kitchen</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Watering Method</mat-label>
+        <mat-select formControlName="wateringMethod">
+            <mat-option>Top water</mat-option>
+            <mat-option>Bottom soak</mat-option>
+            <mat-option>Misting</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="potDrainage"> Pot has drainage holes? </mat-checkbox>
+
+    <mat-form-field>
+        <mat-label>Pot Material</mat-label>
+        <mat-select formControlName="potMaterial">
+            <mat-option>Plastic</mat-option>
+            <mat-option>Terracotta</mat-option>
+            <mat-option>Ceramic</mat-option>
+            <mat-option>Metal</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Soil Type</mat-label>
+        <input
+            matInput
+            type="text"
+            formControlName="soilType" />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Last Watered Date</mat-label>
+        <input
+            matInput
+            type="date"
+            formControlName="lastWateredDate" />
+    </mat-form-field>
+</form>
+
+<div class="form-actions">
+    <button
+        mat-stroked-button
+        type="submit">
+        Generate Watering Schedule
+    </button>
+</div>

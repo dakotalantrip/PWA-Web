@@ -1,11 +1,23 @@
 @use "abstracts/variables";
+@use "themes/theme_vars" as themeVars;
 
 // Border
-@mixin border-standard($radius: null, $top: null, $right: null, $bottom: null, $left: null) {
+@mixin border-standard(
+    $radius: null,
+    $color: themeVars.$color-on-container-tertiary,
+    $top: null,
+    $right: null,
+    $bottom: null,
+    $left: null
+) {
     @if ($radius) {
         @extend %border-standard-rounded; // Use rounded border if radius is provided
     } @else {
         @extend %border-standard; // Use standard border
+    }
+
+    @if not $top and not $right and not $bottom and not $left {
+        border-width: 1px;
     }
 
     @if $top or $right or $bottom or $left {
@@ -27,6 +39,16 @@
     @if $left {
         border-left-width: $left;
     }
+
+    color: $color;
+}
+
+// Display
+@mixin flexbox($flex-direction: row, $align-items: flex-start, $justify-content: flex-start) {
+    @extend %display-flex;
+    flex-direction: $flex-direction;
+    align-items: $align-items;
+    justify-content: $justify-content;
 }
 
 // Responsize
@@ -50,4 +72,21 @@ $breakpoints: (
         @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
           + "Available breakpoints are: #{map-keys($breakpoints)}.";
     }
+}
+
+// Spacing
+@mixin spacing($property, $factor: 1) {
+    #{$property}: calc(#{variables.$spacing} * #{$factor});
+}
+
+// Style
+@mixin container-style($overflow: hidden, $height: 100%, $box-sizing: border-box) {
+    overflow: $overflow;
+    height: $height;
+    box-sizing: $box-sizing;
+}
+
+@mixin link-style($color: inherit, $text-decoration: underline) {
+    color: $color;
+    text-decoration: $text-decoration;
 }

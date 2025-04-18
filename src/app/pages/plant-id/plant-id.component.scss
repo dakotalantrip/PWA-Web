@@ -3,48 +3,49 @@
 @use "@angular/material" as mat;
 @use "themes/_theme_vars" as vars;
 
-$double-spacing: calc(variables.$spacing * 2);
-
 :host {
-    @extend %display-flex;
-    align-items: center;
-    justify-content: space-evenly;
-    column-gap: $double-spacing;
-    height: 100%;
-    padding-left: $double-spacing;
+    @include mixins.flexbox(column, center, space-evenly);
+    @include mixins.spacing(column-gap, 2);
+    @include mixins.spacing(padding, 2);
+    @include mixins.container-style(auto);
     position: relative;
 
-    .progress-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
+    @include mixins.respond-to("medium") {
+        flex-direction: row;
+        overflow-y: unset;
+
+        app-plant-id-results,
+        app-plant-id-search-results {
+            @include mixins.container-style(auto);
+        }
     }
 
     > div {
-        @extend %display-flex;
-        flex-direction: column;
-        align-items: center;
-        row-gap: $double-spacing;
+        @include mixins.flexbox(column, center);
+        @include mixins.spacing(row-gap, 2);
+    }
+
+    mat-form-field {
+        @include mixins.spacing(margin-bottom, 3);
     }
 
     .image-preview-container {
-        @extend %display-flex;
-        column-gap: variables.$spacing;
+        @include mixins.spacing(margin-bottom, 2);
+        position: relative;
+
+        button {
+            position: absolute;
+            @include mixins.spacing(top, 0.5);
+            @include mixins.spacing(right, 0.5);
+        }
 
         img {
-            width: 15vw;
+            width: 15rem;
             @include mixins.border-standard(true);
         }
     }
 
     input {
         display: none;
-    }
-
-    .plant-id-results-container {
-        &.open {
-            max-height: 100%;
-        }
     }
 }

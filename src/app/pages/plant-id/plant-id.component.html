@@ -1,8 +1,3 @@
-@if (isLoading) {
-    <div class="progress-container">
-        <mat-progress-bar mode="buffer"></mat-progress-bar>
-    </div>
-}
 <div>
     <button
         mat-stroked-button
@@ -13,7 +8,7 @@
     <button
         mat-stroked-button
         color="accent"
-        (click)="takePhoto()">
+        (click)="onTakePhoto()">
         Take Photo
     </button>
 
@@ -28,7 +23,7 @@
     <mat-form-field
         appearance="outline"
         class="search-field">
-        <mat-label>Search for a plant</mat-label>
+        <mat-label>Search</mat-label>
         <button
             mat-icon-button
             matSuffix
@@ -37,14 +32,20 @@
         </button>
         <input
             matInput
-            placeholder="Enter plant name"
+            placeholder="Tulip"
             [(ngModel)]="searchQuery"
             (input)="onSearch()" />
+        <mat-hint>Search by common name or species</mat-hint>
     </mat-form-field>
 
     <!-- Preview -->
     @if (selectedImage) {
         <div class="image-preview-container">
+            <button
+                mat-mini-fab
+                (click)="onRemoveClick()">
+                <mat-icon>close</mat-icon>
+            </button>
             <img
                 [src]="selectedImage"
                 alt="Preview" />
@@ -54,7 +55,8 @@
 @if (plantIDs.length) {
     <app-plant-id-results
         [results]="plantIDs"
-        class="plant-id-results-container"
-        [class.open]="!isLoading"
         (plantIDClick)="onPlantIDClick($event)" />
+}
+@if (plantIDSearchResults.length) {
+    <app-plant-id-search-results [results]="plantIDSearchResults" />
 }
