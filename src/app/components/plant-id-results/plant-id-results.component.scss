@@ -3,7 +3,7 @@
 @use "themes/theme_vars" as themeVars;
 
 :host {
-    @include mixins.flexbox(row, center, center);
+    display: flex;
 
     .grid {
         display: grid;

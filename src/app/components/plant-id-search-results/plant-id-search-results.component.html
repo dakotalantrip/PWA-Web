@@ -1,10 +1,10 @@
 <div class="grid">
     @for (result of results; track result) {
         <div class="plant-card">
-            @if (result.image) {
+            @if (result.images && result.images[0]) {
                 <img
-                    [src]="result.image.url"
-                    [title]="result.image.attribution" />
+                    [src]="result.images[0].url"
+                    [title]="result.images[0].attribution" />
             }
             <div class="plant-info">
                 <span>{{ result.scientificName }}</span>

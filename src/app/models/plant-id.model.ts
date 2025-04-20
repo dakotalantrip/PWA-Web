@@ -13,7 +13,7 @@ export class PlantIDImageRequest {
 export interface PlantIDSearchResult {
   scientificName: string;
   commonName: string;
-  image: Image;
+  images: Image[];
 }
 
 export interface PlantID {
