@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +9,11 @@ import { catchError, Observable, throwError } from 'rxjs';
 export abstract class BaseApiService {
   protected apiUrl: string = 'api'; // Base API URL
 
-  constructor(protected httpClient: HttpClient, controller: string) {
-    this.apiUrl = `${this.apiUrl}/${controller}`;
+  constructor(
+    protected httpClient: HttpClient,
+    controller: string,
+  ) {
+    this.apiUrl = `${environment.apiUrl}/${controller}`;
   }
 
   protected get<T>(endpoint: string): Observable<T> {
