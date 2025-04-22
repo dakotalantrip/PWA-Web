@@ -12,7 +12,7 @@ import { WateringScheduleSuggestionResolver } from './resolvers/watering-schedul
 // Resolvers
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'plantID', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'plantID', component: PlantIDComponent },
   { path: 'plant/:name', component: PlantDetailsComponent, resolve: { plant: PlantResolver } },
