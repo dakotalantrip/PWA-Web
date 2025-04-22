@@ -58,5 +58,7 @@
         (plantIDClick)="onPlantIDClick($event)" />
 }
 @if (plantIDSearchResults.length) {
-    <app-plant-id-search-results [results]="plantIDSearchResults" />
+    <app-plant-id-search-results
+        [results]="plantIDSearchResults"
+        (click)="onPlantIDSearchResultClick($event)" />
 }

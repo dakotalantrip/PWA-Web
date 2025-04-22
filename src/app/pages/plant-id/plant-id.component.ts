@@ -97,7 +97,11 @@ export class PlantIDComponent implements OnDestroy {
   }
 
   public onPlantIDClick(plantID: PlantID): void {
-    this.router.navigate(['plant', plantID.species?.scientificNameWithoutAuthor]);
+    this.navigate(plantID.species?.scientificNameWithoutAuthor ?? '');
+  }
+
+  public onPlantIDSearchResultClick(plantIDSearchResult: PlantIDSearchResult): void {
+    this.navigate(plantIDSearchResult.scientificName);
   }
 
   public onRemoveClick(): void {
@@ -133,6 +137,10 @@ export class PlantIDComponent implements OnDestroy {
         this.plantIDSearchResultSignal.set(value);
       }),
     );
+  }
+
+  private navigate(scientificName: string): void {
+    this.router.navigate(['plant', scientificName]);
   }
 
   private readFile(file: File): void {

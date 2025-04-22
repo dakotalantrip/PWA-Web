@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { PlantIDSearchResult } from '../../models/plant-id.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PlantID, PlantIDSearchResult } from '../../models/plant-id.model';
 
 @Component({
   selector: 'app-plant-id-search-results',
@@ -9,4 +9,10 @@ import { PlantIDSearchResult } from '../../models/plant-id.model';
 })
 export class PlantIdSearchResultsComponent {
   @Input({ required: true }) results: PlantIDSearchResult[] = [];
+
+  @Output() click: EventEmitter<PlantIDSearchResult> = new EventEmitter<PlantIDSearchResult>();
+
+  public onClick(plantIDSearchResult: PlantIDSearchResult): void {
+    this.click.emit(plantIDSearchResult);
+  }
 }

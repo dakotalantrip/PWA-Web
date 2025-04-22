@@ -1,6 +1,8 @@
 <div class="grid">
     @for (result of results; track result) {
-        <div class="plant-card">
+        <div
+            class="plant-card"
+            (click)="onClick(result)">
             @if (result.images && result.images[0]) {
                 <img
                     [src]="result.images[0].url"

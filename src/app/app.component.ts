@@ -24,7 +24,7 @@ import { LoadingService } from './services/loading.service';
 })
 export class AppComponent implements OnDestroy {
   public isLoading: boolean = true;
-  public title: string = 'PWA Web';
+  public title: string = 'Adjutum';
 
   private subscription: Subscription = new Subscription();
 
