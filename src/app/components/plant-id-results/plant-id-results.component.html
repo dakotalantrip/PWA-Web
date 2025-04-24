@@ -1,21 +1,14 @@
 @if (results.length > 0) {
     <div class="grid">
         @for (result of results; track result) {
-            <div
-                class="plant-card"
+            <app-plant-card
+                [imageUrl]="result.images && result.images[0] ? result.images[0].url : ''"
+                confidenceScore="{{ result.score * 100 | number: '1.0-1' }}%"
+                [alt]="result.species?.scientificNameWithoutAuthor"
+                [commonNames]="result.species?.commonNames"
+                [scientificName]="result.species?.scientificNameWithoutAuthor ?? 'Unknown'"
                 (click)="onClick(result)">
-                @if (result.images) {
-                    <img
-                        [src]="result.images[0].url"
-                        [alt]="result.species?.scientificNameWithoutAuthor ?? 'Plant'" />
-                }
-                <div class="plant-info">
-                    <span>
-                        {{ result.species?.scientificNameWithoutAuthor ?? "Unknown" }} -
-                        {{ result.score * 100 | number: "1.0-0" }}%
-                    </span>
-                </div>
-            </div>
+            </app-plant-card>
         }
     </div>
 } @else {

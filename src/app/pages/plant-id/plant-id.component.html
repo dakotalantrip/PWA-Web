@@ -52,11 +52,15 @@
         </div>
     }
 </div>
+
+<!--Image identification-->
 @if (plantIDs.length) {
     <app-plant-id-results
         [results]="plantIDs"
         (plantIDClick)="onPlantIDClick($event)" />
 }
+
+<!--Search identification-->
 @if (plantIDSearchResults.length) {
     <app-plant-id-search-results
         [results]="plantIDSearchResults"

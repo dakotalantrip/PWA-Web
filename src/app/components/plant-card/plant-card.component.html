@@ -1,0 +1,24 @@
+<div>
+    @if (imageUrl) {
+        <div class="image-container">
+            @if (confidenceScore) {
+                <div matTooltip="Confidence">
+                    <span>{{ confidenceScore }}</span>
+                </div>
+            }
+            <img
+                [src]="imageUrl"
+                [alt]="alt" />
+        </div>
+    }
+    <div
+        class="plant-info"
+        matTooltip="{{ scientificName }} ({{ commonNames }})">
+        <span class="name scientific">
+            {{ scientificName }}
+        </span>
+        @if (commonNames) {
+            <span class="name common">{{ commonNames }}</span>
+        }
+    </div>
+</div>

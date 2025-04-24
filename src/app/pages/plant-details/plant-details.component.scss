@@ -1,39 +1,33 @@
 @use "abstracts/variables";
 @use "abstracts/mixins";
 @use "themes/theme_vars" as themeVars;
+@use "@angular/material" as mat;
 
-.plant-details {
+:host {
     @include mixins.flexbox(column, center);
     @include mixins.spacing(row-gap);
     @include mixins.spacing(padding);
     @include mixins.container-style;
 
     @include mixins.respond-to(medium) {
-        flex-direction: row;
-
-        mat-divider {
-            display: none;
-        }
     }
 
-    > div:first-child {
-        @include mixins.flexbox(column, center);
-    }
+    swiper-container {
+        height: 35vh;
+        width: 100%;
 
-    .plant-image {
-        @include mixins.spacing(margin-bottom);
-        max-height: 300px;
-        width: auto;
-        object-fit: contain;
-        display: block;
-    }
+        swiper-slide {
+            @include mixins.flexbox(row, center, center);
+            background: unset;
+            text-align: center;
 
-    .image-attribution {
-        font-size: 0.75rem;
-        color: themeVars.$color-on-container-secondary;
-
-        a {
-            @include mixins.link-style;
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                aspect-ratio: 4 / 3;
+                object-fit: contain;
+            }
         }
     }
 
@@ -42,32 +36,41 @@
     }
 
     .plant-info-container {
-        @include mixins.flexbox(column, flex-start);
-        @include mixins.spacing(row-gap, 2);
-        @include mixins.container-style(auto);
+        @include mixins.spacing(padding);
+        @include mixins.container-style;
         position: relative;
+        width: 100%;
 
-        @include mixins.respond-to(medium) {
-            justify-content: center;
-            @include mixins.spacing(padding, 4);
+        .plant-info-title {
+            @include mixins.flexbox(row, center, space-between);
+            @include mixins.spacing(margin-bottom);
         }
 
-        .metadata,
-        .edibility,
-        .toxicity,
-        .growth-info,
-        .source-info {
-            h4 {
-                color: themeVars.$color-on-container-primary; // A nice green
-                @include mixins.spacing(margin-bottom, 0.5);
-                margin-top: 0;
+        mat-tab-group {
+            height: 100%;
+        }
+
+        section {
+            @include mixins.border-standard(true);
+            @include mixins.spacing(padding);
+            @include mixins.spacing(margin);
+
+            .title {
+                font-size: calc(#{variables.$font-size} * 1.2);
+                @include mixins.spacing(margin-bottom);
             }
 
-            p {
-                margin: 0;
+            > div:not(.title) {
+                @include mixins.flexbox(column);
+                font-size: variables.$font-size;
 
-                &.description {
-                    @include mixins.spacing(margin-bottom, 0.5);
+                &:not(:last-child) {
+                    @include mixins.spacing(margin-bottom);
+                }
+
+                span:last-child {
+                    font-size: calc(#{variables.$font-size} * 0.9);
+                    opacity: 0.8;
                 }
             }
         }

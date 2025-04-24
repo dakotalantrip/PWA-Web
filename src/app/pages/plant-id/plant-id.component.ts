@@ -50,6 +50,11 @@ export class PlantIDComponent implements OnDestroy {
           debounceTime(600),
           map((value) => value?.trim()), // remove extra whitespace
           filter((value): value is string => !!value), // filter out empty or undefined/null
+          tap(() => {
+            this.selectedFile = null;
+            this.selectedImage = '';
+            this.plantIDSignal.set([]);
+          }), // reset all fields + data before searching
           switchMap((value: string) => this.identifyByName(value)), // pipe searchTerm to observable returning search results
         )
         .subscribe(),
@@ -73,21 +78,6 @@ export class PlantIDComponent implements OnDestroy {
   //#endregion
 
   //#region Events
-
-  private handleFileSelect(): void {
-    if (this.selectedFile) {
-      const plantID: PlantIDImageRequest = new PlantIDImageRequest([this.selectedFile], 'flower');
-      this.plantIDService
-        .identifyByImage(plantID)
-        .pipe(
-          tap((plantID: PlantID[]) => {
-            this.plantIDSearchResultSignal.set([]);
-            this.plantIDSignal.set(plantID);
-          }),
-        )
-        .subscribe();
-    }
-  }
 
   public onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
@@ -130,10 +120,23 @@ export class PlantIDComponent implements OnDestroy {
 
   //#endregion
 
+  private handleFileSelect(): void {
+    if (this.selectedFile) {
+      const plantID: PlantIDImageRequest = new PlantIDImageRequest([this.selectedFile], 'flower');
+      this.plantIDService
+        .identifyByImage(plantID)
+        .pipe(
+          tap((plantID: PlantID[]) => {
+            this.plantIDSignal.set(plantID);
+          }),
+        )
+        .subscribe();
+    }
+  }
+
   private identifyByName(searchTerm: string): Observable<PlantIDSearchResult[]> {
     return this.plantIDService.identifyByName(searchTerm).pipe(
       tap((value: PlantIDSearchResult[]) => {
-        this.onRemoveClick();
         this.plantIDSearchResultSignal.set(value);
       }),
     );
@@ -144,6 +147,9 @@ export class PlantIDComponent implements OnDestroy {
   }
 
   private readFile(file: File): void {
+    this.searchQuery = '';
+    this.plantIDSearchResultSignal.set([]);
+
     const reader = new FileReader();
     reader.onload = () => {
       this.selectedImage = reader.result as string;

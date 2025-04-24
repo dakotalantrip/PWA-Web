@@ -1,84 +1,82 @@
-<div class="plant-details">
-    <div>
-        <h2>
-            {{ plant.name }} <small>({{ plant.type }})</small>
-        </h2>
+<swiper-container
+    effect="cards"
+    pagination="true"
+    pagination-type="bullets"
+    pagination-dynamic-bullets="true"
+    pagination-dynamic-main-bullets="3">
+    @for (image of plant.images; track image) {
+        <swiper-slide lazy="true">
+            <img
+                class="plant-image"
+                [src]="image.url"
+                loading="lazy"
+                [alt]="image.attribution" />
+        </swiper-slide>
+    }
+</swiper-container>
 
-        <img
-            mat-card-image
-            class="plant-image"
-            [src]="plant.image.url"
-            [alt]="plant.name" />
-        <div class="image-attribution">
-            <small>
-                <span>Image by: {{ plant.image.attribution }}</span
-                ><br />
-                <a
-                    [href]="plant.image.licenseUrl"
-                    target="_blank"
-                    rel="noopener">
-                    {{ plant.image.license }}
-                </a>
-            </small>
-        </div>
+<mat-divider></mat-divider>
+
+<div class="plant-info-container">
+    <div class="plant-info-title">
+        <span>
+            {{ plant.scientificName }}
+        </span>
+        <small>{{ plant.commonName }}</small>
     </div>
+    <mat-tab-group>
+        <mat-tab label="Taxonomy">
+            <section>
+                <div class="title"><strong>Name</strong></div>
+                <div>
+                    <span
+                        ><i>{{ plant.scientificName }}</i></span
+                    >
+                    <span>Scientific</span>
+                </div>
+                <div>
+                    <span
+                        ><i>{{ plant.commonName }}</i></span
+                    >
+                    <span>Common</span>
+                </div>
+                <div>
+                    <span
+                        ><i>{{ plant.genus }}</i></span
+                    >
+                    <span>Genus</span>
+                </div>
+                <div>
+                    <span
+                        ><i>{{ plant.family }}</i></span
+                    >
+                    <span>Family</span>
+                </div>
+            </section>
+        </mat-tab>
+        <mat-tab label="Info">
+            <section></section>
+        </mat-tab>
+        <mat-tab label="Care">
+            <section></section>
+        </mat-tab>
+    </mat-tab-group>
 
-    <mat-divider></mat-divider>
-
-    <div class="plant-info-container">
-        <section class="metadata">
-            <h4>Description</h4>
-            <p class="description">{{ plant.description }}</p>
-            <p><strong>Scientific Name:</strong> {{ plant.scientificName }}</p>
-            <p><strong>Common Name(s):</strong> {{ plant.commonName }}</p>
-            <p><strong>Family:</strong> {{ plant.family }}</p>
-            <p><strong>Genus:</strong> {{ plant.genus }}</p>
-            <p><strong>Species:</strong> {{ plant.species }}</p>
-        </section>
-
-        <section class="edibility">
-            <h4>Edibility</h4>
-            <p><strong>Edible:</strong> {{ plant.edibility.edible }}</p>
-            @if (plant.edibility.edible) {
-                <p><strong>Parts:</strong> {{ plant.edibility.parts }}</p>
-            }
-        </section>
-
-        <section class="toxicity">
-            <h4>Toxicity</h4>
-            <p><strong>Toxic:</strong> {{ plant.toxicity.toxic }}</p>
-            @if (plant.toxicity.toxic) {
-                <p><strong>Organisms:</strong> {{ plant.toxicity.organisms }}</p>
-                <p><strong>Parts:</strong> {{ plant.toxicity.parts }}</p>
-            }
-        </section>
-
-        <section class="growth-info">
-            <h4>Growth Requirements</h4>
-            <p><strong>Light:</strong> {{ plant.lightRequirement }}</p>
-            <p><strong>Water:</strong> {{ plant.waterRequirement }}</p>
-            <p><strong>Soil:</strong> {{ plant.soilType }}</p>
-            <p><strong>Hardiness Zone:</strong> {{ plant.usdaHardinessZone }}</p>
-            <p><strong>Layer:</strong> {{ plant.layer }}</p>
-            <p><strong>Growth:</strong> {{ plant.growth }}</p>
-        </section>
-
-        <section class="source-info">
-            <a
-                [href]="plant.link"
-                target="_blank"
-                rel="noopener"
-                >Wikipedia</a
-            >
-        </section>
-
-        <!-- <button
-            mat-fab
-            class="fab"
-            title="Add Watering Schedule"
-            alt="Add Watering Schedule"
-            (click)="onWateringScheduleClick()">
-            <mat-icon>water_drop</mat-icon>
-        </button> -->
-    </div>
+    <!-- <button
+        mat-fab
+        class="fab"
+        title="Add Watering Schedule"
+        alt="Add Watering Schedule"
+        (click)="onWateringScheduleClick()">
+        <mat-icon>water_drop</mat-icon>
+    </button> -->
 </div>
+
+<ng-template
+    #field
+    let-name="name"
+    let-data="data">
+    <div>
+        <strong>{{ name | titlecase }}: </strong> {{ data }}
+    </div>
+</ng-template>

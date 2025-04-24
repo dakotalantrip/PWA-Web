@@ -1,0 +1,65 @@
+@use "abstracts/mixins";
+@use "abstracts/variables";
+@use "themes/theme_vars" as themeVars;
+
+:host > div {
+    @include mixins.flexbox(column);
+    @include mixins.border-standard(variables.$spacing);
+    height: calc(#{variables.$spacing} * 30);
+    background: themeVars.$color-on-container-tertiary;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+    .image-container {
+        position: relative;
+
+        > div {
+            @include mixins.flexbox(column, center, center);
+            @include mixins.border-standard;
+            @include mixins.spacing(padding);
+            border-radius: 50%;
+            position: absolute;
+            width: 3rem;
+            height: 3rem;
+            top: variables.$spacing;
+            right: variables.$spacing;
+            background-color: themeVars.$color-container-primary;
+            color: themeVars.$color-on-container-primary;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 4 / 3;
+            border-top-right-radius: variables.$border-radius;
+            border-top-left-radius: variables.$border-radius;
+        }
+    }
+
+    .plant-info {
+        @include mixins.flexbox(column, center, center);
+        @include mixins.spacing(padding, 1.25);
+        row-gap: variables.$spacing;
+        flex-grow: 1;
+        width: 100%;
+        box-sizing: border-box;
+
+        .name {
+            font-size: variables.$font-size;
+            color: themeVars.$color-on-primary;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+            overflow: hidden;
+
+            &.scientific {
+                font-weight: bold;
+            }
+
+            &.common {
+                font-size: calc(#{variables.$font-size} * 0.8);
+            }
+        }
+    }
+}

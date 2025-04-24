@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PlantID } from '../../models/plant-id.model';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { PlantCardComponent } from '../plant-card/plant-card.component';
 
 @Component({
   selector: 'app-plant-id-results',
-  imports: [CommonModule, MatDividerModule],
+  imports: [CommonModule, MatDividerModule, PlantCardComponent],
   templateUrl: './plant-id-results.component.html',
   styleUrl: './plant-id-results.component.scss',
 })

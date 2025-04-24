@@ -1,40 +1,12 @@
 @use "abstracts/mixins";
-@use "abstracts/variables";
-@use "themes/theme_vars" as themeVars;
 
 :host {
-    display: flex;
+    @include mixins.flexbox(row, flex-start, center);
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-rows: min-content;
         @include mixins.spacing(gap, 2);
-    }
-
-    .plant-card {
-        @include mixins.flexbox(column);
-        @include mixins.border-standard(variables.$spacing);
-        background: themeVars.$color-on-container-tertiary;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-
-        img {
-            border-top-right-radius: variables.$border-radius;
-            border-top-left-radius: variables.$border-radius;
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            aspect-ratio: 4 / 3;
-        }
-
-        .plant-info {
-            @include mixins.spacing(padding, 1.25);
-
-            span {
-                margin: 0;
-                font-size: variables.$font-size;
-                color: themeVars.$color-on-primary; // example plant-like green
-            }
-        }
     }
 }
