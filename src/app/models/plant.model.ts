@@ -12,9 +12,9 @@ export interface Plant {
   cycle: string;
   layer: string;
   soilType: string;
-  wateringPeriods: string[];
+  wateringPeriods: WateringPeriod[];
   careRequirement: RequirementLevel;
-  lightRequirment: RequirementLevel;
+  lightRequirement: RequirementLevel;
   maintenanceRequirement: RequirementLevel;
   waterRequirement: RequirementLevel;
   anatomy: AnatomicalPart[];
@@ -25,14 +25,24 @@ export interface Plant {
   lightDuration: LightDuration;
   toxicity: Toxicity;
   waterFrequency: WaterFrequency;
+  width: Dimension;
 }
 
 export enum RequirementLevel {
-  'veryLow' = 0,
-  'low' = 1,
-  'medium' = 2,
-  'high' = 3,
-  'veryHigh' = 4,
+  veryLow = 0,
+  low = 1,
+  medium = 2,
+  high = 3,
+  veryHigh = 4,
+}
+
+export enum WateringPeriod {
+  EarlyMorning = 0,
+  Morning = 1,
+  Midday = 2,
+  Afternoon = 3,
+  LateAfternoon = 4,
+  Night = 5,
 }
 
 export interface AnatomicalPart {

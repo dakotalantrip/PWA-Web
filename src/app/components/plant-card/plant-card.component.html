@@ -6,9 +6,13 @@
                     <span>{{ confidenceScore }}</span>
                 </div>
             }
-            <img
-                [src]="imageUrl"
-                [alt]="alt" />
+            @defer (when imageUrl) {
+                <img
+                    [src]="imageUrl"
+                    [alt]="alt" />
+            } @placeholder {
+                <mat-progress-spinner></mat-progress-spinner>
+            }
         </div>
     }
     <div

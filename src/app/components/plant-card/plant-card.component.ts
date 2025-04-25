@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-plant-card',
-  imports: [MatTooltipModule],
+  imports: [MatProgressSpinnerModule, MatTooltipModule],
   templateUrl: './plant-card.component.html',
   styleUrl: './plant-card.component.scss',
 })

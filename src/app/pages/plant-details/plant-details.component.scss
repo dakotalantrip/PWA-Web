@@ -13,26 +13,49 @@
     }
 
     swiper-container {
-        height: 35vh;
+        height: 100%;
         width: 100%;
 
         swiper-slide {
             @include mixins.flexbox(row, center, center);
-            background: unset;
             text-align: center;
+        }
+
+        swiper-slide.images-slide {
+            position: relative;
+
+            > span {
+                @include mixins.spacing(padding);
+                position: absolute;
+                background-color: themeVars.$color-container-tertiary;
+                width: auto;
+                max-width: 33vw;
+                z-index: 100;
+                font-style: oblique;
+
+                &:first-child {
+                    top: 0;
+                    left: 0;
+                    border-bottom-right-radius: variables.$border-radius;
+                    text-align: left;
+                }
+
+                &:last-child {
+                    bottom: 0;
+                    right: 0;
+                    border-top-left-radius: variables.$border-radius;
+                    text-align: right;
+                }
+            }
 
             img {
                 display: block;
                 width: 100%;
                 height: 100%;
                 aspect-ratio: 4 / 3;
-                object-fit: contain;
+                object-fit: cover;
             }
         }
-    }
-
-    mat-divider {
-        width: 100%;
     }
 
     .plant-info-container {
@@ -48,12 +71,14 @@
 
         mat-tab-group {
             height: 100%;
+            width: 100%;
         }
 
         section {
             @include mixins.border-standard(true);
             @include mixins.spacing(padding);
             @include mixins.spacing(margin);
+            text-align: left;
 
             .title {
                 font-size: calc(#{variables.$font-size} * 1.2);
@@ -68,22 +93,10 @@
                     @include mixins.spacing(margin-bottom);
                 }
 
-                span:last-child {
+                span:first-child {
                     font-size: calc(#{variables.$font-size} * 0.9);
                     opacity: 0.8;
                 }
-            }
-        }
-
-        .fab {
-            position: absolute;
-            @include mixins.spacing(bottom);
-            @include mixins.spacing(right);
-            z-index: 1000;
-
-            @include mixins.respond-to(medium) {
-                @include mixins.spacing(top);
-                bottom: unset;
             }
         }
     }

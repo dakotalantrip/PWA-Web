@@ -1,82 +1,136 @@
 <swiper-container
-    effect="cards"
-    pagination="true"
-    pagination-type="bullets"
-    pagination-dynamic-bullets="true"
-    pagination-dynamic-main-bullets="3">
-    @for (image of plant.images; track image) {
-        <swiper-slide lazy="true">
-            <img
-                class="plant-image"
-                [src]="image.url"
-                loading="lazy"
-                [alt]="image.attribution" />
-        </swiper-slide>
-    }
+    direction="vertical"
+    free-mode="true"
+    sticky="true"
+    parallax="true">
+    <swiper-slide
+        class="images-slide"
+        data-swiper-parallax="25%"
+        data-swiper-parallax-opacity="0">
+        <span class="banner">{{ plant.scientificName }}</span>
+        <swiper-container
+            effect="coverflow"
+            pagination="true"
+            pagination-type="bullets"
+            pagination-dynamic-bullets="true"
+            pagination-dynamic-main-bullets="3">
+            @for (image of plant.images; track image) {
+                <swiper-slide lazy="true">
+                    <img
+                        class="plant-image"
+                        [src]="image.url"
+                        loading="lazy"
+                        [alt]="image.attribution" />
+                </swiper-slide>
+            }
+        </swiper-container>
+        <span class="banner">{{ plant.commonName }}</span>
+    </swiper-slide>
+    <swiper-slide class="plant-info-container">
+        <mat-tab-group>
+            <mat-tab label="Taxonomy">
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.scientificName, label: 'scientific name' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.commonName, label: 'common name' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.genus, label: 'genus' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.family, label: 'family' }" />
+            </mat-tab>
+            <mat-tab label="Characteristics">
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.cycle, label: 'cycle' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.description, label: 'description' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{
+                        data: plant.height.value + plant.height.unit + ' x ' + plant.width.value + plant.width.unit,
+                        label: 'size',
+                    }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.layer, label: 'layer' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: getAnatomicalParts(), label: 'anatomy (parts)' }" />
+            </mat-tab>
+            <mat-tab label="Water">
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.waterRequirement, label: 'requirement' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.wateringPeriods, label: 'periods' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{
+                        data: 'Every ' + plant.waterFrequency.value + ' ' + plant.waterFrequency.unit,
+                        label: 'frequency',
+                    }" />
+            </mat-tab>
+            <mat-tab label="Care">
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.careRequirement, label: 'requirement' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{
+                        data: plant.hardinessZone.min + '-' + plant.hardinessZone.max,
+                        label: 'hardiness zone',
+                    }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.lightRequirement, label: 'light requirement' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{
+                        data:
+                            plant.lightDuration.min + ' - ' + plant.lightDuration.max + ' ' + plant.lightDuration.unit,
+                        label: 'light duration',
+                    }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.soilType, label: 'soil type' }" />
+            </mat-tab>
+            <mat-tab label="Edibility">
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.edibility.edible ? 'Yes' : 'No', label: 'edible' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.edibility.parts, label: 'edible parts' }" />
+            </mat-tab>
+            <mat-tab label="Toxicity">
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.toxicity.toxic ? 'Yes' : 'No', label: 'toxic' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.toxicity.parts, label: 'parts' }" />
+                <ng-container
+                    [ngTemplateOutlet]="field"
+                    [ngTemplateOutletContext]="{ data: plant.toxicity.organisms, label: 'toxic to' }" />
+            </mat-tab>
+        </mat-tab-group>
+    </swiper-slide>
 </swiper-container>
-
-<mat-divider></mat-divider>
-
-<div class="plant-info-container">
-    <div class="plant-info-title">
-        <span>
-            {{ plant.scientificName }}
-        </span>
-        <small>{{ plant.commonName }}</small>
-    </div>
-    <mat-tab-group>
-        <mat-tab label="Taxonomy">
-            <section>
-                <div class="title"><strong>Name</strong></div>
-                <div>
-                    <span
-                        ><i>{{ plant.scientificName }}</i></span
-                    >
-                    <span>Scientific</span>
-                </div>
-                <div>
-                    <span
-                        ><i>{{ plant.commonName }}</i></span
-                    >
-                    <span>Common</span>
-                </div>
-                <div>
-                    <span
-                        ><i>{{ plant.genus }}</i></span
-                    >
-                    <span>Genus</span>
-                </div>
-                <div>
-                    <span
-                        ><i>{{ plant.family }}</i></span
-                    >
-                    <span>Family</span>
-                </div>
-            </section>
-        </mat-tab>
-        <mat-tab label="Info">
-            <section></section>
-        </mat-tab>
-        <mat-tab label="Care">
-            <section></section>
-        </mat-tab>
-    </mat-tab-group>
-
-    <!-- <button
-        mat-fab
-        class="fab"
-        title="Add Watering Schedule"
-        alt="Add Watering Schedule"
-        (click)="onWateringScheduleClick()">
-        <mat-icon>water_drop</mat-icon>
-    </button> -->
-</div>
 
 <ng-template
     #field
-    let-name="name"
+    let-label="label"
     let-data="data">
-    <div>
-        <strong>{{ name | titlecase }}: </strong> {{ data }}
-    </div>
+    <section>
+        <div>
+            <span>{{ label | titlecase }}</span>
+            <span>{{ data }}</span>
+        </div>
+    </section>
 </ng-template>
