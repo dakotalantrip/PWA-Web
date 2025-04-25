@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://pwaapi.blackpond-ffc1aef0.canadacentral.azurecontainerapps.io/api',
+  apiUrl: 'https://pwaapi.happyground-152857c3.eastus.azurecontainerapps.io/api',
 };
