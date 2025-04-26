@@ -6,6 +6,12 @@
     .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-rows: min-content;
         @include mixins.spacing(gap, 2);
+        width: 100%;
+
+        @include mixins.respond-to("medium") {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 4fr));
+        }
     }
 }

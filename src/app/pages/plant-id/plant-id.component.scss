@@ -13,9 +13,13 @@
     @include mixins.respond-to("medium") {
         flex-direction: row;
         overflow-y: unset;
+    }
 
-        app-plant-id-results,
-        app-plant-id-search-results {
+    app-plant-id-results,
+    app-plant-id-search-results {
+        width: 100%;
+
+        @include mixins.respond-to("medium") {
             @include mixins.container-style(auto);
         }
     }

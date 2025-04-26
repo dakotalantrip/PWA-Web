@@ -1,28 +1,26 @@
-<div>
-    @if (imageUrl) {
-        <div class="image-container">
-            @if (confidenceScore) {
-                <div matTooltip="Confidence">
-                    <span>{{ confidenceScore }}</span>
-                </div>
-            }
-            @defer (when imageUrl) {
-                <img
-                    [src]="imageUrl"
-                    [alt]="alt" />
-            } @placeholder {
-                <mat-progress-spinner></mat-progress-spinner>
-            }
+@if (imageUrl) {
+    @if (confidenceScore) {
+        <div
+            class="confidence-score"
+            matTooltip="Confidence">
+            <span>{{ confidenceScore }}</span>
         </div>
     }
-    <div
-        class="plant-info"
-        matTooltip="{{ scientificName }} ({{ commonNames }})">
-        <span class="name scientific">
-            {{ scientificName }}
-        </span>
-        @if (commonNames) {
-            <span class="name common">{{ commonNames }}</span>
-        }
-    </div>
+    @defer (when imageUrl) {
+        <img
+            [src]="imageUrl"
+            [alt]="alt" />
+    } @placeholder {
+        <mat-progress-spinner></mat-progress-spinner>
+    }
+}
+<div
+    class="plant-info"
+    matTooltip="{{ scientificName }} ({{ commonNames }})">
+    <span class="name scientific">
+        {{ scientificName }}
+    </span>
+    @if (commonNames) {
+        <span class="name common">{{ commonNames }}</span>
+    }
 </div>

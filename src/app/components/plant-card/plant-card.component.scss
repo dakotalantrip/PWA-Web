@@ -2,48 +2,58 @@
 @use "abstracts/variables";
 @use "themes/theme_vars" as themeVars;
 
-:host > div {
+:host {
     @include mixins.flexbox(column);
     @include mixins.border-standard(variables.$spacing);
-    height: calc(#{variables.$spacing} * 30);
+    height: 45vh;
     background: themeVars.$color-on-container-tertiary;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    position: relative;
 
-    .image-container {
-        position: relative;
+    @include mixins.respond-to("medium") {
+        height: 35vh;
+    }
 
-        > div {
-            @include mixins.flexbox(column, center, center);
-            @include mixins.border-standard;
-            @include mixins.spacing(padding);
-            border-radius: 50%;
-            position: absolute;
-            width: 3rem;
-            height: 3rem;
-            top: variables.$spacing;
-            right: variables.$spacing;
-            background-color: themeVars.$color-container-primary;
-            color: themeVars.$color-on-container-primary;
-        }
+    .confidence-score {
+        @include mixins.flexbox(column, center, center);
+        @include mixins.border-standard;
+        border-radius: 50%;
+        position: absolute;
+        width: 3rem;
+        height: 3rem;
+        font-size: calc(#{variables.$font-size} * 0.9);
+        top: variables.$spacing;
+        right: variables.$spacing;
+        background-color: themeVars.$color-container-primary;
+        color: themeVars.$color-on-container-primary;
+    }
 
-        img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            aspect-ratio: 4 / 3;
-            border-top-right-radius: variables.$border-radius;
-            border-top-left-radius: variables.$border-radius;
+    img {
+        width: 100%;
+        max-height: 65%;
+        height: 65%;
+        object-fit: cover;
+        border-top-right-radius: variables.$border-radius;
+        border-top-left-radius: variables.$border-radius;
+
+        @include mixins.respond-to("small") {
+            max-height: 75%;
+            height: 75%;
         }
     }
 
     .plant-info {
-        @include mixins.flexbox(column, center, center);
-        @include mixins.spacing(padding, 1.25);
-        row-gap: variables.$spacing;
-        flex-grow: 1;
+        @include mixins.flexbox(column, flex-start, center);
+        @include mixins.spacing(padding);
         width: 100%;
+        height: 35%;
+        min-height: 50px;
         box-sizing: border-box;
+
+        @include mixins.respond-to("small") {
+            height: 25%;
+        }
 
         .name {
             font-size: variables.$font-size;

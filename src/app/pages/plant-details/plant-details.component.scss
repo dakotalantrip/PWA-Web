@@ -24,27 +24,32 @@
         swiper-slide.images-slide {
             position: relative;
 
-            > span {
-                @include mixins.spacing(padding);
-                position: absolute;
-                background-color: themeVars.$color-container-tertiary;
-                width: auto;
-                max-width: 33vw;
-                z-index: 100;
-                font-style: oblique;
+            .image-slide {
+                position: relative;
 
-                &:first-child {
-                    top: 0;
-                    left: 0;
-                    border-bottom-right-radius: variables.$border-radius;
-                    text-align: left;
-                }
+                > span {
+                    @include mixins.spacing(padding);
+                    position: absolute;
+                    background-color: themeVars.$color-container-tertiary;
+                    width: auto;
+                    max-width: 33vw;
+                    z-index: 100;
+                    font-style: oblique;
 
-                &:last-child {
-                    bottom: 0;
-                    right: 0;
-                    border-top-left-radius: variables.$border-radius;
-                    text-align: right;
+                    &:first-child {
+                        top: 0;
+                        left: 0;
+                        border-bottom-right-radius: variables.$border-radius;
+                        text-align: left;
+                    }
+
+                    &:last-of-type {
+                        bottom: 0;
+                        right: 0;
+                        border-top-left-radius: variables.$border-radius;
+                        text-align: right;
+                        max-width: 75vw;
+                    }
                 }
             }
 
