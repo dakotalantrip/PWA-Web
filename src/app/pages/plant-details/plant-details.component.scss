@@ -4,104 +4,153 @@
 @use "@angular/material" as mat;
 
 :host {
-    @include mixins.flexbox(column, center);
-    @include mixins.spacing(row-gap);
-    @include mixins.spacing(padding);
     @include mixins.container-style;
+    display: block;
+    height: 100%;
+    overflow-y: hidden;
 
-    @include mixins.respond-to(medium) {
-    }
-
-    swiper-container {
+    .mobile {
         height: 100%;
-        width: 100%;
+        transition: transform 0.6s ease-out;
 
-        swiper-slide {
-            @include mixins.flexbox(row, center, center);
-            text-align: center;
-        }
+        &.details-displayed {
+            display: block;
+            transform: translateY(-80vh);
 
-        swiper-slide.images-slide {
-            position: relative;
-
-            .image-slide {
-                position: relative;
-
-                > span {
-                    @include mixins.spacing(padding);
-                    position: absolute;
-                    background-color: themeVars.$color-container-tertiary;
-                    width: auto;
-                    max-width: 33vw;
-                    z-index: 100;
-                    font-style: oblique;
-
-                    &:first-child {
-                        top: 0;
-                        left: 0;
-                        border-bottom-right-radius: variables.$border-radius;
-                        text-align: left;
-                    }
-
-                    &:last-of-type {
-                        bottom: 0;
-                        right: 0;
-                        border-top-left-radius: variables.$border-radius;
-                        text-align: right;
-                        max-width: 75vw;
-                    }
+            .plant-info-container {
+                mat-tab-group {
+                    display: flex;
                 }
             }
+        }
 
-            img {
-                display: block;
+        .carousel-wrapper {
+            position: sticky;
+            top: 0;
+            overflow: hidden;
+            height: 80vh;
+
+            swiper-container {
+                width: 100vw;
+                &:first-child {
+                    height: 75%;
+                }
+                &:last-child {
+                    height: 25%;
+                }
+            }
+        }
+
+        .plant-info-container {
+            transition: transform 0.6s ease-out;
+            background: themeVars.$color-system-background;
+            z-index: 1;
+            overflow-y: hidden;
+            height: 100%;
+
+            mat-tab-group {
+                display: none;
+                height: 90%;
                 width: 100%;
-                height: 100%;
-                aspect-ratio: 4 / 3;
-                object-fit: cover;
             }
         }
     }
 
-    .plant-info-container {
-        @include mixins.spacing(padding);
-        @include mixins.container-style;
+    .desktop {
+        height: 100%;
         position: relative;
-        width: 100%;
 
-        .plant-info-title {
-            @include mixins.flexbox(row, center, space-between);
+        .carousel-wrapper {
+            height: 100%;
+
+            swiper-container {
+                &:first-child {
+                    height: 75%;
+                    width: 66vw;
+                    margin-left: 0;
+                }
+
+                &:last-child {
+                    height: 25%;
+                    width: 100vw;
+                }
+            }
+        }
+
+        .plant-info-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 33vw;
+            height: 75%;
+            z-index: 0;
+
+            .plant-title > div {
+                flex-direction: row;
+                @include mixins.spacing(gap);
+            }
+
+            mat-tab-group {
+                height: 90%;
+            }
+        }
+
+        button {
+            display: none;
+        }
+    }
+
+    .plant-title {
+        @include mixins.flexbox(row, center, space-between);
+        @include mixins.spacing(column-gap, 0.5);
+        @include mixins.spacing(padding-left, 1.5);
+        @include mixins.spacing(padding-right, 1.5);
+        height: auto;
+
+        button {
+            margin-left: auto;
+        }
+    }
+
+    swiper-slide {
+        @include mixins.flexbox(row, center, center);
+        @include mixins.spacing(padding-bottom, 2);
+        @include mixins.spacing(padding-right);
+        @include mixins.spacing(padding-left);
+        box-sizing: border-box;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: variables.$border-radius;
+    }
+
+    section {
+        @include mixins.border-standard(true);
+        @include mixins.spacing(padding);
+        @include mixins.spacing(margin);
+        text-align: left;
+
+        .title {
+            font-size: calc(#{variables.$font-size} * 1.2);
             @include mixins.spacing(margin-bottom);
         }
 
-        mat-tab-group {
-            height: 100%;
-            width: 100%;
-        }
+        > div:not(.title) {
+            @include mixins.flexbox(column);
+            font-size: variables.$font-size;
 
-        section {
-            @include mixins.border-standard(true);
-            @include mixins.spacing(padding);
-            @include mixins.spacing(margin);
-            text-align: left;
-
-            .title {
-                font-size: calc(#{variables.$font-size} * 1.2);
+            &:not(:last-child) {
                 @include mixins.spacing(margin-bottom);
             }
 
-            > div:not(.title) {
-                @include mixins.flexbox(column);
-                font-size: variables.$font-size;
-
-                &:not(:last-child) {
-                    @include mixins.spacing(margin-bottom);
-                }
-
-                span:first-child {
-                    font-size: calc(#{variables.$font-size} * 0.9);
-                    opacity: 0.8;
-                }
+            span:first-child {
+                font-size: calc(#{variables.$font-size} * 0.9);
+                opacity: 0.8;
             }
         }
     }

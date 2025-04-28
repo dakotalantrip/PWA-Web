@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { AnatomicalPart, Plant } from '../../models/plant.model';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-plant-details',
@@ -17,14 +18,17 @@ import { CommonModule } from '@angular/common';
     MatCardModule,
     MatDividerModule,
     MatExpansionModule,
-    MatTabsModule,
     MatIconModule,
+    MatTabsModule,
+    MatTooltipModule,
   ],
   templateUrl: './plant-details.component.html',
   styleUrl: './plant-details.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PlantDetailsComponent implements OnInit {
+  public isDetailsDisplayed: boolean = false;
+  public isMobile: boolean = false;
   public plant!: Plant;
 
   constructor(
@@ -34,6 +38,7 @@ export class PlantDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.plant = this.route.snapshot.data['plant'];
+    this.isMobile = window.matchMedia('(max-width: 768px)').matches;
   }
 
   //#region Events

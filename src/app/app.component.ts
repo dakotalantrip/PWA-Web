@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {
@@ -15,10 +14,11 @@ import {
 } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoadingService } from './services/loading.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [MatButtonModule, MatIconModule, MatProgressBarModule, MatSidenavModule, MatToolbarModule, RouterModule],
+  imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule, MatToolbarModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

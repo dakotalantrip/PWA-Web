@@ -26,7 +26,7 @@
     <mat-sidenav-content>
         @if (isLoading) {
             <div class="progress-container">
-                <mat-progress-bar mode="buffer"></mat-progress-bar>
+                <mat-progress-spinner mode="indeterminate" />
             </div>
         }
         <router-outlet />
