@@ -1,7 +1,4 @@
-<div
-    [class.desktop]="!isMobile"
-    [class.mobile]="isMobile"
-    [class.details-displayed]="isMobile && isDetailsDisplayed">
+<div [class.details-displayed]="isDetailsDisplayed">
     <ng-container [ngTemplateOutlet]="swiperContainers" />
     <div class="plant-info-container">
         <ng-container [ngTemplateOutlet]="title" />
@@ -14,7 +11,9 @@
     <div class="carousel-wrapper">
         <swiper-container thumbs-swiper=".thumbs">
             @for (image of plant.images; track image) {
-                <swiper-slide lazy="true">
+                <swiper-slide
+                    lazy="true"
+                    class="main-slide">
                     <img
                         class="plant-image"
                         [src]="image.url"

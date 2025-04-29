@@ -28,7 +28,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class PlantDetailsComponent implements OnInit {
   public isDetailsDisplayed: boolean = false;
-  public isMobile: boolean = false;
   public plant!: Plant;
 
   constructor(
@@ -38,7 +37,6 @@ export class PlantDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.plant = this.route.snapshot.data['plant'];
-    this.isMobile = window.matchMedia('(max-width: 768px)').matches;
   }
 
   //#region Events
