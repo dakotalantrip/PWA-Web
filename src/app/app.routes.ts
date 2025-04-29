@@ -8,6 +8,7 @@ import { PlantDetailsComponent } from './pages/plant-details/plant-details.compo
 import { PlantResolver } from './resolvers/plant.resolver';
 import { WateringScheduleComponent } from './pages/watering-schedule/watering-schedule.component';
 import { WateringScheduleSuggestionResolver } from './resolvers/watering-schedule-suggestion.resolver';
+import { AboutComponent } from './pages/about/about.component';
 
 // Resolvers
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
     component: WateringScheduleComponent,
     resolve: { plant: PlantResolver, wateringScheduleSuggestion: WateringScheduleSuggestionResolver },
   },
+  { path: 'about', component: AboutComponent },
 ];
 
 @NgModule({

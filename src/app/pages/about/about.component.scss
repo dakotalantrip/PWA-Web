@@ -1,0 +1,15 @@
+@use "abstracts/mixins";
+
+:host {
+    @include mixins.flexbox(column);
+    @include mixins.container-style(auto);
+    @include mixins.spacing(padding, 2);
+
+    mat-accordion {
+        width: 100%;
+    }
+
+    section {
+        @include mixins.flexbox(column);
+    }
+}

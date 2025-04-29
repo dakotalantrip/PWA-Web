@@ -1,0 +1,44 @@
+<mat-accordion multi>
+    <mat-expansion-panel expanded="">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Purpose</mat-panel-title>
+        </mat-expansion-panel-header>
+        <section>
+            <p>
+                A progressive web application for practicing concepts, challenging our brains, and testing out new
+                technologies.
+            </p>
+            <a href="https://github.com/dakotalantrip/PWA-APIv2">API</a>
+            <a href="https://github.com/dakotalantrip/PWA-Web">Web</a>
+        </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Contributors</mat-panel-title>
+        </mat-expansion-panel-header>
+        <section>
+            <section>
+                <h3>Kimberly Faul</h3>
+                <a href="https://www.linkedin.com/in/kimberlyfaul/">LinkedIn</a>
+                <a href="https://github.com/kimfaul">Github</a>
+            </section>
+            <section>
+                <h3>Dakota Lantrip</h3>
+                <a href="https://www.linkedin.com/in/dakota-lantrip-148888359/">LinkedIn</a>
+                <a href="https://github.com/dakotalantrip">Github</a>
+            </section>
+        </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Technologies</mat-panel-title>
+        </mat-expansion-panel-header>
+        <section>
+            @for (package of packageList; track package) {
+                <a [href]="package.link">{{ package.name | titlecase }}</a>
+            }
+        </section>
+    </mat-expansion-panel>
+</mat-accordion>
