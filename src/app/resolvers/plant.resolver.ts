@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { catchError, EMPTY, Observable, of, tap } from 'rxjs';
-import { Plant } from '../models/plant.model';
+import { Plant } from '../models/plant/plant.model';
 import { PlantIDService } from '../services/plant-id.service';
 import { Injectable } from '@angular/core';
 

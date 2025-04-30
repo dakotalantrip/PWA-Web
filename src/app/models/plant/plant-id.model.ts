@@ -1,4 +1,4 @@
-import { Image } from './image.model';
+import { Image } from '../image.model';
 
 export class PlantIDImageRequest {
   public files: File[];
@@ -12,11 +12,11 @@ export class PlantIDImageRequest {
 
 export interface PlantIDSearchResult {
   scientificName: string;
-  commonName: string;
+  commonNames: string[];
   images: Image[];
 }
 
-export interface PlantID {
+export interface PlantIDImageResult {
   score: number;
   species?: PlantIDSpecies;
   images?: Image[];
@@ -42,4 +42,11 @@ export interface TaxonomicRank {
 export interface IUCN {
   id?: string;
   category?: string;
+}
+
+export interface PlantID {
+  scientificName: string;
+  commonNames: string[];
+  images: Image[];
+  score: number;
 }

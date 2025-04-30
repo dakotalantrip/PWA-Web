@@ -27,6 +27,7 @@
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
+    "ngx-infinite-scroll": "^19.0.0",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.6",
     "tslib": "^2.3.0",

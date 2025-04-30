@@ -13,6 +13,7 @@ export class AboutComponent {
     { name: 'angular', link: 'https://angular.io/' },
     { name: 'angular-material', link: 'https://material.angular.io/' },
     { name: 'fullCalendar', link: 'https://fullcalendar.io/docs/angular' },
+    { name: 'ngx-infinite-scroll', link: 'https://www.npmjs.com/package/ngx-infinite-scroll' },
     { name: 'rxjs', link: 'https://rxjs.dev/' },
     { name: 'swiper', link: 'https://swiperjs.com/' },
   ];

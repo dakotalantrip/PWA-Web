@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { BaseApiService } from './base-api.service';
-import { PlantID, PlantIDImageRequest, PlantIDSearchResult } from '../models/plant-id.model';
-import { Plant } from '../models/plant.model';
+import { PlantIDImageResult, PlantIDImageRequest, PlantIDSearchResult } from '../models/plant/plant-id.model';
+import { Plant } from '../models/plant/plant.model';
+import { PaginatedResult } from '../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,17 +18,22 @@ export class PlantIDService extends BaseApiService {
     return this.get<any>(`${name}`);
   }
 
-  public identifyByImage(plantID: PlantIDImageRequest): Observable<PlantID[]> {
+  public identifyByImage(plantID: PlantIDImageRequest): Observable<PlantIDImageResult[]> {
     const formData = new FormData();
     plantID.files.forEach((value: File) => {
       formData.append('Files', value);
     });
     formData.append('Organ', plantID.organ);
 
-    return this.post<PlantID[]>('Identify', formData);
+    return this.post<PlantIDImageResult[]>('Identify', formData);
   }
 
-  public identifyByName(species: string): Observable<PlantIDSearchResult[]> {
-    return this.get<PlantIDSearchResult[]>(`Identify/${species}`);
+  public identifyByName(
+    species: string,
+    currentPage: number = 1,
+    pageSize: number = 10,
+  ): Observable<PaginatedResult<PlantIDSearchResult>> {
+    const params = new HttpParams().set('page', currentPage.toString()).set('pageSize', pageSize.toString());
+    return this.get<PaginatedResult<PlantIDSearchResult>>(`Identify/${encodeURIComponent(species)}`, params);
   }
 }
