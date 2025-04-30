@@ -3,10 +3,10 @@
         @for (result of results; track result) {
             <app-plant-card
                 [imageUrl]="result.images && result.images[0] ? result.images[0].url : ''"
-                confidenceScore="{{ result.score * 100 | number: '1.0-1' }}%"
-                [alt]="result.species?.scientificNameWithoutAuthor"
-                [commonNames]="result.species?.commonNames"
-                [scientificName]="result.species?.scientificNameWithoutAuthor ?? 'Unknown'"
+                [confidenceScore]="result.score"
+                [alt]="result.scientificName"
+                [commonNames]="result.commonNames"
+                [scientificName]="result.scientificName"
                 (click)="onClick(result)">
             </app-plant-card>
         }

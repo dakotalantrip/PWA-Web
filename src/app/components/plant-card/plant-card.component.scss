@@ -11,10 +11,6 @@
     cursor: pointer;
     position: relative;
 
-    @include mixins.respond-to("medium") {
-        height: 35vh;
-    }
-
     .confidence-score {
         @include mixins.flexbox(column, center, center);
         @include mixins.border-standard;
@@ -33,14 +29,10 @@
         width: 100%;
         max-height: 65%;
         height: 65%;
+        aspect-ratio: 4/3;
         object-fit: cover;
         border-top-right-radius: variables.$border-radius;
         border-top-left-radius: variables.$border-radius;
-
-        @include mixins.respond-to("small") {
-            max-height: 75%;
-            height: 75%;
-        }
     }
 
     .plant-info {
@@ -50,10 +42,6 @@
         height: 35%;
         min-height: 50px;
         box-sizing: border-box;
-
-        @include mixins.respond-to("small") {
-            height: 25%;
-        }
 
         .name {
             font-size: variables.$font-size;
@@ -69,6 +57,27 @@
 
             &.common {
                 font-size: calc(#{variables.$font-size} * 0.8);
+            }
+        }
+    }
+
+    @include mixins.respond-to("medium") {
+        flex-direction: row;
+        height: 35vh;
+
+        img {
+            max-height: 100%;
+            height: 100%;
+            width: 25vw;
+            border-bottom-left-radius: variables.$border-radius;
+            border-top-right-radius: 0;
+        }
+
+        .plant-info {
+            height: 100%;
+
+            .name {
+                white-space: wrap;
             }
         }
     }

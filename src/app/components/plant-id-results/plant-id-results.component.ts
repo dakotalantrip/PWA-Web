@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PlantID } from '../../models/plant-id.model';
+import { PlantID, PlantIDImageResult } from '../../models/plant/plant-id.model';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { PlantCardComponent } from '../plant-card/plant-card.component';

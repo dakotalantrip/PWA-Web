@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WateringScheduleFormComponent } from '../../components/watering-schedule-form/watering-schedule-form.component';
-import { Plant } from '../../models/plant.model';
+import { Plant } from '../../models/plant/plant.model';
 import { ActivatedRoute, Route } from '@angular/router';
 import { WateringScheduleService } from '../../services/watering-schedule.service';
 import { IndoorWateringScheduleRequest } from '../../models/indoor-watering-schedule.model';

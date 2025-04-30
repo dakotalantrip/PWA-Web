@@ -53,16 +53,15 @@
     }
 </div>
 
-<!--Image identification-->
+<!--Image/Search results-->
 @if (plantIDs.length) {
     <app-plant-id-results
         [results]="plantIDs"
+        infiniteScroll
+        [scrollWindow]="false"
+        [fromRoot]="false"
+        [infiniteScrollDistance]="1"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll()"
         (plantIDClick)="onPlantIDClick($event)" />
-}
-
-<!--Search identification-->
-@if (plantIDSearchResults.length) {
-    <app-plant-id-search-results
-        [results]="plantIDSearchResults"
-        (click)="onPlantIDSearchResultClick($event)" />
 }
