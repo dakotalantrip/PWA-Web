@@ -107,8 +107,8 @@ export class PlantIDComponent implements OnDestroy {
     }
   }
 
-  public onPlantIDClick(plantID: PlantIDImageResult): void {
-    this.navigate(plantID.species?.scientificNameWithoutAuthor ?? '');
+  public onPlantIDClick(plantID: PlantID): void {
+    this.navigate(plantID.scientificName ?? '');
   }
 
   public onPlantIDSearchResultClick(plantIDSearchResult: PlantIDSearchResult): void {
