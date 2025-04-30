@@ -1,4 +1,4 @@
-<div>
+<div [class.has-results]="plantIDs.length">
     <button
         mat-stroked-button
         color="primary"
@@ -37,20 +37,6 @@
             (input)="onSearch()" />
         <mat-hint>Search by common name or species</mat-hint>
     </mat-form-field>
-
-    <!-- Preview -->
-    @if (selectedImage) {
-        <div class="image-preview-container">
-            <button
-                mat-mini-fab
-                (click)="onRemoveClick()">
-                <mat-icon>close</mat-icon>
-            </button>
-            <img
-                [src]="selectedImage"
-                alt="Preview" />
-        </div>
-    }
 </div>
 
 <!--Image/Search results-->

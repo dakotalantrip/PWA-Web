@@ -42,7 +42,6 @@ export class PlantIDComponent implements OnDestroy {
   public plantIDSearchResultSignal = signal<PlantIDSearchResult[]>([]);
   public searchQuery: string = '';
   public selectedFile: File | null = null;
-  public selectedImage: string = '';
 
   private currentPage: number = 1;
   private paginatedResult: PaginatedResult<PlantIDSearchResult> | null = null;
@@ -60,15 +59,26 @@ export class PlantIDComponent implements OnDestroy {
           map((value) => value?.trim()), // remove extra whitespace
           filter((value): value is string => !!value), // filter out empty or undefined/null
           tap(() => {
+            if (this.currentPage === 1) {
+              this.plantIDSignal.set([]); // reset plantIDSignal only if currentPage is 1
+            }
             this.selectedFile = null;
-            this.selectedImage = '';
-            this.plantIDImageResultSignal.set([]);
           }), // reset all fields + data before searching
           switchMap((value: string) => this.identifyByName(value)), // pipe searchTerm to observable returning search results
         )
         .subscribe(),
     );
   }
+
+  //#region Lifecycle
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  //#endregion
+
+  //#region Getters
 
   public get plantIDs(): PlantID[] {
     return this.plantIDSignal();
@@ -90,15 +100,23 @@ export class PlantIDComponent implements OnDestroy {
     return this.paginatedResult?.totalPages ?? 0;
   }
 
-  //#region Lifecycle
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   //#endregion
 
   //#region Events
+
+  private handleFileSelect(): void {
+    if (this.selectedFile) {
+      const plantID: PlantIDImageRequest = new PlantIDImageRequest([this.selectedFile], 'flower');
+      this.plantIDService
+        .identifyByImage(plantID)
+        .pipe(
+          tap((plantID: PlantIDImageResult[]) => {
+            this.plantIDImageResultSignal.set(plantID);
+          }),
+        )
+        .subscribe();
+    }
+  }
 
   public onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
@@ -109,16 +127,6 @@ export class PlantIDComponent implements OnDestroy {
 
   public onPlantIDClick(plantID: PlantID): void {
     this.navigate(plantID.scientificName ?? '');
-  }
-
-  public onPlantIDSearchResultClick(plantIDSearchResult: PlantIDSearchResult): void {
-    this.navigate(plantIDSearchResult.scientificName);
-  }
-
-  public onRemoveClick(): void {
-    this.selectedFile = null;
-    this.selectedImage = '';
-    this.plantIDImageResultSignal.set([]);
   }
 
   public onScroll(): void {
@@ -174,20 +182,6 @@ export class PlantIDComponent implements OnDestroy {
 
   //#endregion
 
-  private handleFileSelect(): void {
-    if (this.selectedFile) {
-      const plantID: PlantIDImageRequest = new PlantIDImageRequest([this.selectedFile], 'flower');
-      this.plantIDService
-        .identifyByImage(plantID)
-        .pipe(
-          tap((plantID: PlantIDImageResult[]) => {
-            this.plantIDImageResultSignal.set(plantID);
-          }),
-        )
-        .subscribe();
-    }
-  }
-
   private identifyByName(searchTerm: string): Observable<PaginatedResult<PlantIDSearchResult>> {
     return this.plantIDService.identifyByName(searchTerm, this.currentPage).pipe(
       tap((value: PaginatedResult<PlantIDSearchResult>) => {
@@ -202,16 +196,21 @@ export class PlantIDComponent implements OnDestroy {
   }
 
   private readFile(file: File): void {
-    this.searchQuery = '';
-    this.plantIDSearchResultSignal.set([]);
+    this.reset();
 
     const reader = new FileReader();
-    reader.onload = () => {
-      this.selectedImage = reader.result as string;
-    };
     reader.readAsDataURL(file);
 
     this.selectedFile = file;
     this.handleFileSelect();
+  }
+
+  private reset(): void {
+    this.currentPage = 1;
+    this.selectedFile = null;
+    this.searchQuery = '';
+    this.plantIDImageResultSignal.set([]);
+    this.plantIDSearchResultSignal.set([]);
+    this.plantIDSignal.set([]);
   }
 }

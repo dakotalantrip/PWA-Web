@@ -30,7 +30,6 @@
             @for (image of plant.images; track image) {
                 <swiper-slide lazy="true">
                     <img
-                        class="plant-image"
                         [src]="image.url"
                         loading="lazy"
                         [alt]="image.attribution" />
