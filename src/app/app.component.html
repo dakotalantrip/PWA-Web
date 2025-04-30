@@ -11,6 +11,12 @@
         <div class="sidenav-list">
             <a
                 mat-button
+                routerLink="/dashboard"
+                (click)="sidenav.close()"
+                >Dashboard</a
+            > 
+            <a
+                mat-button
                 routerLink="/plantID"
                 (click)="sidenav.close()"
                 >Plant ID</a
@@ -21,6 +27,13 @@
                 (click)="sidenav.close()"
                 >About</a
             >
+            @if((isLoggedIn$ | async) === false) {
+                <a mat-button routerLink="/login" (click)="sidenav.close()">Login</a>
+            }
+            @else{
+                <a mat-button (click)="logout(); sidenav.close()">Logout</a>
+            }
+        
         </div>
     </mat-sidenav>
     <mat-sidenav-content>

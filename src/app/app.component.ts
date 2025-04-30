@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -12,25 +13,28 @@ import {
   Router,
   RouterModule,
 } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LoadingService } from './services/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule, MatToolbarModule, RouterModule],
+  imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule, MatToolbarModule, RouterModule, AsyncPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   public isLoading: boolean = true;
   public title: string = 'Adjutum';
 
   private subscription: Subscription = new Subscription();
+  isLoggedIn$!: Observable<boolean>;
 
   constructor(
     private loadingService: LoadingService,
     private router: Router,
+    private authService: AuthService
   ) {
     // Routing
     this.subscription.add(
@@ -55,7 +59,15 @@ export class AppComponent implements OnDestroy {
     );
   }
 
+  ngOnInit(): void {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
