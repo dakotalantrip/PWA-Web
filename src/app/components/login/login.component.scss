@@ -1,0 +1,35 @@
+@use "abstracts/mixins";
+
+:host {
+    display: block;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+
+    > div {
+        @include mixins.flexbox(column, center);
+        @include mixins.border-standard(true);
+        @include mixins.spacing(padding-bottom, 2);
+        @include mixins.spacing(padding-top, 2);
+        width: clamp(300px, 25vw, 50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        form {
+            @include mixins.flexbox(column, center);
+
+            > div {
+                @include mixins.flexbox(row, center, center);
+                @include mixins.spacing(column-gap, 2);
+                width: 100%;
+            }
+        }
+
+        mat-divider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+    }
+}

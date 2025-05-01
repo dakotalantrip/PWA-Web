@@ -1,2 +1,32 @@
-<!-- Don't look at me! I'm hideous! -->
-<div id="g_id_signin"></div>
+<div>
+    <h2>Login</h2>
+    <form
+        [formGroup]="formGroup"
+        (submit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input
+                matInput
+                type="text"
+                [formControl]="usernameControl" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input
+                matInput
+                type="password"
+                [formControl]="passwordControl" />
+        </mat-form-field>
+        <div>
+            <button mat-stroked-button>Sign Up</button>
+            <button
+                mat-stroked-button
+                type="submit">
+                Login
+            </button>
+        </div>
+    </form>
+    <mat-divider></mat-divider>
+    <!-- Don't look at me! I'm hideous! -->
+    <div id="g_id_signin"></div>
+</div>

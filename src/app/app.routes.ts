@@ -16,14 +16,21 @@ import { PublicGuard } from './guards/public.guard';
 // Resolvers
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'plantID', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '*', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'plantID', component: PlantIDComponent },
+  { path: 'plantID', component: PlantIDComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
-  { path: 'plant/:name', component: PlantDetailsComponent, resolve: { plant: PlantResolver } },
+  {
+    path: 'plant/:name',
+    component: PlantDetailsComponent,
+    canActivate: [AuthGuard],
+    resolve: { plant: PlantResolver },
+  },
   {
     path: 'plant/:name/schedule',
     component: WateringScheduleComponent,
+    canActivate: [AuthGuard],
     resolve: { plant: PlantResolver, wateringScheduleSuggestion: WateringScheduleSuggestionResolver },
   },
   { path: 'about', component: AboutComponent },

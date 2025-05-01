@@ -20,7 +20,15 @@ import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule, MatToolbarModule, RouterModule, AsyncPipe],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    RouterModule,
+    AsyncPipe,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -34,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private loadingService: LoadingService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     // Routing
     this.subscription.add(
@@ -69,5 +77,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
 }

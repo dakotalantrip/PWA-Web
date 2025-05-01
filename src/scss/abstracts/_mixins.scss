@@ -4,7 +4,7 @@
 // Border
 @mixin border-standard(
     $radius: null,
-    $color: themeVars.$color-on-container-tertiary,
+    $color: themeVars.$color-on-system-background,
     $top: null,
     $right: null,
     $bottom: null,
