@@ -30,6 +30,13 @@ jobs:
             "s|googleClientId: '.*'|googleClientId: '${{ secrets.GOOGLE_CLIENT_ID }}'|g" \
             src/environments/environment.prod.ts
 
+      - name: Inject ApiUrl into environment.prod.ts
+        run: |
+          echo "Updating environment.prod.ts with secret API_URL"
+          sed -i \
+            "s|apiUrl: '.*'|apiUrl: '${{ secrets.API_URL }}'|g" \
+            src/environments/environment.prod.ts
+
       - name: Azure Login
         uses: azure/login@v1
         with:
