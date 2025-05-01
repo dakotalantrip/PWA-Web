@@ -12,11 +12,13 @@ import { routes } from './app.routes';
 // Interceptors
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom(CommonModule, MatIconModule, MatButtonModule, MatDividerModule),
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     provideHttpClient(withInterceptorsFromDi()),

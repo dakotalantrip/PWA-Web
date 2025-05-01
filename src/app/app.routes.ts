@@ -9,13 +9,17 @@ import { PlantResolver } from './resolvers/plant.resolver';
 import { WateringScheduleComponent } from './pages/watering-schedule/watering-schedule.component';
 import { WateringScheduleSuggestionResolver } from './resolvers/watering-schedule-suggestion.resolver';
 import { AboutComponent } from './pages/about/about.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { PublicGuard } from './guards/public.guard';
 
 // Resolvers
 
 export const routes: Routes = [
   { path: '', redirectTo: 'plantID', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'plantID', component: PlantIDComponent },
+  { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
   { path: 'plant/:name', component: PlantDetailsComponent, resolve: { plant: PlantResolver } },
   {
     path: 'plant/:name/schedule',
