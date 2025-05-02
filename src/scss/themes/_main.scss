@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "themes/palettes" as palettes;
+@use "themes/theme_vars" as themeVars;
 @use "sass:map";
 
 html {
@@ -13,6 +14,20 @@ html {
             ),
             typography: Roboto,
             density: -2,
+        )
+    );
+
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: themeVars.$color-container-secondary,
+            container-text-color: themeVars.$color-on-container-secondary,
+        )
+    );
+
+    @include mat.sidenav-overrides(
+        (
+            container-background-color: themeVars.$color-container-secondary,
+            container-text-color: themeVars.$color-on-container-secondary,
         )
     );
 }
