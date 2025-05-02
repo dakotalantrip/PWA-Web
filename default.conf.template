@@ -5,16 +5,9 @@ server {
 
     access_log  /var/log/nginx/server.access.log  main;
 
-        # The single-page-app fallback
     location / {
+        root /usr/share/nginx/html;
         try_files $uri $uri/ /index.html;
-        # no caching for the HTML shell
-        add_header Cache-Control "no-cache, no-store, must-revalidate";
-    }
-
-    # Long-cache static assets
-    location ~* \.(?:js|css|png|jpg|jpeg|svg|gif|woff2?)$ {
-        add_header Cache-Control "public, max-age=31536000, immutable";
     }
 
     location /api/ {
