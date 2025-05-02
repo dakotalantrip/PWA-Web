@@ -168,4 +168,39 @@ $desktop-height: 75%;
             }
         }
     }
+
+    .chart-container {
+        @include mixins.border-standard(true);
+        @include mixins.spacing(padding-top, 2);
+        @include mixins.spacing(padding-bottom, 2);
+        width: 98%;
+        justify-self: center;
+    }
+
+    .requirement-container {
+        &.care {
+            .filled {
+                color: themeVars.$color-primary;
+            }
+        }
+
+        &.light {
+            .filled {
+                color: orange;
+            }
+        }
+
+        &.water {
+            .filled {
+                color: themeVars.$color-tertiary;
+            }
+        }
+    }
+}
+
+::ng-deep {
+    .mat-mdc-tab-body-content {
+        @include mixins.spacing(padding-bottom, 2);
+        box-sizing: border-box;
+    }
 }

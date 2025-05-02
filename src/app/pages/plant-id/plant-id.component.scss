@@ -7,6 +7,7 @@
     @include mixins.flexbox(column, center, space-evenly);
     @include mixins.spacing(column-gap, 2);
     @include mixins.container-style(auto);
+    @include mixins.spacing(padding-top);
     position: relative;
 
     app-plant-id-results {

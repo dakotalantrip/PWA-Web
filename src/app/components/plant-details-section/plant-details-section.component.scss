@@ -1,0 +1,25 @@
+@use "abstracts/mixins";
+@use "abstracts/variables";
+
+section {
+    @include mixins.flexbox(row, center, space-between);
+    @include mixins.border-standard(true);
+    @include mixins.spacing(padding);
+    @include mixins.spacing(margin);
+    text-align: left;
+
+    .title {
+        font-size: calc(#{variables.$font-size} * 1.2);
+        @include mixins.spacing(margin-bottom);
+    }
+
+    > div:not(.title) {
+        @include mixins.flexbox(column);
+        font-size: variables.$font-size;
+
+        span:first-child {
+            font-size: calc(#{variables.$font-size} * 0.9);
+            opacity: 0.8;
+        }
+    }
+}

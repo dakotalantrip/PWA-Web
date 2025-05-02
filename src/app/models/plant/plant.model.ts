@@ -9,6 +9,7 @@ export interface Plant {
   genus: string;
   species: string;
   description: string;
+  biome: string;
   cycle: string;
   layer: string;
   soilType: string;
@@ -24,7 +25,7 @@ export interface Plant {
   images: Image[];
   lightDuration: LightDuration;
   toxicity: Toxicity;
-  waterFrequency: WaterFrequency;
+  waterConsumptions: WaterConsumption[];
   width: Dimension;
 }
 
@@ -71,13 +72,26 @@ export interface LightDuration {
   unit: number;
 }
 
+export interface Seed {
+  description: string;
+  germination: string;
+  germinationTemperature: number;
+  germinationTime: string;
+  weight: number;
+  color: string;
+  shape: string;
+  texture: string;
+  type: string;
+}
+
 export interface Toxicity {
   toxic: boolean;
   parts: string;
   organisms: string;
 }
 
-export interface WaterFrequency {
+export interface WaterConsumption {
   value: number;
   unit: string;
+  month: string;
 }
