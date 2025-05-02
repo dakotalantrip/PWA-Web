@@ -107,13 +107,13 @@
                 [ngTemplateOutlet]="field"
                 [ngTemplateOutletContext]="{ data: plant.wateringPeriods, label: 'periods' }" />
             <div class="chart-container">
-                <!-- <ngx-charts-bar-vertical
+                <ngx-charts-bar-vertical
                     [xAxis]="true"
                     [yAxis]="true"
                     [legend]="false"
                     [autoScale]="true"
                     [showGridLines]="false"
-                    [results]="waterConsumptionResults"></ngx-charts-bar-vertical> -->
+                    [results]="waterConsumptionResults"></ngx-charts-bar-vertical>
             </div>
         </mat-tab>
         <mat-tab label="Light">

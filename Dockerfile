@@ -13,6 +13,9 @@ RUN npm run build
 
 FROM nginx:alpine
 
+# Remove the Alpine image's built-in default.conf
+RUN rm /etc/nginx/conf.d/default.conf
+
 COPY --from=build /app/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/dist/pwa-web/browser /usr/share/nginx/html
 
