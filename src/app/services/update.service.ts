@@ -13,7 +13,7 @@ export class UpdateService {
       return;
     }
 
-    // this.swUpdate.checkForUpdate();
+    this.swUpdate.checkForUpdate();
 
     // Poll for updates
     interval(this.minutes * 60 * 1000).subscribe(() =>
