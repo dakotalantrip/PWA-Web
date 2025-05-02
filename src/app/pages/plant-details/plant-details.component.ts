@@ -10,7 +10,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlantDetailsSectionComponent } from '../../components/plant-details-section/plant-details-section.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-plant-details',
@@ -24,7 +23,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatTabsModule,
     MatTooltipModule,
     PlantDetailsSectionComponent,
-    NgxChartsModule,
   ],
   templateUrl: './plant-details.component.html',
   styleUrl: './plant-details.component.scss',
