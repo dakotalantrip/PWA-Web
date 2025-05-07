@@ -1,5 +1,5 @@
 <div>
-    <h2>Login</h2>
+    <h2>Create User</h2>
     <form
         [formGroup]="formGroup"
         (submit)="onSubmit()">
@@ -11,27 +11,42 @@
                 [formControl]="emailControl" />
         </mat-form-field>
         <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input
+                matInput
+                type="text"
+                [formControl]="nameControl" />
+        </mat-form-field>
+        <mat-form-field>
             <mat-label>Password</mat-label>
             <input
                 matInput
                 type="password"
                 [formControl]="passwordControl" />
         </mat-form-field>
-        <div>
-            <button
-                mat-stroked-button
-                (click)="onSignUp()">
-                Sign Up
-            </button>
+        
+        <mat-form-field>
+            <mat-label>Confirm Password</mat-label>
+            <input
+                matInput
+                type="password"
+                [formControl]="confirmPasswordControl" />
+        </mat-form-field>
+        <div>     
             <button
                 mat-stroked-button
                 type="submit">
-                Login
+                Sign Up
             </button>
         </div>
+        <div class="login-link">
+            <span>
+                    Have a user already? 
+            </span>
+            <a (click)="backToLogin()">Login!</a>
+        </div>
     </form>
+    
     <!--KEF TODO: do some sort of rate-limiting/captcha stuff here to prevent brute force-->
     <mat-divider></mat-divider>
-    <!-- Don't look at me! I'm hideous! -->
-    <div id="g_id_signin"></div>
 </div>

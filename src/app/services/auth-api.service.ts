@@ -15,7 +15,11 @@ export class AuthApiService extends BaseApiService {
     return this.post<{ jwt: string }>('exchange-google-token', { idToken });
   }
 
-  public login(username: string, password: string): Observable<{ jwt: string }> {
-    return this.post('login', { id: 1, providerID: '', email: username, name: '' });
+  public login(email: string, password: string): Observable<{ jwt: string }> {
+    return this.post('login', { email: email, password: password});
+  }
+
+  public register(email: string, password: string, confirmPassword: string, name: string): Observable<{ successful: boolean }> {
+    return this.post('register', { email: email, password: password, confirmPassword: confirmPassword, name: name });
   }
 }

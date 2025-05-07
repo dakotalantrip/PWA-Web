@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
   ) {
     this.formGroup = this.formBuilder.group({
-      username: new FormControl('', { nonNullable: true }),
-      password: new FormControl('', { nonNullable: true }),
+      email: new FormControl('', { nonNullable: true }),
+      password: new FormControl('', { nonNullable: true })
     });
   }
 
@@ -39,9 +39,9 @@ export class LoginComponent implements OnInit {
   public get passwordControl(): FormControl {
     return this.formGroup.get('password') as FormControl;
   }
-
-  public get usernameControl(): FormControl {
-    return this.formGroup.get('username') as FormControl;
+  
+  public get emailControl(): FormControl {
+    return this.formGroup.get('email') as FormControl;
   }
 
   renderGoogleSignInButton() {
@@ -65,9 +65,10 @@ export class LoginComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    console.log('Here in onSubmit');
     if (this.formGroup.valid) {
-      const { username, password } = this.formGroup.value;
-      this.authApiService.login(username, password).subscribe({
+      const { email, password } = this.formGroup.value;
+      this.authApiService.login(email, password).subscribe({
         next: (data: any) => {
           console.log('Login successful', data);
           this.authService.login(data.jwt); // Store the JWT in local storage
@@ -100,5 +101,9 @@ export class LoginComponent implements OnInit {
         console.error('Login failed', err);
       },
     });
+  }
+
+  public onSignUp(): void {
+    this.router.navigate(['registration']);
   }
 }
