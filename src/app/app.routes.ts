@@ -12,6 +12,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PublicGuard } from './guards/public.guard';
+import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 
 // Resolvers
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'plantID', component: PlantIDComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
+  { path: 'registration', component: UserRegistrationComponent, canActivate: [PublicGuard] },
   {
     path: 'plant/:name',
     component: PlantDetailsComponent,
