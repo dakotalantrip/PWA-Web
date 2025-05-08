@@ -7,6 +7,16 @@
         </button>
     }
     <span>{{ title }}</span>
+    @if(isLoggedIn$ | async) {
+        <span class="username">Hello, {{userName}}
+            @if(isAdmin)
+            {
+                <mat-icon aria-hidden="false" fontIcon="person"></mat-icon>
+            } @else {
+                <mat-icon aria-hidden="false" fontIcon="pets"></mat-icon>
+            }
+        </span>
+    }
 </mat-toolbar>
 <mat-sidenav-container>
     <mat-sidenav #sidenav>

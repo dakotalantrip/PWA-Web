@@ -38,6 +38,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
   isLoggedIn$!: Observable<boolean>;
+  public userName: string | null = null;
+  public isAdmin: boolean = false;
 
   constructor(
     private loadingService: LoadingService,
@@ -69,6 +71,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
+
+    this.subscription.add(
+      this.isLoggedIn$.subscribe((loggedIn) => {
+        if (loggedIn) {
+          this.userName = this.authService.getUserName(); // <-- from decoded token
+          this.isAdmin = this.authService.isAdmin();
+        } else {
+          this.userName = null;
+          this.isAdmin = false;
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
