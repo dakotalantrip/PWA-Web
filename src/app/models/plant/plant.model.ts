@@ -23,7 +23,7 @@ export interface Plant {
   hardinessZone: HardinessZone;
   height: Dimension;
   images: Image[];
-  lightDuration: LightDuration;
+  lightDurations: LightDuration[];
   toxicity: Toxicity;
   waterConsumptions: WaterConsumption[];
   width: Dimension;
@@ -69,7 +69,7 @@ export interface HardinessZone {
 export interface LightDuration {
   max: number;
   min: number;
-  unit: number;
+  month: string;
 }
 
 export interface Seed {

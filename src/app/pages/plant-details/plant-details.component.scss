@@ -171,9 +171,9 @@ $desktop-height: 75%;
 
     .chart-container {
         @include mixins.border-standard(true);
-        @include mixins.spacing(padding-top, 2);
-        @include mixins.spacing(padding-bottom, 2);
+        box-sizing: border-box;
         width: 98%;
+        height: 80vh;
         justify-self: center;
     }
 

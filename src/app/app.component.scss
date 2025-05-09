@@ -14,10 +14,6 @@
             pointer-events: auto;
             z-index: 3;
         }
-
-        span {
-            margin-right: auto;
-        }
     }
 
     mat-sidenav-container {
@@ -50,7 +46,7 @@
     }
 
     .username {
-        text-align: right;
-        flex:auto;;
+        @include mixins.flexbox(row, center);
+        margin-left: auto;
     }
 }

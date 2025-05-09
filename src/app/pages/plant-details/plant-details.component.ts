@@ -1,5 +1,11 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { AnatomicalPart, Plant, RequirementLevel, WaterConsumption } from '../../models/plant/plant.model';
+import {
+  AnatomicalPart,
+  LightDuration,
+  Plant,
+  RequirementLevel,
+  WaterConsumption,
+} from '../../models/plant/plant.model';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,7 +16,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlantDetailsSectionComponent } from '../../components/plant-details-section/plant-details-section.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BoxChartMultiSeries, NgxChartsModule } from '@swimlane/ngx-charts';
+import * as shape from 'd3-shape';
 
 @Component({
   selector: 'app-plant-details',
@@ -31,10 +38,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PlantDetailsComponent implements OnInit {
+  public curve = shape.curveBasis;
   public isDetailsDisplayed: boolean = false;
   public plant!: Plant;
   public careRequirementLevel: number = 0;
   public lightRequirementLevel: number = 0;
+  public lightResults: any[] = [];
   public waterRequirementLevel: number = 0;
   public waterConsumptionResults: any[] = [];
 
@@ -47,10 +56,24 @@ export class PlantDetailsComponent implements OnInit {
     this.plant = this.route.snapshot.data['plant'];
     this.careRequirementLevel = this.getRequirementLevel(this.plant.careRequirement.toString());
     this.lightRequirementLevel = this.getRequirementLevel(this.plant.lightRequirement.toString());
-    this.waterRequirementLevel = this.getRequirementLevel(this.plant.waterRequirement.toString());
-    this.waterConsumptionResults = this.plant.waterConsumptions.map((waterConsumption: WaterConsumption) => {
-      return { name: waterConsumption.month, value: waterConsumption.value };
+    this.lightResults = this.plant.lightDurations.map((lightDuration: LightDuration) => {
+      return {
+        name: lightDuration.month,
+        series: [
+          { name: 'min', value: lightDuration.min },
+          { name: 'max', value: lightDuration.max },
+        ],
+      };
     });
+    this.waterRequirementLevel = this.getRequirementLevel(this.plant.waterRequirement.toString());
+    this.waterConsumptionResults = [
+      {
+        name: '',
+        series: this.plant.waterConsumptions.map((waterConsumption: WaterConsumption) => {
+          return { name: waterConsumption.month, value: waterConsumption.value };
+        }),
+      },
+    ];
   }
 
   //#region Events

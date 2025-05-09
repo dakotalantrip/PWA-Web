@@ -3,18 +3,20 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 
 // Components
+import { AboutComponent } from './pages/about/about.component';
+import { LoginComponent } from './pages/login/login.component';
 import { PlantIDComponent } from './pages/plant-id/plant-id.component';
 import { PlantDetailsComponent } from './pages/plant-details/plant-details.component';
 import { PlantResolver } from './resolvers/plant.resolver';
+import { UserRegistrationComponent } from './pages/user-registration/user-registration.component';
 import { WateringScheduleComponent } from './pages/watering-schedule/watering-schedule.component';
-import { WateringScheduleSuggestionResolver } from './resolvers/watering-schedule-suggestion.resolver';
-import { AboutComponent } from './pages/about/about.component';
-import { LoginComponent } from './components/login/login.component';
+
+// Guards
 import { AuthGuard } from './guards/auth.guard';
 import { PublicGuard } from './guards/public.guard';
-import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 
 // Resolvers
+import { WateringScheduleSuggestionResolver } from './resolvers/watering-schedule-suggestion.resolver';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

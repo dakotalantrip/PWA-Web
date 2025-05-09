@@ -3,17 +3,21 @@
         <button
             mat-icon-button
             (click)="sidenav.toggle()">
-            <mat-icon>menu</mat-icon>
+            <mat-icon fontIcon="menu" />
         </button>
     }
     <span>{{ title }}</span>
-    @if(isLoggedIn$ | async) {
-        <span class="username">Hello, {{userName}}
-            @if(isAdmin)
-            {
-                <mat-icon aria-hidden="false" fontIcon="person"></mat-icon>
+    @if (isLoggedIn$ | async) {
+        <span class="username"
+            >Hello, {{ userName }}
+            @if (isAdmin) {
+                <mat-icon
+                    aria-hidden="false"
+                    fontIcon="person" />
             } @else {
-                <mat-icon aria-hidden="false" fontIcon="pets"></mat-icon>
+                <mat-icon
+                    aria-hidden="false"
+                    fontIcon="pets" />
             }
         </span>
     }
