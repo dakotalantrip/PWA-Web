@@ -17,10 +17,12 @@ import { Observable, Subscription } from 'rxjs';
 import { LoadingService } from './services/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from './services/auth.service';
+import { MatSymbolDirective } from './directives/mat-symbol.directive';
 
 @Component({
   selector: 'app-root',
   imports: [
+    MatSymbolDirective,
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
@@ -81,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userName = null;
           this.isAdmin = false;
         }
-      })
+      }),
     );
   }
 

@@ -18,10 +18,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { PaginatedResult } from '../../models/paginated-result.model';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { MatSymbolDirective } from '../../directives/mat-symbol.directive';
 
 @Component({
   selector: 'app-plant-id',
   imports: [
+    MatSymbolDirective,
     FormsModule,
     InfiniteScrollDirective,
     MatButtonModule,

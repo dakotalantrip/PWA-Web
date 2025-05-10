@@ -61,7 +61,9 @@
                 <app-plant-details-section
                     [data]="plant.scientificName"
                     label="scientific name">
-                    <mat-icon fontIcon="genetics" />
+                    <mat-icon
+                        appMatSymbol
+                        fontIcon="genetics" />
                 </app-plant-details-section>
                 <ng-container
                     [ngTemplateOutlet]="field"
@@ -121,14 +123,9 @@
                     [ngTemplateOutlet]="field"
                     [ngTemplateOutletContext]="{ data: plant.wateringPeriods, label: 'periods' }" />
                 <div class="chart-container">
-                    <ngx-charts-line-chart
-                        [xAxis]="true"
-                        [yAxis]="true"
-                        [legend]="false"
-                        [curve]="curve"
-                        [showGridLines]="false"
-                        [results]="waterConsumptionResults">
-                    </ngx-charts-line-chart>
+                    <app-line-chart
+                        [results]="waterConsumptionResults"
+                        [legend]="false" />
                 </div>
             </ng-template>
         </mat-tab>
@@ -144,9 +141,9 @@
                     </div>
                 </app-plant-details-section>
                 <div class="chart-container">
-                    <ngx-charts-box-chart
+                    <app-box-chart
                         [results]="lightResults"
-                        [xAxis]="true"></ngx-charts-box-chart>
+                        [xAxis]="true" />
                 </div>
             </ng-template>
         </mat-tab>

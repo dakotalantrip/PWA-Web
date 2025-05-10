@@ -1,4 +1,17 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
+import * as shape from 'd3-shape';
+
 import {
   AnatomicalPart,
   LightDuration,
@@ -6,22 +19,15 @@ import {
   RequirementLevel,
   WaterConsumption,
 } from '../../models/plant/plant.model';
-import { MatCardModule } from '@angular/material/card';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { CommonModule } from '@angular/common';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSymbolDirective } from '../../directives/mat-symbol.directive';
 import { PlantDetailsSectionComponent } from '../../components/plant-details-section/plant-details-section.component';
-import { BoxChartMultiSeries, NgxChartsModule } from '@swimlane/ngx-charts';
-import * as shape from 'd3-shape';
+import { ChartsModule } from '../../modules/charts/charts.module';
 
 @Component({
   selector: 'app-plant-details',
   imports: [
+    ChartsModule,
+    MatSymbolDirective,
     CommonModule,
     MatButtonModule,
     MatCardModule,

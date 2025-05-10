@@ -3,7 +3,9 @@
         <button
             mat-icon-button
             (click)="sidenav.toggle()">
-            <mat-icon fontIcon="menu" />
+            <mat-icon
+                appMatSymbol
+                fontIcon="menu" />
         </button>
     }
     <span>{{ title }}</span>
@@ -12,10 +14,12 @@
             >Hello, {{ userName }}
             @if (isAdmin) {
                 <mat-icon
+                    appMatSymbol
                     aria-hidden="false"
                     fontIcon="person" />
             } @else {
                 <mat-icon
+                    appMatSymbol
                     aria-hidden="false"
                     fontIcon="pets" />
             }
