@@ -1,8 +1,12 @@
-<ngx-charts-line-chart
-    [view]="[elementRef.nativeElement.offsetHeight, elementRef.nativeElement.offsetWidth]"
-    [xAxis]="xAxis"
-    [yAxis]="yAxis"
-    [legend]="legend"
-    [curve]="curve"
-    [showGridLines]="showGridLines"
-    [results]="results" />
+@defer (when elementRef) {
+    <ngx-charts-line-chart
+        [view]="[elementRef.nativeElement.offsetHeight, elementRef.nativeElement.offsetWidth]"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [legend]="legend"
+        [curve]="curve"
+        [showGridLines]="showGridLines"
+        [results]="results" />
+} @placeholder {
+    <mat-progress-spinner />
+}
