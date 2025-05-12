@@ -102,4 +102,8 @@ export class PlantDetailsComponent implements OnInit {
     var level = RequirementLevel[requirement.toLocaleLowerCase() as any];
     return Number.parseInt(level);
   }
+
+  public xAxisTickFormatter(value: any): any {
+    return value;
+  }
 }

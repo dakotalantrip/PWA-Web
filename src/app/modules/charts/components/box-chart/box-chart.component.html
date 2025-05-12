@@ -1,7 +1,26 @@
-<ngx-charts-box-chart
-    [view]="elementRef.nativeElement"
-    [xAxis]="xAxis"
-    [yAxis]="yAxis"
-    [legend]="legend"
-    [showGridLines]="showGridLines"
-    [results]="results" />
+@defer (when elementRef) {
+    <ngx-charts-box-chart
+        [view]="[elementRef.nativeElement.offsetWidth, elementRef.nativeElement.offsetHeight]"
+        [customColors]="customColors"
+        [gradient]="gradient"
+        [scheme]="scheme"
+        [schemeType]="schemeType"
+        [legend]="legend"
+        [legendPosition]="legendPosition"
+        [legend]="legend"
+        [showGridLines]="showGridLines"
+        [wrapTicks]="wrapTicks"
+        [roundDomains]="roundDomains"
+        [tooltipDisabled]="tooltipDisabled"
+        [showXAxisLabel]="showXAxisLabel"
+        [xAxis]="xAxis"
+        [xAxisLabel]="xAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [yAxis]="yAxis"
+        [yAxisLabel]="yAxisLabel"
+        [showGridLines]="showGridLines"
+        [results]="results">
+    </ngx-charts-box-chart>
+} @placeholder {
+    <mat-progress-spinner />
+}

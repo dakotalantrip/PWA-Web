@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appMatSymbol]',
+  selector: '[appMatSymbol], mat-icon',
 })
 export class MatSymbolDirective {
   constructor(

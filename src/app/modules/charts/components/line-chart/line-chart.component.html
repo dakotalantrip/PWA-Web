@@ -1,12 +1,61 @@
 @defer (when elementRef) {
     <ngx-charts-line-chart
-        [view]="[elementRef.nativeElement.offsetHeight, elementRef.nativeElement.offsetWidth]"
-        [xAxis]="xAxis"
-        [yAxis]="yAxis"
+        [view]="[elementRef.nativeElement.offsetWidth, elementRef.nativeElement.offsetHeight]"
+        [customColors]="customColors"
+        [gradient]="gradient"
+        [scheme]="scheme"
+        [schemeType]="schemeType"
         [legend]="legend"
-        [curve]="curve"
+        [legendPosition]="legendPosition"
+        [legend]="legend"
         [showGridLines]="showGridLines"
-        [results]="results" />
+        [showRefLabels]="showRefLabels"
+        [showRefLines]="showRefLines"
+        [timeline]="timeline"
+        [wrapTicks]="wrapTicks"
+        [autoScale]="autoScale"
+        [roundDomains]="roundDomains"
+        [tooltipDisabled]="tooltipDisabled"
+        [activeEntries]="activeEntries"
+        [referenceLines]="referenceLines"
+        [maxXAxisTickLength]="maxXAxisTickLength"
+        [rotateXAxisTicks]="rotateXAxisTicks"
+        [showXAxisLabel]="showXAxisLabel"
+        [trimXAxisTicks]="trimXAxisTicks"
+        [xAxis]="xAxis"
+        [xAxisLabel]="xAxisLabel"
+        [xAxisTickFormatting]="xAxisTickFormatting"
+        [xScaleMax]="xScaleMax"
+        [xScaleMin]="xScaleMin"
+        [maxYAxisTickLength]="maxYAxisTickLength"
+        [showYAxisLabel]="showYAxisLabel"
+        [trimYAxisTicks]="trimYAxisTicks"
+        [yAxis]="yAxis"
+        [yAxisLabel]="yAxisLabel"
+        [yAxisTickFormatting]="yAxisTickFormatting"
+        [yScaleMax]="yScaleMax"
+        [yScaleMin]="yScaleMin"
+        [curve]="curve"
+        [results]="results">
+        @if (seriesTooltipTemplateRef) {
+            <ng-template
+                #seriesTooltipTemplate
+                let-model="model">
+                <ng-container
+                    [ngTemplateOutlet]="seriesTooltipTemplateRef"
+                    [ngTemplateOutletContext]="{ model: model }"></ng-container
+            ></ng-template>
+        }
+        @if (tooltipTemplateRef) {
+            <ng-template
+                #tooltipTemplate
+                let-model="model">
+                <ng-container
+                    [ngTemplateOutlet]="tooltipTemplateRef"
+                    [ngTemplateOutletContext]="{ model: model }"></ng-container
+            ></ng-template>
+        }
+    </ngx-charts-line-chart>
 } @placeholder {
     <mat-progress-spinner />
 }

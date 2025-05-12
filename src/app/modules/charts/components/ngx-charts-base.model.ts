@@ -1,19 +1,22 @@
-import { Component, ElementRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { MultiSeries, Series } from '@swimlane/ngx-charts';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { LegendPosition, MultiSeries, ScaleType, Series } from '@swimlane/ngx-charts';
+import { curveBasis, CurveFactory } from 'd3';
 
 @Component({
   template: '',
 })
-export abstract class NgxChartsBase {
+export abstract class NgxChartsBase implements AfterViewInit {
   // Color
   @Input() customColors: any;
   @Input() gradient: boolean = false;
-  @Input() scheme: any;
-  @Input() schemeType: SchemeType = 'ordinal';
+  @Input() scheme: any = {
+    domain: ['#004d7a'],
+  };
+  @Input() schemeType: ScaleType = ScaleType.Ordinal;
 
   // Display
   @Input() legend: boolean = true;
-  @Input() legendPosition: LegendPosition = 'right';
+  @Input() legendPosition: LegendPosition = LegendPosition.Right;
   @Input() legendTitle: string = 'Legend';
   @Input() showGridLines: boolean = false;
   @Input() showRefLabels: boolean = true;
@@ -32,8 +35,8 @@ export abstract class NgxChartsBase {
   @Input({ required: true }) abstract results: Series | MultiSeries;
 
   // Tooltip
-  @Input() seriesTooltipTemplate?: TemplateRef<any>;
-  @Input() tooltipTemplate?: TemplateRef<any>;
+  @Input() seriesTooltipTemplateRef?: TemplateRef<any>;
+  @Input() tooltipTemplateRef?: TemplateRef<any>;
 
   // X Axis
   @Input() maxXAxisTickLength: number = 16;
@@ -41,7 +44,7 @@ export abstract class NgxChartsBase {
   @Input() showXAxisLabel: boolean = true;
   @Input() trimXAxisTicks: boolean = true;
   @Input() xAxis: boolean = true;
-  @Input() xAxisLabel?: string;
+  @Input() xAxisLabel: string = '';
   @Input() xAxisTickFormatting: (value: any) => string = (value: any) => {
     return value;
   };
@@ -55,20 +58,32 @@ export abstract class NgxChartsBase {
   @Input() showYAxisLabel: boolean = true;
   @Input() trimYAxisTicks: boolean = true;
   @Input() yAxis: boolean = true;
-  @Input() yAxisLabel?: string;
+  @Input() yAxisLabel: string = '';
   @Input() yAxisTickFormatting: (value: any) => string = (value: any) => {
     return value;
   };
   @Input() yAxisTicks: any[] = [];
-  @Input() yScaleMax?: number;
-  @Input() yScaleMin?: number;
+  @Input() yScaleMax: number = 0;
+  @Input() yScaleMin: number = 0;
 
   @Output() activate: EventEmitter<any> = new EventEmitter<any>();
   @Output() deactivate: EventEmitter<any> = new EventEmitter<any>();
   @Output() select: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public elementRef: ElementRef) {}
+
+  ngAfterViewInit(): void {}
 }
 
-export type LegendPosition = 'right' | 'below';
-export type SchemeType = 'ordinal' | 'linear';
+@Component({
+  template: '',
+})
+export abstract class NgxLineChartsBase extends NgxChartsBase {
+  @Input() curve: CurveFactory = curveBasis;
+  @Input() rangeFillOpacity: number = 0.15;
+  @Input({ required: true }) declare results: MultiSeries;
+
+  constructor(elementRef: ElementRef) {
+    super(elementRef);
+  }
+}

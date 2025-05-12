@@ -61,13 +61,8 @@
                 <app-plant-details-section
                     [data]="plant.scientificName"
                     label="scientific name">
-                    <mat-icon
-                        appMatSymbol
-                        fontIcon="genetics" />
+                    <mat-icon fontIcon="genetics" />
                 </app-plant-details-section>
-                <ng-container
-                    [ngTemplateOutlet]="field"
-                    [ngTemplateOutletContext]="{ data: plant.scientificName, label: 'scientific name' }" />
                 <ng-container
                     [ngTemplateOutlet]="field"
                     [ngTemplateOutletContext]="{ data: plant.commonName, label: 'common name' }" />
@@ -125,7 +120,10 @@
                 <div class="chart-container">
                     <app-line-chart
                         [results]="waterConsumptionResults"
-                        [legend]="false" />
+                        [legend]="false"
+                        [tooltipDisabled]="true"
+                        yAxisLabel="mL"
+                        [xAxisTickFormatting]="xAxisTickFormatter" />
                 </div>
             </ng-template>
         </mat-tab>
@@ -143,6 +141,8 @@
                 <div class="chart-container">
                     <app-box-chart
                         [results]="lightResults"
+                        [legend]="false"
+                        [tooltipDisabled]="true"
                         [xAxis]="true" />
                 </div>
             </ng-template>

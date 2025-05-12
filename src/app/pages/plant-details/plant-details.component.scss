@@ -175,6 +175,12 @@ $desktop-height: 75%;
         width: 98%;
         height: 80vh;
         justify-self: center;
+
+        > * {
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
     }
 
     .requirement-container {

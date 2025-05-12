@@ -1,9 +1,6 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 
-import { curveBasis, CurveFactory } from 'd3-shape';
-
-import { NgxChartsBase } from '../ngx-charts-base.model';
-import { MultiSeries } from '@swimlane/ngx-charts';
+import { NgxLineChartsBase } from '../ngx-charts-base.model';
 
 @Component({
   selector: 'app-line-chart',
@@ -11,11 +8,7 @@ import { MultiSeries } from '@swimlane/ngx-charts';
   templateUrl: './line-chart.component.html',
   styleUrl: './line-chart.component.scss',
 })
-export class LineChartComponent extends NgxChartsBase {
-  @Input() curve: CurveFactory = curveBasis;
-  @Input() rangeFillOpacity: number = 0.15;
-  @Input({ required: true }) declare results: MultiSeries;
-
+export class LineChartComponent extends NgxLineChartsBase {
   constructor(elementRef: ElementRef) {
     super(elementRef);
   }
