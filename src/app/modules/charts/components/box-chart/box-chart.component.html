@@ -1,10 +1,12 @@
 @defer (when elementRef) {
     <ngx-charts-box-chart
         [view]="[elementRef.nativeElement.offsetWidth, elementRef.nativeElement.offsetHeight]"
-        [customColors]="customColors"
-        [gradient]="gradient"
+        [results]="results"
         [scheme]="scheme"
         [schemeType]="schemeType"
+        [customColors]="customColors"
+        [animations]="animations"
+        [gradient]="gradient"
         [legend]="legend"
         [legendPosition]="legendPosition"
         [legend]="legend"
@@ -19,7 +21,27 @@
         [yAxis]="yAxis"
         [yAxisLabel]="yAxisLabel"
         [showGridLines]="showGridLines"
-        [results]="results">
+        [roundEdges]="roundEdges"
+        [strokeColor]="strokeColor"
+        [strokeWidth]="strokeWidth">
+        @if (seriesTooltipTemplateRef) {
+            <ng-template
+                #seriesTooltipTemplate
+                let-model="model">
+                <ng-container
+                    [ngTemplateOutlet]="seriesTooltipTemplateRef"
+                    [ngTemplateOutletContext]="{ model: model }"></ng-container
+            ></ng-template>
+        }
+        @if (tooltipTemplateRef) {
+            <ng-template
+                #tooltipTemplate
+                let-model="model">
+                <ng-container
+                    [ngTemplateOutlet]="tooltipTemplateRef"
+                    [ngTemplateOutletContext]="{ model: model }"></ng-container
+            ></ng-template>
+        }
     </ngx-charts-box-chart>
 } @placeholder {
     <mat-progress-spinner />

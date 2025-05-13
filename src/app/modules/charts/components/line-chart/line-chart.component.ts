@@ -1,6 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
 
-import { NgxLineChartsBase } from '../ngx-charts-base.model';
+import { NgxLineChartBase } from '../ngx-charts-base.model';
 
 @Component({
   selector: 'app-line-chart',
@@ -8,7 +8,7 @@ import { NgxLineChartsBase } from '../ngx-charts-base.model';
   templateUrl: './line-chart.component.html',
   styleUrl: './line-chart.component.scss',
 })
-export class LineChartComponent extends NgxLineChartsBase {
+export class LineChartComponent extends NgxLineChartBase {
   constructor(elementRef: ElementRef) {
     super(elementRef);
   }

@@ -62,15 +62,17 @@ export class PlantDetailsComponent implements OnInit {
     this.plant = this.route.snapshot.data['plant'];
     this.careRequirementLevel = this.getRequirementLevel(this.plant.careRequirement.toString());
     this.lightRequirementLevel = this.getRequirementLevel(this.plant.lightRequirement.toString());
-    this.lightResults = this.plant.lightDurations.map((lightDuration: LightDuration) => {
-      return {
-        name: lightDuration.month,
-        series: [
-          { name: 'min', value: lightDuration.min },
-          { name: 'max', value: lightDuration.max },
-        ],
-      };
-    });
+    this.lightResults = [
+      {
+        name: '',
+        series: this.plant.lightDurations.map((lightDuration: LightDuration) => {
+          return {
+            name: lightDuration.month,
+            value: lightDuration.max,
+          };
+        }),
+      },
+    ];
     this.waterRequirementLevel = this.getRequirementLevel(this.plant.waterRequirement.toString());
     this.waterConsumptionResults = [
       {

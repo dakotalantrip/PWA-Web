@@ -134,16 +134,15 @@
                     label="requirement">
                     <div class="requirement-container light">
                         @for (level of [0, 1, 2, 3, 4]; track level) {
-                            <mat-icon [class.filled]="level <= lightRequirementLevel">wb_sunny</mat-icon>
+                            <mat-icon [class.filled]="level <= lightRequirementLevel">brightness_7</mat-icon>
                         }
                     </div>
                 </app-plant-details-section>
                 <div class="chart-container">
-                    <app-box-chart
+                    <app-line-chart
                         [results]="lightResults"
                         [legend]="false"
-                        [tooltipDisabled]="true"
-                        [xAxis]="true" />
+                        [tooltipDisabled]="true" />
                 </div>
             </ng-template>
         </mat-tab>
@@ -188,7 +187,7 @@
                 <app-plant-details-section
                     [data]="plant.toxicity.toxic ? 'Yes' : 'No'"
                     label="toxic">
-                    <mat-icon fontIcon="ward" />
+                    <mat-icon fontIcon="skull" />
                 </app-plant-details-section>
                 <ng-container
                     [ngTemplateOutlet]="field"

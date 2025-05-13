@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthApiService } from '../../services/auth-api.service';
-import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
-import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+
+import { environment } from '../../../environments/environment';
+
+import { AuthApiService } from '../../services/auth-api.service';
+import { AuthService } from '../../services/auth.service';
 
 declare const google: any; // 👈 tell TypeScript about the global `google` object
 
@@ -28,7 +30,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.formGroup = this.formBuilder.group({
       email: new FormControl('', { nonNullable: true }),
-      password: new FormControl('', { nonNullable: true })
+      password: new FormControl('', { nonNullable: true }),
     });
   }
 
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit {
   public get passwordControl(): FormControl {
     return this.formGroup.get('password') as FormControl;
   }
-  
+
   public get emailControl(): FormControl {
     return this.formGroup.get('email') as FormControl;
   }
@@ -60,12 +62,10 @@ export class LoginComponent implements OnInit {
   //#region Events
 
   handleCredentialResponse(response: any) {
-    console.log('Credential response:', response);
     this.exchangeIdToken(response.credential);
   }
 
   public onSubmit(): void {
-    console.log('Here in onSubmit');
     if (this.formGroup.valid) {
       const { email, password } = this.formGroup.value;
       this.authApiService.login(email, password).subscribe({
@@ -89,9 +89,7 @@ export class LoginComponent implements OnInit {
   exchangeIdToken(idToken: string) {
     this.authApiService.exchangeGoogleToken(idToken).subscribe({
       next: (data) => {
-        console.log('exchange successful', data);
         this.authService.login(data.jwt); // Store the JWT in local storage
-        console.log('Login successful!');
         this.router
           .navigate(['/dashboard'])
           .then((success) => console.log('Navigated to dashboard', success))

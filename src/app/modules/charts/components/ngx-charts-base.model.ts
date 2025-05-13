@@ -5,7 +5,7 @@ import { curveBasis, CurveFactory } from 'd3';
 @Component({
   template: '',
 })
-export abstract class NgxChartsBase implements AfterViewInit {
+export abstract class NgxChartBase implements AfterViewInit {
   // Color
   @Input() customColors: any;
   @Input() gradient: boolean = false;
@@ -25,6 +25,7 @@ export abstract class NgxChartsBase implements AfterViewInit {
   @Input() wrapTicks: boolean = false;
 
   // Functionality
+  @Input() animations: boolean = false;
   @Input() autoScale: boolean = false;
   @Input() roundDomains: boolean = false;
   @Input() tooltipDisabled: boolean = false;
@@ -78,7 +79,7 @@ export abstract class NgxChartsBase implements AfterViewInit {
 @Component({
   template: '',
 })
-export abstract class NgxLineChartsBase extends NgxChartsBase {
+export abstract class NgxLineChartBase extends NgxChartBase {
   @Input() curve: CurveFactory = curveBasis;
   @Input() rangeFillOpacity: number = 0.15;
   @Input({ required: true }) declare results: MultiSeries;

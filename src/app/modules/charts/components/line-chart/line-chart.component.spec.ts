@@ -5,24 +5,12 @@ import { curveBasis } from 'd3';
 
 import { LineChartComponent } from './line-chart.component';
 import { ChartsModule } from '../../charts.module';
+import { mockMultiSeriesLarge, mockMultiSeriesMedium, mockMultiSeriesSmall } from '../../../../testing/mock-chart.data';
 
 describe('LineChartComponent', () => {
-  const mockData = [
-    {
-      name: 'Test A',
-      series: [
-        { name: 'a1', value: 1 },
-        { name: 'a2', value: 2 },
-      ],
-    },
-    {
-      name: 'Test b',
-      series: [
-        { name: 'b1', value: 1 },
-        { name: 'b2', value: 2 },
-      ],
-    },
-  ];
+  const mockData = mockMultiSeriesMedium;
+  const mockDataLarge = mockMultiSeriesLarge;
+  const mockDataSmall = mockMultiSeriesSmall;
 
   let component: LineChartComponent;
   let fixture: ComponentFixture<LineChartComponent>;
@@ -43,7 +31,9 @@ describe('LineChartComponent', () => {
   });
 
   it('should have correct default values', () => {
+    // Chart specific
     expect(component.curve).toBe(curveBasis);
+    expect(component.rangeFillOpacity).toEqual(0.15);
 
     expect(component.legend).toBeTrue();
     expect(component.showRefLabels).toBeTrue();
@@ -65,7 +55,6 @@ describe('LineChartComponent', () => {
 
     expect(component.maxXAxisTickLength).toEqual(16);
     expect(component.maxYAxisTickLength).toEqual(16);
-    expect(component.rangeFillOpacity).toEqual(0.15);
   });
 
   it('should accept MultiSeries results', () => {
@@ -75,11 +64,39 @@ describe('LineChartComponent', () => {
     expect(component.results).toEqual(mockData);
   });
 
-  it('should render the ngx-charts-line-chart component when passed correct results', () => {
+  it('should render the ngx-charts-line-chart component when passed correct results', async () => {
     component.results = mockData;
     fixture.detectChanges();
 
-    const element = fixture.nativeElement.querySelector('ngx-charts-chart');
+    // Wait for afterViewInit()
+    await fixture.whenStable();
+
+    const element = fixture.nativeElement.querySelector('ngx-charts-line-chart');
+    expect(element).toBeTruthy();
     expect(component.results).toEqual(mockData);
+  });
+
+  it('should render the ngx-charts-line-chart component when passed a small set of correct results', async () => {
+    component.results = mockDataSmall;
+    fixture.detectChanges();
+
+    // Wait for afterViewInit()
+    await fixture.whenStable();
+
+    const element = fixture.nativeElement.querySelector('ngx-charts-line-chart');
+    expect(element).toBeTruthy();
+    expect(component.results).toEqual(mockDataSmall);
+  });
+
+  it('should render the ngx-charts-line-chart component when passed a large set of correct results', async () => {
+    component.results = mockDataLarge;
+    fixture.detectChanges();
+
+    // Wait for afterViewInit()
+    await fixture.whenStable();
+
+    const element = fixture.nativeElement.querySelector('ngx-charts-line-chart');
+    expect(element).toBeTruthy();
+    expect(component.results).toEqual(mockDataLarge);
   });
 });
