@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { Event } from '../models/event.model';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+
 import { BaseApiService } from './base-api.service';
+import { Event } from '../models/event.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,8 @@ export class EventService extends BaseApiService {
     this.eventsSubject.next(value); // Setter to update the BehaviorSubject with a new array of events
   }
 
-  constructor(private http: HttpClient) {
+  constructor(http: HttpClient) {
     super(http, 'Events');
-    this.getEvents().subscribe(); // Preload the events when the service is instantiated to ensure the cache is populated
   }
 
   public addEvent(event: Event): Observable<Event | null> {
@@ -49,7 +49,7 @@ export class EventService extends BaseApiService {
   public getEvents(): Observable<Event[]> {
     return this.events.length > 0
       ? this.events$
-      : this.get<Event[]>('').pipe(
+      : this.get<Event[]>().pipe(
           tap((response) => {
             this.events = response; // Update the BehaviorSubject with the latest events
           }),

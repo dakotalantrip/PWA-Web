@@ -1,0 +1,33 @@
+@use "abstracts/mixins";
+@use "abstracts/variables";
+
+:host {
+    @include mixins.flexbox(column);
+    @include mixins.container-style(auto);
+    position: relative;
+
+    button.add {
+        position: fixed;
+        @include mixins.spacing(bottom, 2);
+        @include mixins.spacing(right, 2);
+    }
+
+    mat-divider {
+        width: 100%;
+    }
+
+    .reminder-container {
+        @include mixins.flexbox(row, center, space-between);
+        @include mixins.spacing(padding);
+        box-sizing: border-box;
+        width: 100%;
+
+        .data {
+            @include mixins.flexbox(column);
+        }
+
+        .buttons {
+            margin-left: auto;
+        }
+    }
+}

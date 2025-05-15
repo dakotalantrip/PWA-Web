@@ -16,10 +16,10 @@ export abstract class BaseApiService {
     this.apiUrl = `${environment.apiUrl}/${controller}`;
   }
 
-  protected get<T>(endpoint: string, params: any = null): Observable<T> {
+  protected get<T>(endpoint?: string, params: any = null): Observable<T> {
     return params
       ? this.httpClient.get<T>(`${this.apiUrl}/${endpoint}`, { params })
-      : this.httpClient.get<T>(`${this.apiUrl}/${endpoint}`);
+      : this.httpClient.get<T>(`${this.apiUrl}/${endpoint ?? ''}`);
   }
 
   protected post<T>(endpoint: string, body: any): Observable<T> {

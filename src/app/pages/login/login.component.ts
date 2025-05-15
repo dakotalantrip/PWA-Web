@@ -10,6 +10,8 @@ import { environment } from '../../../environments/environment';
 
 import { AuthApiService } from '../../services/auth-api.service';
 import { AuthService } from '../../services/auth.service';
+import { filter, Observable, switchMap, tap } from 'rxjs';
+import { User } from '../../models/authentication/user.model';
 
 declare const google: any; // 👈 tell TypeScript about the global `google` object
 
@@ -68,19 +70,17 @@ export class LoginComponent implements OnInit {
   public onSubmit(): void {
     if (this.formGroup.valid) {
       const { email, password } = this.formGroup.value;
-      this.authApiService.login(email, password).subscribe({
-        next: (data: any) => {
-          console.log('Login successful', data);
-          this.authService.login(data.jwt); // Store the JWT in local storage
-          this.router
-            .navigate(['/dashboard'])
-            .then((success) => console.log('Navigated to dashboard', success))
-            .catch((error) => console.error('Navigation error', error));
-        },
-        error: (err: any) => {
-          console.error('Login failed', err);
-        },
-      });
+      this.authApiService
+        .login(email, password)
+        .pipe(
+          filter((value: any) => value),
+          switchMap((value: any) => this.getUser(value)),
+        )
+        .subscribe({
+          error: (err: any) => {
+            console.error('Login failed', err);
+          },
+        });
     }
   }
 
@@ -99,6 +99,18 @@ export class LoginComponent implements OnInit {
         console.error('Login failed', err);
       },
     });
+  }
+
+  private getUser(data: any): Observable<User> {
+    this.authService.login(data.jwt); // Store the JWT in local storage
+    return this.authApiService.getUser().pipe(
+      tap(() => {
+        this.router
+          .navigate(['/dashboard'])
+          .then((success) => console.log('Navigated to dashboard', success))
+          .catch((error) => console.error('Navigation error', error));
+      }),
+    );
   }
 
   public onSignUp(): void {

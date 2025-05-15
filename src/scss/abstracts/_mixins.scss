@@ -81,7 +81,7 @@ $breakpoints: (
 
 // Style
 @mixin container-style($overflow: hidden, $height: 100%, $box-sizing: border-box) {
-    overflow: $overflow;
+    overflow-y: $overflow;
     height: $height;
     box-sizing: $box-sizing;
 }

@@ -12,7 +12,7 @@ export abstract class NgxChartBase implements AfterViewInit {
   @Input() scheme: any = {
     domain: ['#004d7a'],
   };
-  @Input() schemeType: ScaleType = ScaleType.Ordinal;
+  @Input() schemeType: ScaleType = ScaleType.Linear;
 
   // Display
   @Input() legend: boolean = true;
@@ -21,7 +21,6 @@ export abstract class NgxChartBase implements AfterViewInit {
   @Input() showGridLines: boolean = false;
   @Input() showRefLabels: boolean = true;
   @Input() showRefLines: boolean = false;
-  @Input() timeline: boolean = false;
   @Input() wrapTicks: boolean = false;
 
   // Functionality
@@ -83,6 +82,7 @@ export abstract class NgxLineChartBase extends NgxChartBase {
   @Input() curve: CurveFactory = curveBasis;
   @Input() rangeFillOpacity: number = 0.15;
   @Input({ required: true }) declare results: MultiSeries;
+  @Input() timeline: boolean = false;
 
   constructor(elementRef: ElementRef) {
     super(elementRef);

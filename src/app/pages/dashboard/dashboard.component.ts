@@ -1,21 +1,22 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { filter, Observable, Subscription, switchMap, tap } from 'rxjs';
+
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { Calendar, CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+
 import { EventDialogComponent } from '../../components/event-dialog/event-dialog.component';
 import { EventService } from '../../services/event.service';
-import { catchError, filter, finalize, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { Event } from '../../models/event.model';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { MatSymbolDirective } from '../../directives/mat-symbol.directive';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FullCalendarModule, MatIconModule, MatButtonModule],
+  imports: [FullCalendarModule, MatIconModule, MatButtonModule, MatSymbolDirective],
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

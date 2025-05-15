@@ -1,1 +1,29 @@
-<p>reminders works!</p>
+@for (reminder of reminders; track reminder) {
+    <div class="reminder-container">
+        <div class="data">
+            <span>{{ reminder.description }} ({{ reminder.priorityLevel }})</span>
+            <span>{{ reminder.notes }}</span>
+        </div>
+        <div class="buttons">
+            @if (!reminder.isCompleted) {
+                <button
+                    mat-icon-button
+                    (click)="onCompleteClick(reminder.id)">
+                    <mat-icon fontIcon="task_alt" />
+                </button>
+            }
+            <button
+                mat-icon-button
+                (click)="onDeleteClick(reminder.id)">
+                <mat-icon fontIcon="delete" />
+            </button>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+}
+<button
+    class="add"
+    mat-fab
+    (click)="onAddClick()">
+    <mat-icon fontIcon="add_task" />
+</button>

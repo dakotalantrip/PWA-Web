@@ -3,8 +3,8 @@ import { ElementRef } from '@angular/core';
 
 import { curveBasis } from 'd3';
 
-import { LineChartComponent } from './line-chart.component';
 import { ChartsModule } from '../../charts.module';
+import { LineChartComponent } from './line-chart.component';
 import { mockMultiSeriesLarge, mockMultiSeriesMedium, mockMultiSeriesSmall } from '../../../../testing/mock-chart.data';
 
 describe('LineChartComponent', () => {
@@ -34,6 +34,7 @@ describe('LineChartComponent', () => {
     // Chart specific
     expect(component.curve).toBe(curveBasis);
     expect(component.rangeFillOpacity).toEqual(0.15);
+    expect(component.timeline).toBeFalse();
 
     expect(component.legend).toBeTrue();
     expect(component.showRefLabels).toBeTrue();

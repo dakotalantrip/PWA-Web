@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ElementRef } from '@angular/core';
 
-import { BoxChartComponent } from './box-chart.component';
 import { ChartsModule } from '../../charts.module';
+import { BoxChartComponent } from './box-chart.component';
 import { mockMultiSeriesMedium, mockMultiSeriesLarge, mockMultiSeriesSmall } from '../../../../testing/mock-chart.data';
 
 describe('BoxChartComponent', () => {
@@ -46,7 +46,6 @@ describe('BoxChartComponent', () => {
     expect(component.gradient).toBeFalse();
     expect(component.showGridLines).toBeFalse();
     expect(component.showRefLines).toBeFalse();
-    expect(component.timeline).toBeFalse();
     expect(component.wrapTicks).toBeFalse();
     expect(component.autoScale).toBeFalse();
     expect(component.roundDomains).toBeFalse();
