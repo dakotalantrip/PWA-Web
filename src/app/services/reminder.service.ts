@@ -22,7 +22,15 @@ export class ReminderService extends BaseApiService {
   }
 
   public set reminders(value: Reminder[]) {
-    this.remindersSubject.next(value);
+    this.remindersSubject.next(
+      value
+        .sort((a, b) => {
+          return a.priorityLevel === b.priorityLevel ? 0 : a.priorityLevel <= b.priorityLevel ? 1 : -1;
+        })
+        .sort((a, b) => {
+          return a.isCompleted && b.isCompleted ? 0 : a.isCompleted && !b.isCompleted ? 1 : -1;
+        }),
+    );
   }
 
   public add(reminder: Reminder): Observable<Reminder | null> {

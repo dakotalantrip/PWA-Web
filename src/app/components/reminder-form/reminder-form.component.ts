@@ -32,7 +32,7 @@ export class ReminderFormComponent {
     this.form = this.formBuilder.group<Partial<FormControls<Reminder>>>({
       description: new FormControl(),
       notes: new FormControl(),
-      priorityLevel: new FormControl(PriorityLevelEnum.None, { nonNullable: true }),
+      priorityLevel: new FormControl(PriorityLevelEnum.Low, { nonNullable: true }),
     });
   }
 

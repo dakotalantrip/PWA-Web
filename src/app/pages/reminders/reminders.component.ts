@@ -1,65 +1,95 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MatBottomSheet, MatBottomSheetModule, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { exhaustMap, filter, Observable, Subject, Subscription, switchMap } from 'rxjs';
 
 import { MatSymbolDirective } from '../../directives/mat-symbol.directive';
-import { Reminder } from '../../models/reminder.model';
+import { PriorityLevelEnum, Reminder } from '../../models/reminder.model';
 import { ReminderFormComponent } from '../../components/reminder-form/reminder-form.component';
-import { filter, Observable, switchMap, tap } from 'rxjs';
 import { ReminderService } from '../../services/reminder.service';
-import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-reminders',
-  imports: [MatBottomSheetModule, MatButtonModule, MatDividerModule, MatIconModule, MatSymbolDirective],
+  imports: [
+    AsyncPipe,
+    DatePipe,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatSymbolDirective,
+    MatTooltipModule,
+  ],
   templateUrl: './reminders.component.html',
   styleUrl: './reminders.component.scss',
 })
-export class RemindersComponent implements OnInit {
-  public reminders: Reminder[] = [];
+export class RemindersComponent implements OnInit, OnDestroy {
+  private add$: Subject<void> = new Subject<void>();
+  private complete$: Subject<number> = new Subject<number>();
+  private delete$: Subject<number> = new Subject<number>();
+  private subscription: Subscription = new Subscription();
+
+  public priorityLevelEnum: typeof PriorityLevelEnum = PriorityLevelEnum;
+  public reminders$: Observable<Reminder[]>;
 
   constructor(
     private bottomSheet: MatBottomSheet,
     private reminderService: ReminderService,
-    private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.reminders$ = this.reminderService.reminders$;
+  }
+
+  //#region Lifecycle
 
   ngOnInit(): void {
-    this.reminders = this.route.snapshot.data['reminders'];
+    this.subscription.add(
+      this.add$
+        .pipe(
+          exhaustMap(() =>
+            this.bottomSheet
+              .open(ReminderFormComponent)
+              .afterDismissed()
+              .pipe(
+                filter((value: Reminder | undefined) => value !== undefined),
+                switchMap((value: Reminder) => this.reminderService.add(value)),
+              ),
+          ),
+        )
+        .subscribe(),
+    );
+    this.subscription.add(
+      this.complete$.pipe(exhaustMap((value: number) => this.reminderService.complete(value))).subscribe(),
+    );
+    this.subscription.add(
+      this.delete$.pipe(exhaustMap((value: number) => this.reminderService.deleteReminder(value))).subscribe(),
+    );
   }
 
-  //#region Events
-
-  public onAddClick(): void {
-    this.bottomSheet
-      .open(ReminderFormComponent)
-      .afterDismissed()
-      .pipe(
-        filter((value: Reminder | undefined) => value !== undefined),
-        switchMap((result: Reminder) => this.add$(result)),
-      )
-      .subscribe();
-  }
-
-  public onCompleteClick(id: number): void {
-    this.reminderService.complete(id).subscribe();
-  }
-
-  public onDeleteClick(id: number): void {
-    this.reminderService.deleteReminder(id).subscribe();
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   //#endregion
 
-  private add$(reminder: Reminder): Observable<Reminder | null> {
-    return this.reminderService.add(reminder).pipe(
-      tap((result: Reminder | null) => {
-        if (result) {
-          this.reminders.push(result);
-        }
-      }),
-    );
+  //#region Events
+
+  public onAddClick(): void {
+    this.add$.next();
   }
+
+  public onCompleteClick(id: number): void {
+    this.complete$.next(id);
+  }
+
+  public onDeleteClick(id: number): void {
+    this.delete$.next(id);
+  }
+
+  public onEditClick(reminder: Reminder): void {}
+
+  //#endregion
 }

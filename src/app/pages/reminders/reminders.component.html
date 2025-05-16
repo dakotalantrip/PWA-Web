@@ -1,11 +1,24 @@
-@for (reminder of reminders; track reminder) {
-    <div class="reminder-container">
-        <div class="data">
-            <span>{{ reminder.description }} ({{ reminder.priorityLevel }})</span>
+@for (reminder of reminders$ | async; track $index) {
+    <div
+        class="reminder-container"
+        [class.high]="reminder.priorityLevel === priorityLevelEnum.High"
+        [class.medium]="reminder.priorityLevel === priorityLevelEnum.Medium"
+        [class.completed]="reminder.isCompleted">
+        <div
+            class="data"
+            matTooltip="Completed: {{ reminder.completedOn | date }}">
+            <strong
+                ><span>{{ reminder.description }}</span></strong
+            >
             <span>{{ reminder.notes }}</span>
         </div>
         <div class="buttons">
             @if (!reminder.isCompleted) {
+                <button
+                    mat-icon-button
+                    (click)="onEditClick(reminder)">
+                    <mat-icon fontIcon="edit" />
+                </button>
                 <button
                     mat-icon-button
                     (click)="onCompleteClick(reminder.id)">
@@ -20,6 +33,8 @@
         </div>
     </div>
     <mat-divider></mat-divider>
+} @empty {
+    <span>No reminders</span>
 }
 <button
     class="add"

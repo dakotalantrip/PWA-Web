@@ -1,5 +1,6 @@
 @use "abstracts/mixins";
 @use "abstracts/variables";
+@use "themes/theme_vars" as themeVars;
 
 :host {
     @include mixins.flexbox(column);
@@ -21,12 +22,34 @@
         @include mixins.spacing(padding);
         box-sizing: border-box;
         width: 100%;
+        border-left: 5px;
+        border-right: 0px;
+        border-style: solid;
+        border-bottom: 0px;
+        border-top: 0px;
+        border-color: themeVars.$color-primary;
+
+        &.high {
+            border-color: themeVars.$color-system-error;
+        }
+
+        &.medium {
+            border-color: themeVars.$color-tertiary;
+        }
+
+        &.completed {
+            .data {
+                opacity: 0.6;
+            }
+        }
 
         .data {
             @include mixins.flexbox(column);
         }
 
         .buttons {
+            @include mixins.flexbox(row, center, flex-end);
+            width: clamp(100px, 20%, 20vw);
             margin-left: auto;
         }
     }
