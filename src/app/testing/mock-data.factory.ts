@@ -1,6 +1,7 @@
 import { MultiSeries, SingleSeries } from '@swimlane/ngx-charts';
 import { PaginatedResult } from '../models/paginated-result.model';
 import { PlantID } from '../models/plant/plant-id.model';
+import { PriorityLevelEnum, Reminder } from '../models/reminder.model';
 
 export function createPaginatedResult<T>(items: T[], totalItems: number, totalPages: number): PaginatedResult<T> {
   return {
@@ -27,6 +28,22 @@ export function createPlantID(scientificName: string, score: number, commonNames
         licenseUrl: 'https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia',
       },
     ],
+  };
+}
+
+export function createReminder(
+  id: number = 0,
+  description?: string,
+  notes?: string,
+  priorityLevel: PriorityLevelEnum = PriorityLevelEnum.Low,
+): Reminder {
+  return {
+    id: id,
+    description: description,
+    notes: notes,
+    priorityLevel: priorityLevel,
+    isCompleted: false,
+    completedOn: undefined,
   };
 }
 
