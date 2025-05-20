@@ -1,0 +1,9 @@
+# .husky/pre-commit
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+# run fast, non-interactive tests
+npm run test:ci
+
+# then lint+test only the files you changed
+# npx lint-staged

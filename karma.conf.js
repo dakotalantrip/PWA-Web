@@ -2,13 +2,6 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
-    ],
     client: {
       jasmine: {},
       clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -26,14 +19,9 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: process.env.CI ? ['ChromeHeadlessCI'] : ['Chrome'],
-    customLaunchers: {
-      ChromeHeadlessCI: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu']
-      }
-    },
-    singleRun: false,
+    browsers: process.env.CI ? ['ChromeHeadless'] : ['Chrome'],
+    singleRun: false,   // Angular CLI will flip this on via --watch=false
+    autoWatch: true,     // Angular CLI will handle turning this off
     restartOnFileChange: true,
     files: [
       { pattern: './src/**/*.spec.ts', watched: true } // Ensure test files are included

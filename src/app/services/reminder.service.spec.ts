@@ -71,7 +71,7 @@ describe('ReminderService', () => {
 
   it('should not update the running list of "Reminder" objects when "NULL" is returned', () => {
     service.add(mockReminderLowPriority).subscribe((data: Reminder | null) => {
-      expect(data).toEqual(mockReminderLowPriority);
+      expect(data).toEqual(null);
       expect(service.reminders).toEqual([]);
     });
 
