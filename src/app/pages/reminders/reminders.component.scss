@@ -19,38 +19,36 @@
 
     .reminder-container {
         @include mixins.flexbox(row, center, space-between);
-        @include mixins.spacing(padding);
+        @include mixins.border-standard($bottom: 1px);
         box-sizing: border-box;
         width: 100%;
-        border-left: 5px;
-        border-right: 0px;
-        border-style: solid;
-        border-bottom: 0px;
-        border-top: 0px;
-        border-color: themeVars.$color-primary;
-
-        &.high {
-            border-color: themeVars.$color-system-error;
-        }
-
-        &.medium {
-            border-color: themeVars.$color-tertiary;
-        }
-
-        &.completed {
-            .data {
-                opacity: 0.6;
-            }
-        }
 
         .data {
-            @include mixins.flexbox(column);
-        }
+            @include mixins.flexbox(row, center);
+            @include mixins.spacing(column-gap);
+            height: 100%;
 
-        .buttons {
-            @include mixins.flexbox(row, center, flex-end);
-            width: clamp(100px, 20%, 20vw);
-            margin-left: auto;
+            &.complete span {
+                text-decoration: line-through;
+                opacity: 0.8;
+            }
+
+            .status-container {
+                @include mixins.flexbox(row, center);
+                @include mixins.spacing(padding, 1);
+                background-color: themeVars.$color-primary;
+                color: themeVars.$color-on-primary;
+                box-sizing: border-box;
+                height: inherit;
+
+                &.medium {
+                    background-color: themeVars.$color-warn;
+                }
+
+                &.high {
+                    background-color: themeVars.$color-system-error;
+                }
+            }
         }
     }
 }

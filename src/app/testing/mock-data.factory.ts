@@ -1,7 +1,7 @@
 import { MultiSeries, SingleSeries } from '@swimlane/ngx-charts';
 import { PaginatedResult } from '../models/paginated-result.model';
 import { PlantID } from '../models/plant/plant-id.model';
-import { PriorityLevelEnum, Reminder } from '../models/reminder.model';
+import { PriorityLevelEnum, RecurrenceUnit, Reminder } from '../models/reminder.model';
 
 export function createPaginatedResult<T>(items: T[], totalItems: number, totalPages: number): PaginatedResult<T> {
   return {
@@ -33,7 +33,7 @@ export function createPlantID(scientificName: string, score: number, commonNames
 
 export function createReminder(
   id: number = 0,
-  description?: string,
+  description: string,
   notes?: string,
   priorityLevel: PriorityLevelEnum = PriorityLevelEnum.Low,
 ): Reminder {
@@ -44,6 +44,13 @@ export function createReminder(
     priorityLevel: priorityLevel,
     isCompleted: false,
     completedOn: undefined,
+    startDate: null,
+    endDate: null,
+    isRecurring: false,
+    recurrenceCount: 0,
+    recurrenceInterval: 1,
+    recurrenceUnit: RecurrenceUnit.Day,
+    tasks: [],
   };
 }
 

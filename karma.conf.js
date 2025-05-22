@@ -21,7 +21,6 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: process.env.CI ? ['ChromeHeadless'] : ['Chrome'],
     singleRun: false,   // Angular CLI will flip this on via --watch=false
-    autoWatch: true,     // Angular CLI will handle turning this off
     restartOnFileChange: true,
     files: [
       { pattern: './src/**/*.spec.ts', watched: true } // Ensure test files are included

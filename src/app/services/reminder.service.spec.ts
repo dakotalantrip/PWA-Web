@@ -11,6 +11,8 @@ describe('ReminderService', () => {
   let service: ReminderService;
   let httpTestingController: HttpTestingController;
 
+  const updatedReminders: Reminder[] = mockReminders.concat(mockReminderLowPriority);
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting(), ReminderService],
@@ -47,37 +49,67 @@ describe('ReminderService', () => {
   //#region Add
 
   it('should call the correct URL for add()', () => {
-    service.add(mockReminderLowPriority).subscribe((data: Reminder | null) => {
-      expect(data).toEqual(mockReminderLowPriority);
+    service.add(mockReminderLowPriority).subscribe((value: Reminder[]) => {
+      expect(value).toEqual(updatedReminders);
+      expect(value).toContain(mockReminderLowPriority);
     });
 
     const testRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/Add`);
-
     expect(testRequest.request.method).toBe('POST');
     testRequest.flush(mockReminderLowPriority);
+
+    const testGetByUserRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/GetByUser`);
+    expect(testGetByUserRequest.request.method).toBe('GET');
+    testGetByUserRequest.flush(updatedReminders);
   });
 
-  it('should update the running list of "Reminder" objects with the added object after calling add()', () => {
-    service.add(mockReminderLowPriority).subscribe((data: Reminder | null) => {
-      expect(data).toEqual(mockReminderLowPriority);
+  it('should call add() with the passed-in "Reminder" object', () => {
+    const spy = spyOn(service, 'add');
+
+    service.add(mockReminderLowPriority);
+
+    expect(spy).toHaveBeenCalledWith(mockReminderLowPriority);
+  });
+
+  it('should update the running list of "Reminder" objects with the added object after successful response', () => {
+    service.add(mockReminderLowPriority).subscribe((data: Reminder[]) => {
       expect(data).toBeTruthy();
-      expect(service.reminders.includes(data!));
+      expect(data).toContain(mockReminderLowPriority);
     });
 
     const testRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/Add`);
-
     testRequest.flush(mockReminderLowPriority);
+
+    const testGetByUserRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/GetByUser`);
+    testGetByUserRequest.flush(updatedReminders);
   });
 
   it('should not update the running list of "Reminder" objects when "NULL" is returned', () => {
-    service.add(mockReminderLowPriority).subscribe((data: Reminder | null) => {
-      expect(data).toEqual(null);
-      expect(service.reminders).toEqual([]);
+    const initialReminders: Reminder[] = service.reminders;
+
+    service.add(mockReminderLowPriority).subscribe(() => {
+      expect(service.reminders).toEqual(initialReminders);
     });
 
     const testRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/Add`);
-
     testRequest.flush(null);
+
+    const testGetByUserRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/GetByUser`);
+    testGetByUserRequest.flush(initialReminders);
+  });
+
+  it('should complete after emitting or error', (done: DoneFn) => {
+    service.add(mockReminderLowPriority).subscribe({
+      complete: () => {
+        done();
+      },
+    });
+
+    const testRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/Add`);
+    testRequest.flush(null);
+
+    const testGetByUserRequest = httpTestingController.expectOne(`${environment.apiUrl}/Reminder/GetByUser`);
+    testGetByUserRequest.flush([]);
   });
 
   //#endregion

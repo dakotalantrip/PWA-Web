@@ -1,38 +1,27 @@
 @for (reminder of reminders$ | async; track $index) {
-    <div
-        class="reminder-container"
-        [class.high]="reminder.priorityLevel === priorityLevelEnum.High"
-        [class.medium]="reminder.priorityLevel === priorityLevelEnum.Medium"
-        [class.completed]="reminder.isCompleted">
+    <div class="reminder-container">
         <div
             class="data"
-            matTooltip="Completed: {{ reminder.completedOn | date }}">
+            [class.complete]="reminder.isCompleted">
+            <div
+                class="status-container"
+                [class.high]="reminder.priorityLevel === priorityLevelEnum.High"
+                [class.medium]="reminder.priorityLevel === priorityLevelEnum.Medium"
+                [class.complete]="reminder.isCompleted"
+                matTooltip="{{ reminder.isCompleted ? 'Completed: ' + (reminder.completedOn | date) : 'Incomplete' }}">
+                <mat-icon [fontIcon]="reminder.isCompleted ? 'task_alt' : 'circle'" />
+            </div>
             <strong
                 ><span>{{ reminder.description }}</span></strong
             >
-            <span>{{ reminder.notes }}</span>
         </div>
-        <div class="buttons">
-            @if (!reminder.isCompleted) {
-                <button
-                    mat-icon-button
-                    (click)="onEditClick(reminder)">
-                    <mat-icon fontIcon="edit" />
-                </button>
-                <button
-                    mat-icon-button
-                    (click)="onCompleteClick(reminder.id)">
-                    <mat-icon fontIcon="task_alt" />
-                </button>
-            }
-            <button
-                mat-icon-button
-                (click)="onDeleteClick(reminder.id)">
-                <mat-icon fontIcon="delete" />
-            </button>
-        </div>
+        <button mat-icon-button>
+            <mat-icon
+                fontIcon="more_vert"
+                [matMenuTriggerFor]="menu"
+                [matMenuTriggerData]="{ reminder: reminder }" />
+        </button>
     </div>
-    <mat-divider></mat-divider>
 } @empty {
     <span>No reminders</span>
 }
@@ -42,3 +31,27 @@
     (click)="onAddClick()">
     <mat-icon fontIcon="add_task" />
 </button>
+
+<mat-menu #menu="matMenu">
+    <ng-template
+        matMenuContent
+        let-reminder="reminder">
+        @if (!reminder.isCompleted) {
+            <button
+                mat-menu-item
+                (click)="onEditClick(reminder)">
+                Edit
+            </button>
+            <button
+                mat-menu-item
+                (click)="onCompleteClick(reminder.id)">
+                Complete
+            </button>
+        }
+        <button
+            mat-menu-item
+            (click)="onDeleteClick(reminder.id)">
+            Delete
+        </button>
+    </ng-template>
+</mat-menu>

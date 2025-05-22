@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { FormBuilder } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatSelect } from '@angular/material/select';
 
 import { PriorityLevelEnum } from '../../models/reminder.model';
@@ -17,7 +17,11 @@ describe('ReminderFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{ provide: MatBottomSheetRef, useValue: bottomSheetRefStub }, FormBuilder],
+      providers: [
+        { provide: MatBottomSheetRef, useValue: bottomSheetRefStub },
+        { provide: MAT_BOTTOM_SHEET_DATA, useValue: {} },
+        FormBuilder,
+      ],
       imports: [ReminderFormComponent],
     }).compileComponents();
 
@@ -61,6 +65,12 @@ describe('ReminderFormComponent', () => {
       description: mockReminderLowPriority.description,
       notes: mockReminderLowPriority.notes,
       priorityLevel: mockReminderLowPriority.priorityLevel,
+      isRecurring: mockReminderLowPriority.isRecurring,
+      recurrenceInterval: mockReminderLowPriority.recurrenceInterval,
+      recurrenceCount: mockReminderLowPriority.recurrenceCount,
+      recurrenceUnit: mockReminderLowPriority.recurrenceUnit,
+      startDate: mockReminderLowPriority.startDate,
+      endDate: mockReminderLowPriority.endDate,
     });
 
     component.onSubmit();

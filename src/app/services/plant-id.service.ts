@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BaseApiService } from './base-api.service';
 import { PlantIDImageResult, PlantIDImageRequest, PlantIDSearchResult } from '../models/plant/plant-id.model';
 import { Plant } from '../models/plant/plant.model';
@@ -15,7 +15,7 @@ export class PlantIDService extends BaseApiService {
   }
 
   public search(name: string): Observable<Plant> {
-    return this.get<any>(`${name}`);
+    return this.get<Plant>(`${name}`);
   }
 
   public identifyByImage(plantID: PlantIDImageRequest): Observable<PlantIDImageResult[]> {

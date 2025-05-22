@@ -4,6 +4,7 @@ import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-s
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { exhaustMap, filter, Observable, Subject, Subscription, switchMap } from 'rxjs';
 
@@ -21,6 +22,7 @@ import { ReminderService } from '../../services/reminder.service';
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
+    MatMenuModule,
     MatSymbolDirective,
     MatTooltipModule,
   ],
@@ -31,6 +33,7 @@ export class RemindersComponent implements OnInit, OnDestroy {
   private add$: Subject<void> = new Subject<void>();
   private complete$: Subject<number> = new Subject<number>();
   private delete$: Subject<number> = new Subject<number>();
+  private edit$: Subject<Reminder> = new Subject<Reminder>();
   private subscription: Subscription = new Subscription();
 
   public priorityLevelEnum: typeof PriorityLevelEnum = PriorityLevelEnum;
@@ -67,6 +70,21 @@ export class RemindersComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.delete$.pipe(exhaustMap((value: number) => this.reminderService.deleteReminder(value))).subscribe(),
     );
+    this.subscription.add(
+      this.edit$
+        .pipe(
+          exhaustMap((value: Reminder) =>
+            this.bottomSheet
+              .open(ReminderFormComponent, { data: value })
+              .afterDismissed()
+              .pipe(
+                filter((value: Reminder | undefined) => value !== undefined),
+                switchMap((value: Reminder) => this.reminderService.update(value)),
+              ),
+          ),
+        )
+        .subscribe(),
+    );
   }
 
   ngOnDestroy(): void {
@@ -89,7 +107,9 @@ export class RemindersComponent implements OnInit, OnDestroy {
     this.delete$.next(id);
   }
 
-  public onEditClick(reminder: Reminder): void {}
+  public onEditClick(reminder: Reminder): void {
+    this.edit$.next(reminder);
+  }
 
   //#endregion
 }

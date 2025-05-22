@@ -1,6 +1,7 @@
 <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()">
+    <!--Description-->
     <mat-form-field>
         <mat-label>Description</mat-label>
         <input
@@ -9,14 +10,7 @@
             formControlName="description"
             placeholder="Make appointment" />
     </mat-form-field>
-    <mat-form-field>
-        <mat-label>Notes</mat-label>
-        <input
-            matInput
-            type="textarea"
-            formControlName="notes"
-            placeholder="Notes" />
-    </mat-form-field>
+    <!--Priority-->
     <mat-form-field>
         <mat-label>Priority</mat-label>
         <mat-select formControlName="priorityLevel">
@@ -25,9 +19,73 @@
             <mat-option [value]="3">High</mat-option>
         </mat-select>
     </mat-form-field>
-    <button
-        mat-stroked-button
-        type="submit">
-        Submit
-    </button>
+    <!--Start-->
+    <mat-form-field>
+        <mat-label>Start</mat-label>
+        <input
+            matInput
+            formControlName="startDate"
+            [matDatepicker]="startDatepicker" />
+        <mat-datepicker-toggle
+            matIconSuffix
+            [for]="startDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatepicker />
+    </mat-form-field>
+    <!--End-->
+    <mat-form-field>
+        <mat-label>End</mat-label>
+        <input
+            matInput
+            formControlName="endDate"
+            [matDatepicker]="endDatepicker" />
+        <mat-datepicker-toggle
+            matIconSuffix
+            [for]="endDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatepicker />
+    </mat-form-field>
+    <!--Recurring-->
+    <mat-slide-toggle formControlName="isRecurring">Is recurring?</mat-slide-toggle>
+    <!--Recurring unit-->
+    <mat-form-field>
+        <mat-label>Unit</mat-label>
+        <mat-select formControlName="recurrenceUnit">
+            <mat-option [value]="recurrenceUnit.Day">Day</mat-option>
+            <mat-option [value]="recurrenceUnit.Week">Week</mat-option>
+            <mat-option [value]="recurrenceUnit.Month">Month</mat-option>
+            <mat-option [value]="recurrenceUnit.Year">Year</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!--Recurrence interval-->
+    <mat-form-field>
+        <mat-label>Interval</mat-label>
+        <input
+            matInput
+            formControlName="recurrenceInterval"
+            type="number" />
+    </mat-form-field>
+    <!--Recurrence count-->
+    <mat-form-field>
+        <mat-label>Count</mat-label>
+        <input
+            matInput
+            formControlName="recurrenceCount"
+            type="number" />
+    </mat-form-field>
+    <!--Notes-->
+    <mat-form-field>
+        <mat-label>Notes</mat-label>
+        <textarea
+            matInput
+            type="textarea"
+            formControlName="notes"
+            placeholder="Notes">
+        </textarea>
+    </mat-form-field>
+    <div>
+        <button
+            mat-stroked-button
+            type="submit">
+            Submit
+        </button>
+    </div>
 </form>
