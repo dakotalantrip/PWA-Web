@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 
 import { BaseApiService } from './base-api.service';
-import { Reminder } from '../models/reminder.model';
+import { Reminder, ReminderItem, ReminderTask } from '../models/reminder.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +27,14 @@ export class ReminderService extends BaseApiService {
 
   public add(reminder: Reminder): Observable<Reminder[]> {
     return this.post<Reminder>('Add', reminder).pipe(switchMap(() => this.getAll()));
+  }
+
+  public addItem(id: number, reminderItem: ReminderItem): Observable<Reminder[]> {
+    return this.post<ReminderItem>(`AddItem${id}`, reminderItem).pipe(switchMap(() => this.getAll()));
+  }
+
+  public addTask(id: number, reminderTask: ReminderTask): Observable<Reminder[]> {
+    return this.post<ReminderItem>(`AddTask${id}`, reminderTask).pipe(switchMap(() => this.getAll()));
   }
 
   public complete(id: number): Observable<Reminder[]> {

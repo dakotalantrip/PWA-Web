@@ -1,0 +1,18 @@
+@use "abstracts/mixins";
+@use "abstracts/variables";
+
+form {
+    @include mixins.flexbox(row, baseline, center);
+    @include mixins.spacing(gap);
+    flex-wrap: wrap;
+
+    > :not(div) {
+        flex: 1 1 calc(50% - #{variables.$spacing});
+    }
+
+    > div {
+        display: inherit;
+        justify-content: center;
+        width: 100%;
+    }
+}

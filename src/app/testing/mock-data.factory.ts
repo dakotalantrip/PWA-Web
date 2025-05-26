@@ -39,8 +39,8 @@ export function createReminder(
 ): Reminder {
   return {
     id: id,
-    description: description,
-    notes: notes,
+    title: description,
+    description: notes,
     priorityLevel: priorityLevel,
     isCompleted: false,
     completedOn: undefined,
@@ -50,7 +50,10 @@ export function createReminder(
     recurrenceCount: 0,
     recurrenceInterval: 1,
     recurrenceUnit: RecurrenceUnit.Day,
+    items: [],
     tasks: [],
+    createdOn: new Date(),
+    updatedOn: null,
   };
 }
 

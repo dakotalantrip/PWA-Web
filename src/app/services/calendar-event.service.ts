@@ -8,7 +8,7 @@ import { Event } from '../models/event.model';
 @Injectable({
   providedIn: 'root',
 })
-export class EventService extends BaseApiService {
+export class CalendarEventService extends BaseApiService {
   private eventsSubject: BehaviorSubject<Event[]> = new BehaviorSubject<Event[]>([]); // Cache for events to avoid multiple calls
 
   public events$: Observable<Event[]> = this.eventsSubject.asObservable(); // Expose the observable for components to subscribe to
@@ -22,7 +22,7 @@ export class EventService extends BaseApiService {
   }
 
   constructor(http: HttpClient) {
-    super(http, 'Events');
+    super(http, 'CalendarEvent');
   }
 
   public addEvent(event: Event): Observable<Event | null> {

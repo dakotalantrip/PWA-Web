@@ -36,8 +36,8 @@ describe('ReminderFormComponent', () => {
 
   it('should set the FormGroup with correct FormControls', () => {
     expect(component.form).toBeTruthy();
+    expect(component.form.get('title')).toBeTruthy();
     expect(component.form.get('description')).toBeTruthy();
-    expect(component.form.get('notes')).toBeTruthy();
     expect(component.form.get('priorityLevel')).toBeTruthy();
   });
 
@@ -62,8 +62,8 @@ describe('ReminderFormComponent', () => {
 
   it('should return data from the FormGroup when form is submitted', () => {
     component.form.setValue({
+      title: mockReminderLowPriority.title,
       description: mockReminderLowPriority.description,
-      notes: mockReminderLowPriority.notes,
       priorityLevel: mockReminderLowPriority.priorityLevel,
       isRecurring: mockReminderLowPriority.isRecurring,
       recurrenceInterval: mockReminderLowPriority.recurrenceInterval,

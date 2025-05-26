@@ -1,7 +1,7 @@
 export interface Reminder {
   id: number;
-  description: string;
-  notes?: string | null;
+  title: string;
+  description?: string | null;
   priorityLevel: PriorityLevelEnum;
   isCompleted: boolean;
   completedOn?: Date;
@@ -13,7 +13,18 @@ export interface Reminder {
   endDate?: Date | null;
   startDate?: Date | null;
   nextOccurrence?: Date;
+  items: ReminderItem[];
   tasks: ReminderTask[];
+  createdOn: Date;
+  updatedOn?: Date | null;
+}
+
+export interface ReminderItem {
+  id: number;
+  description: string;
+  url?: string;
+  createdOn: Date;
+  updatedOn?: Date | null;
 }
 
 export interface ReminderTask {
@@ -23,13 +34,14 @@ export interface ReminderTask {
   isCompleted: boolean;
   completedOn?: Date;
   url?: string;
+  createdOn: Date;
+  updatedOn?: Date | null;
 }
 
 export enum PriorityLevelEnum {
-  'None' = 0,
-  'Low' = 1,
-  'Medium' = 2,
-  'High' = 3,
+  'Low' = 0,
+  'Medium' = 1,
+  'High' = 2,
 }
 
 export enum RecurrenceUnit {

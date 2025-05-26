@@ -10,7 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import { EventDialogComponent } from '../../components/event-dialog/event-dialog.component';
-import { EventService } from '../../services/event.service';
+import { CalendarEventService } from '../../services/calendar-event.service';
 import { Event } from '../../models/event.model';
 import { MatSymbolDirective } from '../../directives/mat-symbol.directive';
 
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription(); // Subscription to manage observables
 
   constructor(
-    private eventService: EventService,
+    private eventService: CalendarEventService,
     private dialog: MatDialog,
   ) {
     const eventSubscription = this.eventService.events$

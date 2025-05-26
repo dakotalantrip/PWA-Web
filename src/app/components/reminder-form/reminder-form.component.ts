@@ -38,8 +38,8 @@ export class ReminderFormComponent {
     @Inject(MAT_BOTTOM_SHEET_DATA) public data?: Reminder,
   ) {
     this.form = this.formBuilder.group<Partial<FormControls<Reminder>>>({
-      description: new FormControl(this.data?.description ?? '', { nonNullable: true }),
-      notes: new FormControl(this.data?.notes, { nonNullable: true }),
+      title: new FormControl(this.data?.title ?? '', { nonNullable: true }),
+      description: new FormControl(this.data?.description, { nonNullable: true }),
       priorityLevel: new FormControl(this.data?.priorityLevel ?? PriorityLevelEnum.Low, { nonNullable: true }),
       isRecurring: new FormControl(this.data?.isRecurring ?? false, { nonNullable: true }),
       recurrenceInterval: new FormControl(this.data?.recurrenceInterval, { nonNullable: false }),

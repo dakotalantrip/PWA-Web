@@ -1,0 +1,5 @@
+@for (item of data?.items; track item) {
+    <div>{{ item.description }}</div>
+} @empty {
+    <span>No items</span>
+}

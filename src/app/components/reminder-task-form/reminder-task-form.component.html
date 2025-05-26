@@ -1,0 +1,38 @@
+<form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()">
+    <!--Description-->
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input
+            matInput
+            type="text"
+            formControlName="description"
+            placeholder="A task for the Reminder" />
+    </mat-form-field>
+    <!--Priority-->
+    <mat-form-field>
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priorityLevel">
+            <mat-option [value]="1">Low</mat-option>
+            <mat-option [value]="2">Medium</mat-option>
+            <mat-option [value]="3">High</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!--Url-->
+    <mat-form-field>
+        <mat-label>Url</mat-label>
+        <input
+            matInput
+            type="text"
+            formControlName="url"
+            placeholder="A url for the Task" />
+    </mat-form-field>
+    <div>
+        <button
+            mat-stroked-button
+            type="submit">
+            Submit
+        </button>
+    </div>
+</form>

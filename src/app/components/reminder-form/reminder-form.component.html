@@ -1,13 +1,13 @@
 <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()">
-    <!--Description-->
+    <!--Title-->
     <mat-form-field>
-        <mat-label>Description</mat-label>
+        <mat-label>Title</mat-label>
         <input
             matInput
             type="text"
-            formControlName="description"
+            formControlName="title"
             placeholder="Make appointment" />
     </mat-form-field>
     <!--Priority-->
@@ -71,14 +71,14 @@
             formControlName="recurrenceCount"
             type="number" />
     </mat-form-field>
-    <!--Notes-->
+    <!--Description-->
     <mat-form-field>
-        <mat-label>Notes</mat-label>
+        <mat-label>Description</mat-label>
         <textarea
             matInput
             type="textarea"
-            formControlName="notes"
-            placeholder="Notes">
+            formControlName="description"
+            placeholder="Description of the reminder">
         </textarea>
     </mat-form-field>
     <div>

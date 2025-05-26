@@ -12,7 +12,8 @@
                 <mat-icon [fontIcon]="reminder.isCompleted ? 'task_alt' : 'circle'" />
             </div>
             <strong
-                ><span>{{ reminder.description }}</span></strong
+                ><span>{{ reminder.title }}</span> (Items: {{ reminder.items.length }} | Tasks:
+                {{ reminder.tasks.length }})</strong
             >
         </div>
         <button mat-icon-button>
@@ -39,6 +40,12 @@
         @if (!reminder.isCompleted) {
             <button
                 mat-menu-item
+                [matMenuTriggerFor]="addMenu"
+                [matMenuTriggerData]="{ reminder: reminder }">
+                Add
+            </button>
+            <button
+                mat-menu-item
                 (click)="onEditClick(reminder)">
                 Edit
             </button>
@@ -48,10 +55,41 @@
                 Complete
             </button>
         }
+        @if (reminder.items.length) {
+            <button
+                mat-menu-item
+                (click)="onViewItemsClick(reminder)">
+                View Items
+            </button>
+        }
+        @if (reminder.tasks.length) {
+            <button
+                mat-menu-item
+                (click)="onViewTasksClick(reminder)">
+                View Tasks
+            </button>
+        }
         <button
             mat-menu-item
             (click)="onDeleteClick(reminder.id)">
             Delete
+        </button>
+    </ng-template>
+</mat-menu>
+
+<mat-menu #addMenu="matMenu">
+    <ng-template
+        matMenuContent
+        let-reminder="reminder">
+        <button
+            mat-menu-item
+            (click)="onAddItemClick(reminder)">
+            Item
+        </button>
+        <button
+            mat-menu-item
+            (click)="onAddTaskClick(reminder)">
+            Task
         </button>
     </ng-template>
 </mat-menu>

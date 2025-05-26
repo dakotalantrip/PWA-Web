@@ -1,0 +1,5 @@
+@for (task of data?.tasks; track task) {
+    <div>{{ task.description }}</div>
+} @empty {
+    <span>No tasks</span>
+}

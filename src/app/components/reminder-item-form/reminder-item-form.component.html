@@ -1,0 +1,29 @@
+<form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()">
+    <!--Description-->
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input
+            matInput
+            type="text"
+            formControlName="description"
+            placeholder="An item for the Reminder" />
+    </mat-form-field>
+    <!--Url-->
+    <mat-form-field>
+        <mat-label>Url</mat-label>
+        <input
+            matInput
+            type="text"
+            formControlName="url"
+            placeholder="A url for the Item" />
+    </mat-form-field>
+    <div>
+        <button
+            mat-stroked-button
+            type="submit">
+            Submit
+        </button>
+    </div>
+</form>
