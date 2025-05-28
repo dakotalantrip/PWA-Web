@@ -32,7 +32,6 @@ export class ReminderTaskFormComponent {
     this.form = this.formBuilder.group<Partial<FormControls<ReminderTask>>>({
       description: new FormControl(this.data?.description ?? '', { nonNullable: true }),
       priorityLevel: new FormControl(this.data?.priorityLevel ?? PriorityLevelEnum.Low, { nonNullable: true }),
-      url: new FormControl(this.data?.url ?? '', { nonNullable: true }),
     });
   }
 

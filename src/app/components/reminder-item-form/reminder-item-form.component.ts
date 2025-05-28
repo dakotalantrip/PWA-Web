@@ -23,7 +23,6 @@ export class ReminderItemFormComponent {
   ) {
     this.form = this.formBuilder.group<Partial<FormControls<ReminderItem>>>({
       description: new FormControl(this.data?.description ?? '', { nonNullable: true }),
-      url: new FormControl(this.data?.url ?? '', { nonNullable: true }),
     });
   }
 

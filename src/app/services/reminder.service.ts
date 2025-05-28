@@ -25,16 +25,10 @@ export class ReminderService extends BaseApiService {
     this.remindersSubject.next(value);
   }
 
+  //#region Reminder
+
   public add(reminder: Reminder): Observable<Reminder[]> {
     return this.post<Reminder>('Add', reminder).pipe(switchMap(() => this.getAll()));
-  }
-
-  public addItem(id: number, reminderItem: ReminderItem): Observable<Reminder[]> {
-    return this.post<ReminderItem>(`AddItem${id}`, reminderItem).pipe(switchMap(() => this.getAll()));
-  }
-
-  public addTask(id: number, reminderTask: ReminderTask): Observable<Reminder[]> {
-    return this.post<ReminderItem>(`AddTask${id}`, reminderTask).pipe(switchMap(() => this.getAll()));
   }
 
   public complete(id: number): Observable<Reminder[]> {
@@ -56,4 +50,42 @@ export class ReminderService extends BaseApiService {
       }),
     );
   }
+
+  //#endregion
+
+  //#region ReminderItem
+
+  public addItem(id: number, item: ReminderItem): Observable<Reminder[]> {
+    return this.post<ReminderItem>(`AddItem${id}`, item).pipe(switchMap(() => this.getAll()));
+  }
+
+  public deleteItem(id: number): Observable<Reminder[]> {
+    return this.delete<void>(`DeleteItem${id}`).pipe(switchMap(() => this.getAll()));
+  }
+
+  public updateItem(item: ReminderItem): Observable<Reminder[]> {
+    return this.put<ReminderItem>('UpdateItem', item).pipe(switchMap(() => this.getAll()));
+  }
+
+  //#endregion
+
+  //#region ReminderTask
+
+  public addTask(id: number, task: ReminderTask): Observable<Reminder[]> {
+    return this.post<ReminderTask>(`AddTask${id}`, task).pipe(switchMap(() => this.getAll()));
+  }
+
+  public completeTask(id: number): Observable<Reminder[]> {
+    return this.put<ReminderTask>(`CompleteTask${id}`, null).pipe(switchMap(() => this.getAll()));
+  }
+
+  public deleteTask(id: number): Observable<Reminder[]> {
+    return this.delete<void>(`DeleteTask${id}`).pipe(switchMap(() => this.getAll()));
+  }
+
+  public updateTask(task: ReminderTask): Observable<Reminder[]> {
+    return this.put<ReminderTask>('UpdateTask', task).pipe(switchMap(() => this.getAll()));
+  }
+
+  //#endregion
 }
