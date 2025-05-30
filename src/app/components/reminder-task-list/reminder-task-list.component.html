@@ -22,50 +22,25 @@
     </ng-template>
 </mat-menu>
 
-<div class="task-list-container">
-    @for (task of data; track $index) {
-        <div>
-            <div>
-                <div [class.completed]="task.isCompleted">
-                    <span
-                        class="status-indicator"
-                        [class.high]="task.priorityLevel === priorityLevelEnum.High"
-                        [class.medium]="task.priorityLevel === priorityLevelEnum.Medium"></span>
-                    <strong>{{ task.description }}</strong>
-                </div>
-                <button
-                    mat-icon-button
-                    [matMenuTriggerFor]="menu"
-                    [matMenuTriggerData]="{ task: task }">
-                    <mat-icon fontIcon="more_vert" />
-                </button>
-            </div>
-            <small>Created: {{ task.createdOn | date: "short" }}</small>
-            @if (task.updatedOn) {
-                <small>Updated: {{ task.updatedOn | date: "short" }}</small>
-            }
-            @if (task.url) {
-                <a
-                    [href]="task.url"
-                    target="_blank"
-                    >View Details</a
-                >
-            }
-            @if (task.isCompleted) {
-                <small>Completed: {{ task.completedOn | date: "short" }}</small>
-            }
+@for (task of data; track $index) {
+    <div>
+        <div [class.completed]="task.isCompleted">
+            <span
+                class="status-indicator"
+                [class.high]="task.priorityLevel === priorityLevelEnum.High"
+                [class.medium]="task.priorityLevel === priorityLevelEnum.Medium"></span>
+            <strong>{{ task.description }}</strong>
         </div>
+        <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            [matMenuTriggerData]="{ task: task }">
+            <mat-icon fontIcon="more_vert" />
+        </button>
+    </div>
+    @if ($index < (data?.length ?? 1) - 1) {
         <mat-divider></mat-divider>
-    } @empty {
-        No tasks found
     }
-</div>
-
-<div class="button-row">
-    <button
-        class="add"
-        mat-fab
-        (click)="onAddClick()">
-        <mat-icon fontIcon="list_alt_add" />
-    </button>
-</div>
+} @empty {
+    No tasks found
+}

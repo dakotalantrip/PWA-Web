@@ -3,73 +3,54 @@
 @use "themes/theme_vars" as themeVars;
 
 :host {
-    @include mixins.spacing(row-gap);
-    position: relative;
-    height: 100%;
+    width: 100%;
+    height: calc(100% - 75px);
     overflow-y: auto;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+    min-height: 100px;
 
-    .button-row {
-        position: fixed;
-        @include mixins.spacing(bottom, 2);
-        @include mixins.spacing(right, 2);
-        z-index: 10;
+    > div {
+        @include mixins.flexbox(row, center, space-between);
+        width: 100%;
+
+        > div {
+            @include mixins.flexbox(row, center);
+            @include mixins.spacing(column-gap);
+            width: 100%;
+            overflow: hidden;
+
+            &.completed {
+                text-decoration: line-through;
+            }
+
+            strong {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            .status-indicator {
+                min-width: variables.$spacing;
+                min-height: variables.$spacing;
+                border-radius: 50%;
+                background-color: themeVars.$color-primary;
+                border-color: themeVars.$color-primary;
+
+                &.medium {
+                    background-color: themeVars.$color-warn;
+                    border-color: themeVars.$color-warn;
+                }
+
+                &.high {
+                    background-color: themeVars.$color-system-error;
+                    border-color: themeVars.$color-system-error;
+                }
+            }
+        }
     }
 
     mat-divider {
         width: 100%;
-    }
-
-    .task-list-container {
-        width: 100%;
-        height: calc(100% - 75px);
-        overflow-y: auto;
-        padding-bottom: 50px;
-        box-sizing: border-box;
-        min-height: 100px;
-
-        > div {
-            @include mixins.flexbox(column);
-            width: 100%;
-
-            > div:first-child {
-                @include mixins.flexbox(row, center, space-between);
-                width: 100%;
-
-                > div {
-                    @include mixins.flexbox(row, center);
-                    @include mixins.spacing(column-gap);
-                    width: 100%;
-                    overflow: hidden;
-
-                    &.completed {
-                        text-decoration: line-through;
-                    }
-
-                    strong {
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                    }
-
-                    .status-indicator {
-                        min-width: variables.$spacing;
-                        min-height: variables.$spacing;
-                        border-radius: 50%;
-                        background-color: themeVars.$color-primary;
-                        border-color: themeVars.$color-primary;
-
-                        &.medium {
-                            background-color: themeVars.$color-warn;
-                            border-color: themeVars.$color-warn;
-                        }
-
-                        &.high {
-                            background-color: themeVars.$color-system-error;
-                            border-color: themeVars.$color-system-error;
-                        }
-                    }
-                }
-            }
-        }
     }
 }

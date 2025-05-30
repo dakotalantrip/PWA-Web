@@ -19,14 +19,16 @@
                     [matBadge]="reminder.items.length"
                     matTooltip="Items"
                     fontIcon="list_alt"
-                    (click)="onViewItemsClick(reminder)" />
+                    [matMenuTriggerFor]="itemMenu"
+                    [matMenuTriggerData]="{ reminder: reminder }" />
             </button>
             <button mat-icon-button>
                 <mat-icon
                     [matBadge]="reminder.incompleteTasksCount"
                     matTooltip="Tasks"
                     fontIcon="list_alt_check"
-                    (click)="onViewTasksClick(reminder)" />
+                    [matMenuTriggerFor]="taskMenu"
+                    [matMenuTriggerData]="{ reminder: reminder }" />
             </button>
             <button mat-icon-button>
                 <mat-icon
@@ -67,6 +69,40 @@
             mat-menu-item
             (click)="onDeleteClick(reminder.id)">
             Delete
+        </button>
+    </ng-template>
+</mat-menu>
+
+<mat-menu #itemMenu="matMenu">
+    <ng-template
+        matMenuContent
+        let-reminder="reminder">
+        <button
+            mat-menu-item
+            (click)="onAddItemClick(reminder)">
+            Add item
+        </button>
+        <button
+            mat-menu-item
+            (click)="onViewItemsClick(reminder)">
+            View items
+        </button>
+    </ng-template>
+</mat-menu>
+
+<mat-menu #taskMenu="matMenu">
+    <ng-template
+        matMenuContent
+        let-reminder="reminder">
+        <button
+            mat-menu-item
+            (click)="onAddTaskClick(reminder)">
+            Add task
+        </button>
+        <button
+            mat-menu-item
+            (click)="onViewTasksClick(reminder)">
+            View tasks
         </button>
     </ng-template>
 </mat-menu>

@@ -2,38 +2,18 @@
 @use "abstracts/variables";
 
 :host {
-    @include mixins.spacing(row-gap);
-    position: relative;
-    height: 100%;
+    width: 100%;
+    height: calc(100% - 75px);
     overflow-y: auto;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+    min-height: 100px;
 
-    .button-row {
-        position: fixed;
-        @include mixins.spacing(bottom, 2);
-        @include mixins.spacing(right, 2);
-        z-index: 10;
+    > div {
+        @include mixins.flexbox(row, center, space-between);
+        width: 100%;
     }
-
     mat-divider {
         width: 100%;
-    }
-
-    .item-list-container {
-        width: 100%;
-        height: calc(100% - 75px);
-        overflow-y: auto;
-        padding-bottom: 50px;
-        box-sizing: border-box;
-        min-height: 100px;
-
-        > div {
-            @include mixins.flexbox(column);
-            width: 100%;
-
-            > div:first-child {
-                @include mixins.flexbox(row, center, space-between);
-                width: 100%;
-            }
-        }
     }
 }
