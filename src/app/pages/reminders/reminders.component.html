@@ -20,7 +20,8 @@
                     matTooltip="Items"
                     fontIcon="list_alt"
                     [matMenuTriggerFor]="itemMenu"
-                    [matMenuTriggerData]="{ reminder: reminder }" />
+                    [matMenuTriggerData]="{ reminder: reminder }"
+                    aria-hidden="false" />
             </button>
             <button mat-icon-button>
                 <mat-icon
@@ -28,7 +29,8 @@
                     matTooltip="Tasks"
                     fontIcon="list_alt_check"
                     [matMenuTriggerFor]="taskMenu"
-                    [matMenuTriggerData]="{ reminder: reminder }" />
+                    [matMenuTriggerData]="{ reminder: reminder }"
+                    aria-hidden="false" />
             </button>
             <button mat-icon-button>
                 <mat-icon

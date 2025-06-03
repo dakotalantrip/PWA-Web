@@ -51,6 +51,8 @@ export class RemindersComponent implements OnInit, OnDestroy {
   private viewTasks$: Subject<Reminder> = new Subject<Reminder>();
   private subscription: Subscription = new Subscription();
 
+  private selectedReminder: Reminder | undefined;
+
   public priorityLevelEnum: typeof PriorityLevelEnum = PriorityLevelEnum;
   public reminders$: Observable<ReminderView[]>;
 
@@ -59,6 +61,22 @@ export class RemindersComponent implements OnInit, OnDestroy {
     private reminderService: ReminderService,
   ) {
     this.reminders$ = this.reminderService.reminders$.pipe(
+      tap((reminders: Reminder[]) => {
+        if (this.selectedReminder) {
+          const reminder = reminders.find((r) => r.id === this.selectedReminder?.id);
+          if (reminder) {
+            if (this.collectionChanged(this.selectedReminder.items, reminder.items)) {
+              this.viewItems$.next(reminder);
+            }
+
+            if (this.collectionChanged(this.selectedReminder.tasks, reminder.tasks)) {
+              this.viewTasks$.next(reminder);
+            }
+          }
+
+          this.selectedReminder = undefined;
+        }
+      }),
       map((reminders: Reminder[]) => reminders.map((reminder: Reminder) => new ReminderView(reminder))),
     );
   }
@@ -148,6 +166,7 @@ export class RemindersComponent implements OnInit, OnDestroy {
               .pipe(
                 filter((value) => value !== undefined),
                 tap((value) => {
+                  this.selectedReminder = reminder;
                   if (value.action === 'add') {
                     this.addItem$.next(reminder);
                   } else if (value.action === 'delete') {
@@ -209,6 +228,7 @@ export class RemindersComponent implements OnInit, OnDestroy {
               .pipe(
                 filter((value) => value !== undefined),
                 tap((value) => {
+                  this.selectedReminder = reminder;
                   if (value.action === 'add') {
                     this.addTask$.next(reminder);
                   } else if (value.action === 'complete') {
@@ -239,10 +259,12 @@ export class RemindersComponent implements OnInit, OnDestroy {
   }
 
   public onAddItemClick(reminder: Reminder): void {
+    this.selectedReminder = reminder;
     this.addItem$.next(reminder);
   }
 
   public onAddTaskClick(reminder: Reminder): void {
+    this.selectedReminder = reminder;
     this.addTask$.next(reminder);
   }
 
@@ -267,4 +289,16 @@ export class RemindersComponent implements OnInit, OnDestroy {
   }
 
   //#endregion
+
+  private collectionChanged(a: ReminderItem[] | ReminderTask[], b: ReminderItem[] | ReminderTask[]): boolean {
+    if (a.length !== b.length) {
+      return true;
+    }
+
+    if (JSON.stringify(a) !== JSON.stringify(b)) {
+      return true;
+    }
+
+    return false;
+  }
 }
